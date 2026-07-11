@@ -1,0 +1,51 @@
+schemaVersion: "1.0"
+investigation:
+  id: INV-002
+  title: Invalid no-impact conclusion with blocked contract
+  mode: investigation_only
+  assuranceLevel: standard
+baseline:
+  repositoryCommit: 89163ce17ae57f4c0bdf0468cbed54339b096886
+  branch: main
+  observedAt: 2026-07-11T10:00:00+09:00
+  sources:
+    - {kind: repository, snapshot: "git:89163ce17ae57f4c0bdf0468cbed54339b096886", capturedAt: 2026-07-11T10:00:00+09:00}
+changeSeeds:
+  - {id: CHG-001, kind: contract.column-removal, target: IF-POSITION.legacy_code}
+scope: {included: [IF-POSITION], excluded: []}
+lensCoverage:
+  - {lens: business, required: true, status: completed, evidenceRefs: [EV-001], reason: Requirement checked.}
+  - {lens: code, required: true, status: completed, evidenceRefs: [EV-001], reason: Repository searched.}
+  - {lens: configuration, required: false, status: not_applicable, evidenceRefs: [], reason: No configuration path.}
+  - {lens: data, required: false, status: not_applicable, evidenceRefs: [], reason: No persistence in stated scope.}
+  - {lens: contract, required: true, status: blocked, evidenceRefs: [], reason: External contract is inaccessible., owner: upstream-owner, dueAt: 2026-07-18}
+  - {lens: batch, required: false, status: not_applicable, evidenceRefs: [], reason: No batch in stated scope.}
+  - {lens: runtime, required: false, status: not_applicable, evidenceRefs: [], reason: Runtime does not resolve the missing contract.}
+  - {lens: test, required: true, status: completed, evidenceRefs: [EV-001], reason: Existing tests searched.}
+  - {lens: operations, required: false, status: not_applicable, evidenceRefs: [], reason: No operational path identified.}
+  - {lens: security, required: false, status: not_applicable, evidenceRefs: [], reason: No security property changed.}
+  - {lens: manual, required: false, status: not_applicable, evidenceRefs: [], reason: No known manual process.}
+evidence:
+  - id: EV-001
+    class: structural
+    source: repository
+    locator: repository-wide-search
+    snapshot: git:89163ce17ae57f4c0bdf0468cbed54339b096886
+    observedAt: 2026-07-11T10:10:00+09:00
+    method: lexical-search
+    limitations: External contract and consumers are unavailable.
+graph: {nodes: [], edges: []}
+impacts: []
+findings:
+  facts: []
+  assumptions: []
+  unknowns:
+    - {id: U-001, statement: External consumers are unknown., owner: upstream-owner, dueAt: 2026-07-18}
+  conflicts: []
+requiredTests: []
+recommendedFollowUps: []
+completeness: {status: complete, openFrontiers: [], unresolvedConflicts: []}
+conclusion:
+  outcome: no_impact_confirmed
+  summary: No references were found in the local repository.
+  confidence: high
