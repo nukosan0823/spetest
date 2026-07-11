@@ -1,0 +1,107 @@
+schemaVersion: "1.0"
+investigation:
+  id: INV-001
+  title: Position amount precision impact
+  mode: investigation_only
+  assuranceLevel: high_assurance
+baseline:
+  repositoryCommit: 89163ce17ae57f4c0bdf0468cbed54339b096886
+  branch: main
+  observedAt: 2026-07-11T10:00:00+09:00
+  sources:
+    - kind: repository
+      snapshot: git:89163ce17ae57f4c0bdf0468cbed54339b096886
+      capturedAt: 2026-07-11T10:00:00+09:00
+    - kind: contract
+      snapshot: IF-POSITION:r2026-06
+      capturedAt: 2026-07-11T10:05:00+09:00
+changeSeeds:
+  - id: CHG-001
+    kind: contract.column-type-change
+    target: IF-POSITION.amount
+    before: NUMBER(18,2)
+    after: NUMBER(24,8)
+scope:
+  included: [IF-POSITION, PositionRecord.amount, PositionMapper, T_POSITION.AMOUNT]
+  excluded:
+    - target: unrelated-market-data
+      reason: Consumes no amount field and is isolated by a separate contract.
+lensCoverage:
+  - {lens: business, required: true, status: completed, evidenceRefs: [EV-002], reason: Business precision is part of the contract.}
+  - {lens: code, required: true, status: completed, evidenceRefs: [EV-001], reason: DTO and mapper consume the field.}
+  - {lens: configuration, required: false, status: not_applicable, evidenceRefs: [], reason: No configuration selects the numeric mapping.}
+  - {lens: data, required: true, status: completed, evidenceRefs: [EV-001], reason: The mapped value is persisted.}
+  - {lens: contract, required: true, status: completed, evidenceRefs: [EV-002], reason: The seed is a contract change.}
+  - {lens: batch, required: false, status: not_applicable, evidenceRefs: [], reason: This fixture ends at persistence and has no batch consumer.}
+  - {lens: runtime, required: true, status: completed, evidenceRefs: [EV-003], reason: Runtime access confirms the observed data path.}
+  - {lens: test, required: true, status: completed, evidenceRefs: [EV-001], reason: Mapping tests cover the conversion.}
+  - {lens: operations, required: false, status: not_applicable, evidenceRefs: [], reason: No operational behavior changes in the fixture scope.}
+  - {lens: security, required: false, status: not_applicable, evidenceRefs: [], reason: Data classification and access policy remain unchanged.}
+  - {lens: manual, required: false, status: not_applicable, evidenceRefs: [], reason: No manual consumer exists in the controlled fixture inventory.}
+evidence:
+  - id: EV-001
+    class: structural
+    source: repository
+    locator: src/main/java/example/PositionMapper.java#L20-L35
+    snapshot: git:89163ce17ae57f4c0bdf0468cbed54339b096886
+    observedAt: 2026-07-11T10:10:00+09:00
+    method: symbol-and-data-flow
+    limitations: Reflection is not used in this fixture.
+  - id: EV-002
+    class: declaration
+    source: contract
+    locator: IF-POSITION.schema.yml#amount
+    snapshot: IF-POSITION:r2026-06
+    observedAt: 2026-07-11T10:05:00+09:00
+    method: schema-diff
+    limitations: Confirms the declared contract, not deployed consumers.
+  - id: EV-003
+    class: runtime
+    source: access-history
+    locator: query:fixture-position-write
+    snapshot: window:2026-06-11/2026-07-11
+    observedAt: 2026-07-11T10:20:00+09:00
+    method: observed-read-write-path
+    limitations: Covers the stated 30-day window only.
+graph:
+  nodes:
+    - {id: NODE-IF-POSITION.amount, type: contract-field, label: IF-POSITION.amount}
+    - {id: NODE-PositionRecord.amount, type: java-field, label: PositionRecord.amount}
+    - {id: NODE-PositionMapper, type: java-method, label: PositionMapper.map}
+    - {id: NODE-T_POSITION.AMOUNT, type: database-column, label: T_POSITION.AMOUNT}
+  edges:
+    - {id: EDGE-001, source: NODE-IF-POSITION.amount, target: NODE-PositionRecord.amount, relation: deserializes, evidenceRefs: [EV-001, EV-002], confidence: high}
+    - {id: EDGE-002, source: NODE-PositionRecord.amount, target: NODE-PositionMapper, relation: maps, evidenceRefs: [EV-001], confidence: high}
+    - {id: EDGE-003, source: NODE-PositionMapper, target: NODE-T_POSITION.AMOUNT, relation: writes, evidenceRefs: [EV-001, EV-003], confidence: high}
+impacts:
+  - id: IMP-001
+    seedRefs: [CHG-001]
+    pathEdgeRefs: [EDGE-001, EDGE-002, EDGE-003]
+    target: T_POSITION.AMOUNT
+    status: confirmed
+    consequence: Persistence precision and mapping tests must be updated together.
+    severity: high
+    confidence: high
+    evidenceRefs: [EV-001, EV-002, EV-003]
+findings:
+  facts:
+    - id: F-001
+      statement: PositionMapper writes PositionRecord.amount to T_POSITION.AMOUNT.
+      evidenceRefs: [EV-001, EV-003]
+  assumptions: []
+  unknowns: []
+  conflicts: []
+requiredTests:
+  - mapping precision boundary test
+  - Oracle persistence round-trip test
+recommendedFollowUps:
+  - type: create_feature
+    target: CAP-POSITION-INGESTION
+completeness:
+  status: complete
+  openFrontiers: []
+  unresolvedConflicts: []
+conclusion:
+  outcome: impacts_identified
+  summary: The contract precision change reaches the persisted amount through the Java mapping path.
+  confidence: high

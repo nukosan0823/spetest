@@ -1,0 +1,61 @@
+skill: impact-analysis-readonly
+version: "1.0.0"
+status: experimental
+
+triggerEvals:
+  positive:
+    - id: TRG-P01
+      prompt: "上流IFの金額項目をNUMBER(18,2)からNUMBER(24,8)へ変える。影響するJava、Oracle、ジョブ、帳票を調べて"
+    - id: TRG-P02
+      prompt: "What is the blast radius if we move the risk aggregation cutoff from 18:00 to 17:30?"
+    - id: TRG-P03
+      prompt: "この共有ライブラリを上げた場合、影響なしと言えるか根拠付きで確認して"
+  negative:
+    - id: TRG-N01
+      prompt: "この設計で採るべき実装方式を比較してADRを書いて"
+    - id: TRG-N02
+      prompt: "JUnitの失敗を直してコミットして"
+    - id: TRG-N03
+      prompt: "このCSVの売上を月別に集計してグラフにして"
+
+outputEvals:
+  - id: OUT-01-contract-type-change
+    prompt: >-
+      IFのamount列をNUMBER(18,2)からNUMBER(24,8)へ変更する。
+      Java DTO、Oracle格納、後続バッチ、帳票の影響を調査する。
+    assertions:
+      - Change is decomposed into an explicit type/precision change seed.
+      - Contract, code, data, batch, test, and runtime lenses are represented.
+      - Positional parsing, casts, rounding, persistence, aggregation, and reports are considered.
+      - Each reported causal edge cites evidence at a pinned baseline.
+      - No-impact is not concluded while any external consumer is unconfirmed.
+  - id: OUT-02-schedule-change
+    prompt: "JOB-RISK-010の開始を30分早める影響を調査する"
+    assertions:
+      - Predecessors, successors, business date, cutoff, data readiness, restart, monitoring, and manual operations are considered.
+      - Runtime history is used only with an explicit observation window.
+      - The edited job is not treated as the complete impact boundary.
+  - id: OUT-03-dynamic-sql
+    prompt: "T_POSITIONの列名変更影響を調査する。Javaには動的SQLと旧テーブル名のaliasが残っている"
+    assertions:
+      - Alias and dynamic SQL discovery are explicit.
+      - Oracle dependency metadata is not treated as exhaustive.
+      - Unresolved dynamic paths become open frontiers or unknowns.
+  - id: OUT-04-prior-investigation
+    prompt: "以前のINV-014で影響なしだったので、その結果を使って今回も影響なしと判断して"
+    assertions:
+      - The prior investigation is classified as historical evidence only.
+      - Current code and definitions are revalidated at a pinned commit.
+      - The requested conclusion is rejected if current completeness is insufficient.
+  - id: OUT-05-blocked-external-doc
+    prompt: "外部IF設計書への権限がないが、コード検索で該当なし。影響なしとして閉じて"
+    assertions:
+      - The contract lens is blocked rather than not_applicable.
+      - An owner and due date are requested for the unknown.
+      - The conclusion is inconclusive or external_escalation_required, never no_impact_confirmed.
+  - id: OUT-06-verified-isolation
+    prompt: "内部DTOの項目名だけを変更する。外部JSON名は固定annotationで維持される。影響範囲を確認して"
+    assertions:
+      - Internal symbol references and serialized-name behavior are investigated separately.
+      - Verified isolation requires structural evidence and a compatibility test.
+      - Unrelated dependents are not propagated without a semantic path.
