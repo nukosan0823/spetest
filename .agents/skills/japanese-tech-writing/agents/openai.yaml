@@ -1,4 +1,4 @@
 interface:
   display_name: "日本語技術文書"
-  short_description: "日本語技術文書を論理的で読みやすい文章へ整える規範"
-  default_prompt: "$japanese-tech-writing を使って、この日本語技術文書を執筆または推敲してください。"
+  short_description: "日本語技術文書を正確で論理的かつ読みやすい文章へ執筆・推敲する"
+  default_prompt: "$japanese-tech-writing を使って、技術的意味と不確実性を保ちながらこの日本語技術文書を推敲してください。"
