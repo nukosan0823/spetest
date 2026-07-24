@@ -1,0 +1,102 @@
+[
+  {
+    "id": "trigger-01",
+    "query": "技術書の第3章を書いたので、論理の流れと日本語を推敲して",
+    "should_trigger": true
+  },
+  {
+    "id": "trigger-02",
+    "query": "この日本語の技術解説記事からLLMっぽい言い回しと重複を除いてください",
+    "should_trigger": true
+  },
+  {
+    "id": "trigger-03",
+    "query": "アーキテクチャの設計思想を説明する文章が読みにくいので構成を直したい",
+    "should_trigger": true
+  },
+  {
+    "id": "trigger-04",
+    "query": "推測と確認済み事実の区別を保ったまま、この障害解説をリライトして",
+    "should_trigger": true
+  },
+  {
+    "id": "trigger-05",
+    "query": "新人向けの依存関係管理チュートリアルを日本語で執筆して",
+    "should_trigger": true
+  },
+  {
+    "id": "trigger-06",
+    "query": "章ごとに用語の意味がずれていないか校閲して",
+    "should_trigger": true
+  },
+  {
+    "id": "trigger-07",
+    "query": "この記事の主張を例が本当に支えているか確認し、文章を修正して",
+    "should_trigger": true
+  },
+  {
+    "id": "trigger-08",
+    "query": "技術書の草稿を校正して。ダッシュと中黒の表記規則も適用したい",
+    "should_trigger": true
+  },
+  {
+    "id": "trigger-09",
+    "query": "因果関係が飛躍している箇所を直して、読み手が追える解説文にして",
+    "should_trigger": true
+  },
+  {
+    "id": "trigger-10",
+    "query": "このMarkdownの技術記事を、意味を変えずに簡潔な日本語へ整えて",
+    "should_trigger": true
+  },
+  {
+    "id": "no-trigger-01",
+    "query": "このPythonコードのバグを直してテストを追加して",
+    "should_trigger": false
+  },
+  {
+    "id": "no-trigger-02",
+    "query": "この英語のAPIドキュメントを日本語へ翻訳して",
+    "should_trigger": false
+  },
+  {
+    "id": "no-trigger-03",
+    "query": "この障害ログを解析して根本原因を特定して",
+    "should_trigger": false
+  },
+  {
+    "id": "no-trigger-04",
+    "query": "仕様書のパラメータ表にtimeoutの行を追加して",
+    "should_trigger": false
+  },
+  {
+    "id": "no-trigger-05",
+    "query": "このPull Requestの実装をコードレビューして",
+    "should_trigger": false
+  },
+  {
+    "id": "no-trigger-06",
+    "query": "経営会議向けのPowerPointを10枚作って",
+    "should_trigger": false
+  },
+  {
+    "id": "no-trigger-07",
+    "query": "上司に送る日程調整メールを書いて",
+    "should_trigger": false
+  },
+  {
+    "id": "no-trigger-08",
+    "query": "売上上位10商品のSQLを書いて",
+    "should_trigger": false
+  },
+  {
+    "id": "no-trigger-09",
+    "query": "この記事に書かれた製品価格が最新かファクトチェックして",
+    "should_trigger": false
+  },
+  {
+    "id": "no-trigger-10",
+    "query": "このデータをMarkdownの表に変換して",
+    "should_trigger": false
+  }
+]
