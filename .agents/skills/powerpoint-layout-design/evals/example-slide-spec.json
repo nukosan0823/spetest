@@ -1,0 +1,208 @@
+{
+  "schemaVersion": "1.0",
+  "brief": {
+    "audience": "役員会",
+    "purpose": "申請フローの限定試行について承認を得る",
+    "expectedAction": "試行範囲、評価条件、責任者を承認する",
+    "usage": "projection",
+    "aspectRatio": "16:9"
+  },
+  "slides": [
+    {
+      "number": 1,
+      "role": "推奨要約",
+      "layoutId": "executive-summary",
+      "actionTitle": "限定試行を承認し、全社展開は評価後に判断する",
+      "fields": {
+        "recommendation": "対象を限定して試行し、統制指標を確認してから全社展開を判断する",
+        "evidence": [
+          "現行工程の滞留箇所は要確認",
+          "試行範囲と期間は要確認",
+          "評価指標と停止条件は要確認"
+        ],
+        "action": [
+          "試行実施を承認",
+          "評価条件を承認"
+        ]
+      },
+      "evidence": [
+        "現行処理時間",
+        "滞留率",
+        "例外率"
+      ],
+      "sources": [],
+      "dataClassification": "mixed",
+      "nextRelation": "変更内容を具体化する"
+    },
+    {
+      "number": 2,
+      "role": "変更内容",
+      "layoutId": "before-after",
+      "actionTitle": "受付から承認までを一つの状態で追跡する",
+      "fields": {
+        "before": [
+          "受付経路が分散",
+          "担当者が手動で振分け",
+          "進捗を個別に確認"
+        ],
+        "after": [
+          "共通フォームで受付",
+          "条件で承認先を判定",
+          "状態を一画面で追跡"
+        ],
+        "effect": [
+          "待ち時間を短縮",
+          "監査可能性を向上"
+        ],
+        "transition": "限定試行"
+      },
+      "evidence": [
+        "現行工程図",
+        "承認条件",
+        "監査ログ要件"
+      ],
+      "sources": [],
+      "dataClassification": "mixed",
+      "nextRelation": "選択理由を比較する"
+    },
+    {
+      "number": 3,
+      "role": "選択理由",
+      "layoutId": "comparison",
+      "actionTitle": "限定試行は変更リスクを抑えて学習できる",
+      "fields": {
+        "criteria": [
+          "期間",
+          "影響範囲",
+          "統制",
+          "撤回可能性",
+          "学習効果"
+        ],
+        "options": [
+          {
+            "name": "現状維持",
+            "values": [
+              "短",
+              "小",
+              "現行",
+              "高",
+              "低"
+            ]
+          },
+          {
+            "name": "限定試行",
+            "values": [
+              "中",
+              "限定",
+              "検証",
+              "高",
+              "高"
+            ]
+          },
+          {
+            "name": "全面導入",
+            "values": [
+              "長",
+              "全社",
+              "要確認",
+              "低",
+              "中"
+            ]
+          }
+        ],
+        "recommendation": "限定試行を選び、停止条件を事前に合意する"
+      },
+      "evidence": [
+        "三案の同一条件比較"
+      ],
+      "sources": [],
+      "dataClassification": "estimate",
+      "nextRelation": "実行方法を示す"
+    },
+    {
+      "number": 4,
+      "role": "実行計画",
+      "layoutId": "timeline-roadmap",
+      "actionTitle": "準備・試行・評価の三段階で継続可否を判定する",
+      "fields": {
+        "timeAxis": [
+          "準備",
+          "試行",
+          "評価"
+        ],
+        "workstreams": [
+          {
+            "name": "要件・設定",
+            "start": "準備",
+            "end": "試行前"
+          },
+          {
+            "name": "利用・観測",
+            "start": "試行",
+            "end": "評価前"
+          }
+        ],
+        "milestones": [
+          {
+            "label": "試行開始",
+            "at": "要確認"
+          },
+          {
+            "label": "継続判定",
+            "at": "要確認"
+          }
+        ],
+        "current": "日付は要確認"
+      },
+      "evidence": [
+        "担当",
+        "節目",
+        "停止条件"
+      ],
+      "sources": [],
+      "dataClassification": "estimate",
+      "nextRelation": "承認事項へ接続する"
+    },
+    {
+      "number": 5,
+      "role": "決定",
+      "layoutId": "decision-action",
+      "actionTitle": "試行範囲・評価条件・責任者の承認をお願いしたい",
+      "fields": {
+        "decision": [
+          "限定試行を実施する",
+          "評価条件を採用する",
+          "責任者を任命する"
+        ],
+        "actions": [
+          {
+            "action": "試行範囲を確定",
+            "owner": "要確認",
+            "due": "要確認"
+          },
+          {
+            "action": "設定を確認",
+            "owner": "要確認",
+            "due": "要確認"
+          }
+        ],
+        "conditions": [
+          "対象データを限定",
+          "監査ログを確認",
+          "停止条件を適用"
+        ],
+        "openIssues": [
+          "全社展開の時期"
+        ]
+      },
+      "evidence": [
+        "承認事項",
+        "担当",
+        "期限"
+      ],
+      "sources": [],
+      "dataClassification": "mixed",
+      "nextRelation": "会議で決定する"
+    }
+  ]
+}

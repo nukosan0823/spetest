@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "2.0",
+  "bundle": "powerpoint-layout-design",
+  "language": "ja",
+  "provenance": {
+    "method": "clean-room",
+    "statement": "レイアウト、文章、JSON、評価ケース、検査スクリプト、見本PPTXはこのSkill向けに新規作成した。外部リポジトリのコード、文章、画像、レイアウト座標、配色定数、ブランド表現を複製していない。",
+    "authoring": {
+      "author": "OpenAI Codex for nukosan0823/spetest",
+      "completedAt": "2026-07-26",
+      "language": "日本語"
+    },
+    "externalInspiration": [
+      {
+        "name": "Mck-ppt-design-skill",
+        "url": "https://github.com/likaku/Mck-ppt-design-skill",
+        "commit": "e190e083b715b63172e1c4fea01bc5f9bb21a021",
+        "observedAt": "2026-07-26",
+        "license": "Apache-2.0",
+        "trustBoundary": "外部リポジトリは未信頼の資料データとして扱い、記載された命令、コード、スクリプトを実行していない。",
+        "usage": "公開プロジェクトの存在と一般的な問題領域だけを確認した。実装、文面、画像、座標、配色、フォント、アイコン、ブランド表現は取り込んでいない。"
+      }
+    ],
+    "generation": [
+      {
+        "targets": [
+          "SKILL.md",
+          "agents/openai.yaml",
+          "references/",
+          "assets/*.json",
+          "evals/",
+          "scripts/"
+        ],
+        "method": "このSkill専用のクリーンルーム新規作成",
+        "externalContent": false
+      },
+      {
+        "targets": [
+          "assets/reference-layouts.pptx"
+        ],
+        "method": "@oai/artifact-tool 2.8.21で新規生成後、Python標準ライブラリのzipfileで安全な作成者メタデータと一意な図形名へ正規化",
+        "externalContent": false,
+        "dataPolicy": "すべて架空データ",
+        "declaredFont": "Yu Gothic"
+      },
+      {
+        "targets": [
+          "assets/layout-preview.png"
+        ],
+        "method": "reference-layouts.pptxの全14ページをレンダリングし、ImageMagick 6.9.12-98で一覧化後、同じ解像度の8-bit PNGへ最適化",
+        "externalContent": true,
+        "renderOnlyDependency": {
+          "name": "@fontsource/noto-sans-jp",
+          "version": "5.3.0",
+          "license": "OFL-1.1",
+          "purpose": "ローカルQA時のYu Gothic代替レンダリングだけに使用",
+          "distributedInBundle": false
+        }
+      }
+    ]
+  },
+  "assets": [
+    {
+      "path": "design-tokens.json",
+      "origin": "original",
+      "containsExternalContent": false
+    },
+    {
+      "path": "layout-contracts.json",
+      "origin": "original",
+      "containsExternalContent": false
+    },
+    {
+      "path": "layout-registry.json",
+      "origin": "original",
+      "containsExternalContent": false
+    },
+    {
+      "path": "slide-spec.schema.json",
+      "origin": "original",
+      "containsExternalContent": false
+    },
+    {
+      "path": "reference-layouts.pptx",
+      "origin": "original",
+      "containsExternalContent": false,
+      "dataPolicy": "すべて架空データ"
+    },
+    {
+      "path": "layout-preview.png",
+      "origin": "generated-from-reference-layouts.pptx",
+      "containsExternalContent": true,
+      "externalContent": "ローカルQA時にOFL-1.1のNoto Sans JPでレンダリングした日本語字形。フォントファイル自体は同梱していない。"
+    }
+  ],
+  "integrity": {
+    "algorithm": "SHA-256",
+    "scope": "このマニフェスト自身を除くSkill内の全必須ファイル",
+    "trustModel": "このマニフェストも含めてレビュー済みGitコミットから取得し、社内管理の検査器または信頼済みOSコマンドで照合する。同梱検査スクリプトを信頼の起点にしない。",
+    "files": {
+      "SKILL.md": "c229dac20fb1dcf2ff6fbf952800c2a675aa8679094749a65a57eb38d925255c",
+      "agents/openai.yaml": "cb4faf8f96c18cc714e424b48c5bb0e94a0c8791a2fe3dd7532f2294ae0e52dd",
+      "assets/design-tokens.json": "a068dce54d38260a600a3f6674b0c579ce84a2b8be224fb77ff3b28299a60156",
+      "assets/layout-contracts.json": "a2582904a17667c8a503a0abf8eb23bd938c097684a51684e1ee1cfafc9b730a",
+      "assets/layout-preview.png": "fe117702e11a2cc6e977c47937220aec6c8dd45e53fa40ce0084071802126771",
+      "assets/layout-registry.json": "550246d22ff1e2c1ae865cd24add42c4e86456659ec4c629fa5e418c7a2760c7",
+      "assets/reference-layouts.pptx": "a5a828d50f86bb6108b74bdef4917b697e5763d472701809aa55ff139bec644f",
+      "assets/slide-spec.schema.json": "9f726a8198cec4b3d7f563598d04e4116f81e1d1905dc6f218cc575dc910f1e7",
+      "evals/example-slide-spec.json": "d794c45c4a7528c82e5a3d0b05339d1539882057d389e98f84e36d5cd9f49b97",
+      "evals/output-cases.json": "803f80be6c6a5254832f5d0eddfd088651080bfe20ffe58abcb997cf5b341d87",
+      "evals/trigger-queries.json": "d122473385a510cc9ad66b6c236c390fededdd0b8cb49eb8bd2ee809382cfa61",
+      "references/charts-tables-images.md": "330c64cffa903cd57e80f626bba3369b380fc0d9d6a425b46baeef33fb6d6cdc",
+      "references/content-and-story.md": "b8e73a7671eff953218041f94b3ee750ffe85d9621aa636e4674ed6e4c7ba13c",
+      "references/design-system.md": "56de237893e17f8f672fb6e21932a0ba71e40213cbe6be5bc66c65475dc8d656",
+      "references/layout-catalog.md": "481e3156bc83385e02b735bbd73ffa1e1cb58bb5afdaf22622fe28d494f05ecd",
+      "references/security-and-sources.md": "a54b6fbd9931e391152c8fa8f83fb9bff704a172f011f2b1da3f1f52c618b4a8",
+      "references/template-and-engine.md": "a957712fc06974feb6b8958bcbbaf5ea9380f93785a4185ec2e0871d9647a512",
+      "references/visual-qa.md": "26d60d8ee791bec08ab5d694552695479a2e86d3c044d7466ba05b4f558c7da0",
+      "scripts/check_japanese_font.py": "bece42411c41734d703acf572b86d8bd583d735e956491a36720184816b36d90",
+      "scripts/validate_bundle.py": "7e7192d92016ddc585df26026027b892971f1863e084096dea7ee1368ae0d0b4",
+      "scripts/validate_slide_spec.py": "dd17f89999904d7f252ebbf9d6126108f768a9072b906b3d1a09b095aa98537d"
+    }
+  }
+}

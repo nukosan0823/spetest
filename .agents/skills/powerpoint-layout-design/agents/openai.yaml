@@ -1,0 +1,4 @@
+interface:
+  display_name: "日本語PowerPointデザイン"
+  short_description: "日本語PPTXの構成・レイアウト・図表・視覚QAを一貫して設計する"
+  default_prompt: "$powerpoint-layout-design を使って、読み手と目的に合う日本語PowerPointを設計し、全スライドをレンダリング検査してください。"
