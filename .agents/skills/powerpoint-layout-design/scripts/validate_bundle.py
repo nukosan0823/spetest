@@ -36,13 +36,18 @@ REQUIRED_FILES = [
     "assets/layout-preview.png",
     "evals/trigger-queries.json",
     "evals/output-cases.json",
+    "evals/layout-selection-cases.json",
     "evals/example-slide-spec.json",
+    "scripts/build_layout_assets.py",
+    "scripts/build_reference_deck.mjs",
+    "scripts/create_layout_preview.py",
+    "scripts/normalize_reference_pptx.py",
     "scripts/validate_bundle.py",
     "scripts/check_japanese_font.py",
     "scripts/validate_slide_spec.py",
 ]
 
-ALLOWED_TEXT_SUFFIXES = {".md", ".json", ".yaml", ".yml", ".py"}
+ALLOWED_TEXT_SUFFIXES = {".md", ".json", ".yaml", ".yml", ".py", ".mjs"}
 ALLOWED_SUFFIXES = ALLOWED_TEXT_SUFFIXES | {".pptx", ".png"}
 FORBIDDEN_CONTROLS = {
     "\u200b",
@@ -277,10 +282,40 @@ def validate_registry(validation: Validation) -> None:
     data = load_json(path, validation)
     if not isinstance(data, dict):
         return
+    families = data.get("families")
     layouts = data.get("layouts")
+    if not isinstance(families, list) or not families:
+        validation.error("layout-registry.jsonにfamiliesがありません")
+        return
     if not isinstance(layouts, list) or not layouts:
         validation.error("layout-registry.jsonにlayoutsがありません")
         return
+    family_ids: list[str] = []
+    family_layout_ids: set[str] = set()
+    for family in families:
+        if not isinstance(family, dict):
+            validation.error(
+                "layout-registry.jsonのfamilyがオブジェクトではありません"
+            )
+            continue
+        family_id = family.get("id")
+        if not isinstance(family_id, str) or not re.fullmatch(
+            r"[a-z0-9]+(?:-[a-z0-9]+)*", family_id
+        ):
+            validation.error(f"不正なファミリーIDです: {family_id!r}")
+            continue
+        family_ids.append(family_id)
+        layout_ids = family.get("layoutIds")
+        if not isinstance(layout_ids, list) or not layout_ids:
+            validation.error(f"{family_id}: layoutIdsがありません")
+        else:
+            family_layout_ids.update(layout_ids)
+        if family.get("contractId") != family_id:
+            validation.error(f"{family_id}: contractIdをfamily IDと一致させます")
+        if family.get("defaultLayoutId") not in set(layout_ids or []):
+            validation.error(f"{family_id}: defaultLayoutIdがlayoutIdsにありません")
+    if len(family_ids) != len(set(family_ids)):
+        validation.error("ファミリーIDが重複しています")
     ids: list[str] = []
     for layout in layouts:
         if not isinstance(layout, dict):
@@ -291,6 +326,12 @@ def validate_registry(validation: Validation) -> None:
             validation.error(f"不正なレイアウトIDです: {layout_id!r}")
             continue
         ids.append(layout_id)
+        if layout.get("familyId") not in set(family_ids):
+            validation.error(
+                f"{layout_id}: 未定義familyIdです: {layout.get('familyId')}"
+            )
+        if layout.get("contractId") != layout.get("familyId"):
+            validation.error(f"{layout_id}: contractIdとfamilyIdが一致しません")
         if not layout.get("purpose"):
             validation.error(f"{layout_id}: purposeがありません")
         if not isinstance(layout.get("capacity"), dict) or not layout["capacity"]:
@@ -319,6 +360,20 @@ def validate_registry(validation: Validation) -> None:
             validation.error(f"{layout_id}: region IDが重複しています")
     if len(ids) != len(set(ids)):
         validation.error("レイアウトIDが重複しています")
+    if family_layout_ids != set(ids):
+        validation.error(
+            "families.layoutIdsとlayoutsが一致しません: "
+            f"family_only={sorted(family_layout_ids - set(ids))}, "
+            f"layout_only={sorted(set(ids) - family_layout_ids)}"
+        )
+    counts = data.get("counts")
+    if not isinstance(counts, dict):
+        validation.error("layout-registry.jsonにcountsがありません")
+    else:
+        if counts.get("families") != len(families):
+            validation.error("counts.familiesと実件数が一致しません")
+        if counts.get("layouts") != len(layouts):
+            validation.error("counts.layoutsと実件数が一致しません")
     for layout in layouts:
         fallback = layout.get("fallback")
         if fallback and fallback not in ids:
@@ -326,11 +381,12 @@ def validate_registry(validation: Validation) -> None:
     if catalog_path.is_file():
         catalog = catalog_path.read_text(encoding="utf-8")
         catalog_ids = re.findall(r"^##\s+\d+\.\s+`([^`]+)`", catalog, re.MULTILINE)
-        if set(catalog_ids) != set(ids):
+        if set(catalog_ids) != set(family_ids):
             validation.error(
-                "layout-catalog.mdとlayout-registry.jsonのIDが一致しません: "
-                f"catalog_only={sorted(set(catalog_ids) - set(ids))}, "
-                f"registry_only={sorted(set(ids) - set(catalog_ids))}"
+                "layout-catalog.mdとlayout-registry.jsonのfamily IDが"
+                "一致しません: "
+                f"catalog_only={sorted(set(catalog_ids) - set(family_ids))}, "
+                f"registry_only={sorted(set(family_ids) - set(catalog_ids))}"
             )
 
 
@@ -345,22 +401,29 @@ def validate_layout_contracts(validation: Validation) -> None:
     if not isinstance(contracts, dict):
         validation.error("layout-contracts.jsonにcontractsがありません")
         return
-    registry_ids = {
-        layout.get("id")
-        for layout in layouts
-        if isinstance(layout, dict) and isinstance(layout.get("id"), str)
+    family_ids = {
+        family.get("id")
+        for family in registry_data.get("families", [])
+        if isinstance(family, dict) and isinstance(family.get("id"), str)
     }
-    if registry_ids != set(contracts):
+    if family_ids != set(contracts):
         validation.error(
-            "layout-registry.jsonとlayout-contracts.jsonのIDが一致しません: "
-            f"registry_only={sorted(registry_ids - set(contracts))}, "
-            f"contracts_only={sorted(set(contracts) - registry_ids)}"
+            "layout-registry.jsonのfamilyとlayout-contracts.jsonのIDが"
+            "一致しません: "
+            f"registry_only={sorted(family_ids - set(contracts))}, "
+            f"contracts_only={sorted(set(contracts) - family_ids)}"
         )
     for layout in layouts:
-        if not isinstance(layout, dict) or layout.get("id") not in contracts:
+        if not isinstance(layout, dict):
             continue
         layout_id = layout["id"]
-        contract = contracts[layout_id]
+        contract_id = layout.get("contractId")
+        if contract_id not in contracts:
+            validation.error(
+                f"{layout_id}: contractがありません: {contract_id}"
+            )
+            continue
+        contract = contracts[contract_id]
         fields = contract.get("fields") if isinstance(contract, dict) else None
         if not isinstance(fields, dict) or not fields:
             validation.error(f"{layout_id}: field contractがありません")
@@ -442,6 +505,80 @@ def validate_layout_contracts(validation: Validation) -> None:
     capacity = common_title.get("capacity") if isinstance(common_title, dict) else None
     if not isinstance(capacity, dict) or capacity.get("maxLines") != 1:
         validation.error("common.titleの一行上限が定義されていません")
+
+    if contracts_data.get("schemaVersion") == "2.0":
+        example_path = ROOT / "evals/example-slide-spec.json"
+        if example_path.is_file():
+            example_data = load_json(example_path, validation)
+            if isinstance(example_data, dict):
+                if example_data.get("schemaVersion") != "2.0":
+                    validation.error(
+                        "example-slide-spec.jsonのschemaVersionは2.0にします"
+                    )
+                layouts_by_id = {
+                    layout.get("id"): layout
+                    for layout in layouts
+                    if isinstance(layout, dict)
+                    and isinstance(layout.get("id"), str)
+                }
+                slides = example_data.get("slides")
+                if not isinstance(slides, list) or not slides:
+                    validation.error(
+                        "example-slide-spec.jsonにslidesがありません"
+                    )
+                else:
+                    for index, slide in enumerate(slides):
+                        if not isinstance(slide, dict):
+                            validation.error(
+                                f"example-slide-spec.json/slides[{index}]が"
+                                "不正です"
+                            )
+                            continue
+                        layout = layouts_by_id.get(slide.get("layoutId"))
+                        if not isinstance(layout, dict):
+                            validation.error(
+                                "example-slide-spec.jsonに未定義layoutIdが"
+                                f"あります: {slide.get('layoutId')}"
+                            )
+                            continue
+                        contract = contracts.get(layout.get("contractId"))
+                        if not isinstance(contract, dict):
+                            validation.error(
+                                "example-slide-spec.jsonのlayoutに契約が"
+                                f"ありません: {slide.get('layoutId')}"
+                            )
+                            continue
+                        fields = slide.get("fields")
+                        if not isinstance(fields, dict):
+                            validation.error(
+                                f"example-slide-spec.json/slides[{index}]に"
+                                "fieldsがありません"
+                            )
+                            continue
+                        contract_fields = contract.get("fields", {})
+                        expected_fields = set(contract_fields) - {"title"}
+                        unknown_fields = set(fields) - expected_fields
+                        if unknown_fields:
+                            validation.error(
+                                f"example-slide-spec.json/slides[{index}]に"
+                                "未定義fieldがあります: "
+                                f"{sorted(unknown_fields)}"
+                            )
+                        required_fields = {
+                            name
+                            for name, field in contract_fields.items()
+                            if name != "title"
+                            and isinstance(field, dict)
+                            and field.get("required") is True
+                        }
+                        missing_fields = required_fields - set(fields)
+                        if missing_fields:
+                            validation.error(
+                                f"example-slide-spec.json/slides[{index}]に"
+                                "必須fieldがありません: "
+                                f"{sorted(missing_fields)}"
+                            )
+        return
 
     capacity_bindings = [
         ("cover-minimal", "titleChars", "title", "maxChars"),
@@ -676,6 +813,64 @@ def validate_evals(validation: Validation) -> None:
             validation.error("output-cases.jsonのIDが重複しています")
         if len(output_data) < 8:
             validation.error(f"出力評価ケースが不足しています: {len(output_data)}")
+    selection_data = load_json(
+        ROOT / "evals/layout-selection-cases.json", validation
+    )
+    registry_data = load_json(
+        ROOT / "assets/layout-registry.json", validation
+    )
+    if isinstance(selection_data, list) and isinstance(registry_data, dict):
+        family_ids = {
+            item.get("id")
+            for item in registry_data.get("families", [])
+            if isinstance(item, dict) and isinstance(item.get("id"), str)
+        }
+        layout_ids = {
+            item.get("id")
+            for item in registry_data.get("layouts", [])
+            if isinstance(item, dict) and isinstance(item.get("id"), str)
+        }
+        covered_families: set[str] = set()
+        eval_ids: list[str] = []
+        for item in selection_data:
+            if not isinstance(item, dict):
+                validation.error(
+                    "layout-selection-cases.jsonの項目が"
+                    "オブジェクトではありません"
+                )
+                continue
+            eval_ids.append(item.get("id"))
+            family_id = item.get("expectedFamilyId")
+            if family_id not in family_ids:
+                validation.error(
+                    f"{item.get('id')}: expectedFamilyIdが未定義です: "
+                    f"{family_id}"
+                )
+            else:
+                covered_families.add(family_id)
+            allowed = item.get("allowedLayoutIds")
+            if not isinstance(allowed, list) or not allowed:
+                validation.error(
+                    f"{item.get('id')}: allowedLayoutIdsがありません"
+                )
+            else:
+                unknown = set(allowed) - layout_ids
+                if unknown:
+                    validation.error(
+                        f"{item.get('id')}: 未定義layoutIdがあります: "
+                        f"{sorted(unknown)}"
+                    )
+            if not isinstance(item.get("prompt"), str) or not item[
+                "prompt"
+            ].strip():
+                validation.error(f"{item.get('id')}: promptがありません")
+        if len(eval_ids) != len(set(eval_ids)):
+            validation.error("layout-selection-cases.jsonのIDが重複しています")
+        if covered_families != family_ids:
+            validation.error(
+                "layout-selection-cases.jsonが全familyを網羅していません: "
+                f"{sorted(family_ids - covered_families)}"
+            )
 
 
 def validate_png(validation: Validation) -> None:
@@ -748,6 +943,17 @@ def validate_png(validation: Validation) -> None:
 def validate_pptx(validation: Validation) -> None:
     path = ROOT / "assets/reference-layouts.pptx"
     if not path.is_file():
+        return
+    registry = load_json(ROOT / "assets/layout-registry.json", validation)
+    expected_slides = (
+        registry.get("counts", {}).get("layouts")
+        if isinstance(registry, dict)
+        else None
+    )
+    if not isinstance(expected_slides, int) or expected_slides < 1:
+        validation.error(
+            "reference-layouts.pptxの期待ページ数を解決できません"
+        )
         return
     try:
         with zipfile.ZipFile(path) as archive:
@@ -866,9 +1072,11 @@ def validate_pptx(validation: Validation) -> None:
                 for name in names
                 if re.fullmatch(r"ppt/slides/slide\d+\.xml", name)
             ]
-            if len(slide_names) != 14:
+            if len(slide_names) != expected_slides:
                 validation.error(
-                    f"reference-layouts.pptxは14ページ必要です: {len(slide_names)}"
+                    "reference-layouts.pptxのページ数がlayout-registry.jsonと"
+                    f"一致しません: expected={expected_slides}, "
+                    f"actual={len(slide_names)}"
                 )
             for slide_name in slide_names:
                 try:
@@ -981,8 +1189,8 @@ def validate_pptx(validation: Validation) -> None:
                 )
                 for expected_metadata in (
                     "<ap:Application>powerpoint-layout-design</ap:Application>",
-                    "<ap:Slides>14</ap:Slides>",
-                    "<ap:Notes>14</ap:Notes>",
+                    f"<ap:Slides>{expected_slides}</ap:Slides>",
+                    f"<ap:Notes>{expected_slides}</ap:Notes>",
                     "<ap:HiddenSlides>0</ap:HiddenSlides>",
                 ):
                     if expected_metadata not in app_text:

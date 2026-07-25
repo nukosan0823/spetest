@@ -65,7 +65,8 @@ PPTX生成前に、各スライドについて次を短く定義する。
 | 役割 | 導入、要約、根拠、比較、計画、決定など |
 | アクションタイトル | そのページから読み手が得る結論 |
 | 証拠 | データ、図、比較、引用、事実 |
-| レイアウトID | `layout-registry.json` のID |
+| ファミリーID | 意味構造を表す40ファミリーのID |
+| レイアウトID | 表現差を含む62レイアウトの具体ID |
 | 次ページとの関係 | 問い、補強、具体化、判断、行動 |
 
 タイトルは原則一行に収める。単なる話題名ではなく、事実または主張を含める。
@@ -82,10 +83,13 @@ python scripts/validate_slide_spec.py path/to/slide-spec.json
 
 [layout-catalog.md](references/layout-catalog.md)、[layout-registry.json](assets/layout-registry.json)、[layout-contracts.json](assets/layout-contracts.json) から、意味構造に合うレイアウトを選ぶ。
 
+- 先に「比較、推移、工程、意思決定」などの意味からファミリーIDを決め、次に情報量、強調対象、前後ページとのリズムから具体的なレイアウトIDを決める。
+- 40ファミリーは入力契約の単位、62レイアウトは具体的な配置の単位として扱う。同じファミリー内のバリエーションで必須情報の意味を変えない。
 - 見た目の変化だけを目的にレイアウトを替えない。
 - 同じ意味構造には同じレイアウト規則を使う。
 - 容量上限を超えるときは別レイアウトへ自動遷移せず、削る、分ける、補足へ移す。第二候補への変更は人またはAIが意味を確認して選ぶ。
 - 既存テンプレートでは、選んだレイアウトIDを最も近い既存レイアウトへ対応付ける。
+- 選択ロジックの回帰には [layout-selection-cases.json](evals/layout-selection-cases.json) を使い、40ファミリーすべての代表依頼を確認する。
 
 ### 4. デザインシステム適用
 
@@ -174,4 +178,4 @@ PPTXを画像またはPDFへレンダリングする。ソースコードやオ�
 | レンダリング検査、修正優先順位 | [visual-qa.md](references/visual-qa.md) |
 | プロンプトインジェクション、出典、安全性 | [security-and-sources.md](references/security-and-sources.md) |
 
-見た目の基準は [reference-layouts.pptx](assets/reference-layouts.pptx) と [layout-preview.png](assets/layout-preview.png) を参照する。これらは完成テンプレートではなく、余白、階層、密度、比較方法を示す編集可能な見本である。会社テンプレートがある場合は会社側を優先する。
+見た目の基準は、62レイアウトを一枚ずつ収録した [reference-layouts.pptx](assets/reference-layouts.pptx) と [layout-preview.png](assets/layout-preview.png) を参照する。これらは完成テンプレートではなく、余白、階層、密度、比較方法を示す編集可能な見本である。会社テンプレートがある場合は会社側を優先する。

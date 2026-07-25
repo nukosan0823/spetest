@@ -1,6 +1,6 @@
 {
-  "schemaVersion": "1.0",
-  "purpose": "レイアウトごとの入力型、必須項目、容量を社内アダプターへ渡す実装契約",
+  "schemaVersion": "2.0",
+  "purpose": "レイアウトファミリーごとの入力型、必須項目、容量を社内アダプターへ渡す実装契約",
   "measurementPolicy": {
     "characterCount": "Unicodeコードポイント数を一次ゲートに使う",
     "lineCount": "明示改行を数え、自動折返しは実フォント計測とレンダリングで判定する",
@@ -12,43 +12,91 @@
     "object",
     "object-list",
     "chart",
+    "chart-list",
     "table",
-    "media"
+    "media",
+    "media-list"
   ],
   "contracts": {
-    "cover-minimal": {
+    "cover": {
       "fields": {
         "title": {
           "type": "string",
           "required": true,
           "region": "title",
-          "maxChars": 24,
+          "maxChars": 26,
           "maxLines": 2
         },
         "subtitle": {
           "type": "string",
           "required": false,
           "region": "subtitle",
-          "maxChars": 45,
+          "maxChars": 48,
           "maxLines": 2
         },
         "metadata": {
           "type": "string-list",
           "required": false,
           "region": "metadata",
+          "minItems": 0,
           "maxItems": 3,
           "maxCharsEach": 30
         },
         "visual": {
           "type": "media",
           "required": false,
-          "region": "visual",
-          "maxItems": 1
+          "region": "visual"
+        }
+      }
+    },
+    "agenda": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "items": {
+          "type": "object-list",
+          "required": true,
+          "region": "items",
+          "minItems": 3,
+          "maxItems": 6,
+          "requiredKeys": [
+            "number",
+            "title"
+          ],
+          "allowedKeys": [
+            "number",
+            "title",
+            "description",
+            "status"
+          ],
+          "valueTypesByKey": {
+            "number": "scalar",
+            "title": "string",
+            "description": "string",
+            "status": "string"
+          },
+          "maxCharsPerValue": 38,
+          "maxCharsByKey": {
+            "title": 18,
+            "description": 36
+          }
         }
       }
     },
     "section-divider": {
       "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 22,
+          "maxLines": 1
+        },
         "sectionNumber": {
           "type": "string",
           "required": true,
@@ -56,18 +104,11 @@
           "maxChars": 6,
           "maxLines": 1
         },
-        "title": {
-          "type": "string",
-          "required": true,
-          "region": "title",
-          "maxChars": 20,
-          "maxLines": 1
-        },
         "question": {
           "type": "string",
           "required": false,
           "region": "question",
-          "maxChars": 45,
+          "maxChars": 48,
           "maxLines": 2
         }
       }
@@ -85,13 +126,14 @@
           "type": "string",
           "required": true,
           "region": "recommendation",
-          "maxChars": 70,
+          "maxChars": 72,
           "maxLines": 2
         },
         "evidence": {
           "type": "string-list",
           "required": true,
           "region": "evidence",
+          "minItems": 2,
           "maxItems": 3,
           "maxCharsEach": 45
         },
@@ -99,8 +141,82 @@
           "type": "string-list",
           "required": true,
           "region": "action",
+          "minItems": 1,
           "maxItems": 2,
-          "maxCharsEach": 45
+          "maxCharsEach": 42
+        }
+      }
+    },
+    "closing": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "resolution": {
+          "type": "string",
+          "required": true,
+          "region": "resolution",
+          "maxChars": 72,
+          "maxLines": 2
+        },
+        "actions": {
+          "type": "object-list",
+          "required": true,
+          "region": "actions",
+          "minItems": 1,
+          "maxItems": 3,
+          "requiredKeys": [
+            "action"
+          ],
+          "allowedKeys": [
+            "action",
+            "owner",
+            "due"
+          ],
+          "valueTypesByKey": {
+            "action": "string",
+            "owner": "string",
+            "due": "string"
+          },
+          "maxCharsPerValue": 38
+        },
+        "contact": {
+          "type": "string",
+          "required": false,
+          "region": "contact",
+          "maxChars": 48,
+          "maxLines": 1
+        }
+      }
+    },
+    "appendix": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 34,
+          "maxLines": 1
+        },
+        "detail": {
+          "type": "string-list",
+          "required": true,
+          "region": "detail",
+          "minItems": 1,
+          "maxItems": 8,
+          "maxCharsEach": 72
+        },
+        "sources": {
+          "type": "string-list",
+          "required": false,
+          "region": "sources",
+          "minItems": 0,
+          "maxItems": 6,
+          "maxCharsEach": 90
         }
       }
     },
@@ -117,26 +233,593 @@
           "type": "string",
           "required": true,
           "region": "message",
-          "maxChars": 20,
+          "maxChars": 24,
           "maxLines": 2
         },
         "support": {
           "type": "string",
           "required": false,
           "region": "support",
-          "maxChars": 70,
+          "maxChars": 72,
           "maxLines": 2
         },
         "evidence": {
           "type": "string-list",
           "required": false,
           "region": "evidence",
+          "minItems": 0,
           "maxItems": 2,
-          "maxCharsEach": 35
+          "maxCharsEach": 36
         }
       }
     },
-    "kpi-trend": {
+    "context-background": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "lead": {
+          "type": "string",
+          "required": true,
+          "region": "lead",
+          "maxChars": 72,
+          "maxLines": 2
+        },
+        "facts": {
+          "type": "object-list",
+          "required": true,
+          "region": "facts",
+          "minItems": 2,
+          "maxItems": 4,
+          "requiredKeys": [
+            "label",
+            "value"
+          ],
+          "allowedKeys": [
+            "label",
+            "value",
+            "detail"
+          ],
+          "valueTypesByKey": {
+            "label": "string",
+            "value": "scalar",
+            "detail": "string"
+          },
+          "maxCharsPerValue": 38
+        },
+        "implication": {
+          "type": "string",
+          "required": true,
+          "region": "implication",
+          "maxChars": 64,
+          "maxLines": 2
+        }
+      }
+    },
+    "problem-definition": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "problem": {
+          "type": "string",
+          "required": true,
+          "region": "problem",
+          "maxChars": 70,
+          "maxLines": 2
+        },
+        "symptoms": {
+          "type": "string-list",
+          "required": true,
+          "region": "symptoms",
+          "minItems": 2,
+          "maxItems": 4,
+          "maxCharsEach": 36
+        },
+        "causes": {
+          "type": "string-list",
+          "required": true,
+          "region": "causes",
+          "minItems": 1,
+          "maxItems": 3,
+          "maxCharsEach": 38
+        },
+        "impact": {
+          "type": "string",
+          "required": true,
+          "region": "impact",
+          "maxChars": 58,
+          "maxLines": 2
+        }
+      }
+    },
+    "objective-scope": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "objective": {
+          "type": "string",
+          "required": true,
+          "region": "objective",
+          "maxChars": 64,
+          "maxLines": 2
+        },
+        "inScope": {
+          "type": "string-list",
+          "required": true,
+          "region": "inScope",
+          "minItems": 1,
+          "maxItems": 4,
+          "maxCharsEach": 34
+        },
+        "outOfScope": {
+          "type": "string-list",
+          "required": false,
+          "region": "outOfScope",
+          "minItems": 1,
+          "maxItems": 4,
+          "maxCharsEach": 34
+        },
+        "successMetrics": {
+          "type": "string-list",
+          "required": true,
+          "region": "successMetrics",
+          "minItems": 1,
+          "maxItems": 3,
+          "maxCharsEach": 34
+        }
+      }
+    },
+    "two-column-explanation": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "leftHeading": {
+          "type": "string",
+          "required": true,
+          "region": "leftHeading",
+          "maxChars": 18,
+          "maxLines": 1
+        },
+        "leftItems": {
+          "type": "string-list",
+          "required": true,
+          "region": "leftItems",
+          "minItems": 2,
+          "maxItems": 5,
+          "maxCharsEach": 38
+        },
+        "rightHeading": {
+          "type": "string",
+          "required": true,
+          "region": "rightHeading",
+          "maxChars": 18,
+          "maxLines": 1
+        },
+        "rightItems": {
+          "type": "string-list",
+          "required": true,
+          "region": "rightItems",
+          "minItems": 2,
+          "maxItems": 5,
+          "maxCharsEach": 38
+        },
+        "takeaway": {
+          "type": "string",
+          "required": false,
+          "region": "takeaway",
+          "maxChars": 58,
+          "maxLines": 2
+        }
+      }
+    },
+    "quote-evidence": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "quote": {
+          "type": "string",
+          "required": true,
+          "region": "quote",
+          "maxChars": 90,
+          "maxLines": 4
+        },
+        "attribution": {
+          "type": "string",
+          "required": true,
+          "region": "attribution",
+          "maxChars": 42,
+          "maxLines": 1
+        },
+        "implication": {
+          "type": "string",
+          "required": true,
+          "region": "implication",
+          "maxChars": 64,
+          "maxLines": 2
+        }
+      }
+    },
+    "case-study": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "situation": {
+          "type": "string",
+          "required": true,
+          "region": "situation",
+          "maxChars": 58,
+          "maxLines": 2
+        },
+        "action": {
+          "type": "string-list",
+          "required": true,
+          "region": "action",
+          "minItems": 2,
+          "maxItems": 4,
+          "maxCharsEach": 38
+        },
+        "result": {
+          "type": "object-list",
+          "required": true,
+          "region": "result",
+          "minItems": 1,
+          "maxItems": 3,
+          "requiredKeys": [
+            "label",
+            "value"
+          ],
+          "allowedKeys": [
+            "label",
+            "value",
+            "detail"
+          ],
+          "valueTypesByKey": {
+            "label": "string",
+            "value": "scalar",
+            "detail": "string"
+          },
+          "maxCharsPerValue": 34
+        },
+        "lesson": {
+          "type": "string",
+          "required": false,
+          "region": "lesson",
+          "maxChars": 56,
+          "maxLines": 2
+        }
+      }
+    },
+    "comparison": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "criteria": {
+          "type": "string-list",
+          "required": true,
+          "region": "criteria",
+          "minItems": 3,
+          "maxItems": 5,
+          "maxCharsEach": 22
+        },
+        "options": {
+          "type": "object-list",
+          "required": true,
+          "region": "options",
+          "minItems": 2,
+          "maxItems": 3,
+          "requiredKeys": [
+            "name",
+            "values"
+          ],
+          "allowedKeys": [
+            "name",
+            "values",
+            "recommended"
+          ],
+          "valueTypesByKey": {
+            "name": "string",
+            "values": "string-list",
+            "recommended": "boolean"
+          },
+          "maxCharsPerValue": 28
+        },
+        "recommendation": {
+          "type": "string",
+          "required": true,
+          "region": "recommendation",
+          "maxChars": 64,
+          "maxLines": 2
+        }
+      }
+    },
+    "before-after": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "before": {
+          "type": "string-list",
+          "required": true,
+          "region": "before",
+          "minItems": 2,
+          "maxItems": 4,
+          "maxCharsEach": 36,
+          "maxTotalChars": 120
+        },
+        "after": {
+          "type": "string-list",
+          "required": true,
+          "region": "after",
+          "minItems": 2,
+          "maxItems": 4,
+          "maxCharsEach": 36,
+          "maxTotalChars": 120
+        },
+        "effect": {
+          "type": "string-list",
+          "required": true,
+          "region": "effect",
+          "minItems": 1,
+          "maxItems": 3,
+          "maxCharsEach": 36
+        }
+      }
+    },
+    "pros-cons": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "pros": {
+          "type": "string-list",
+          "required": true,
+          "region": "pros",
+          "minItems": 2,
+          "maxItems": 5,
+          "maxCharsEach": 38
+        },
+        "cons": {
+          "type": "string-list",
+          "required": true,
+          "region": "cons",
+          "minItems": 2,
+          "maxItems": 5,
+          "maxCharsEach": 38
+        },
+        "condition": {
+          "type": "string",
+          "required": true,
+          "region": "condition",
+          "maxChars": 64,
+          "maxLines": 2
+        }
+      }
+    },
+    "scorecard": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "items": {
+          "type": "object-list",
+          "required": true,
+          "region": "items",
+          "minItems": 3,
+          "maxItems": 6,
+          "requiredKeys": [
+            "criterion",
+            "score",
+            "status"
+          ],
+          "allowedKeys": [
+            "criterion",
+            "score",
+            "status",
+            "evidence"
+          ],
+          "valueTypesByKey": {
+            "criterion": "string",
+            "score": "number",
+            "status": "string",
+            "evidence": "string"
+          },
+          "maxCharsPerValue": 34
+        },
+        "summary": {
+          "type": "string",
+          "required": true,
+          "region": "summary",
+          "maxChars": 64,
+          "maxLines": 2
+        }
+      }
+    },
+    "swot": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "strengths": {
+          "type": "string-list",
+          "required": true,
+          "region": "strengths",
+          "minItems": 1,
+          "maxItems": 4,
+          "maxCharsEach": 34
+        },
+        "weaknesses": {
+          "type": "string-list",
+          "required": true,
+          "region": "weaknesses",
+          "minItems": 1,
+          "maxItems": 4,
+          "maxCharsEach": 34
+        },
+        "opportunities": {
+          "type": "string-list",
+          "required": true,
+          "region": "opportunities",
+          "minItems": 1,
+          "maxItems": 4,
+          "maxCharsEach": 34
+        },
+        "threats": {
+          "type": "string-list",
+          "required": true,
+          "region": "threats",
+          "minItems": 1,
+          "maxItems": 4,
+          "maxCharsEach": 34
+        }
+      }
+    },
+    "decision-tree": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "nodes": {
+          "type": "object-list",
+          "required": true,
+          "region": "nodes",
+          "minItems": 3,
+          "maxItems": 9,
+          "requiredKeys": [
+            "id",
+            "label"
+          ],
+          "allowedKeys": [
+            "id",
+            "label",
+            "parentId",
+            "branch",
+            "outcome"
+          ],
+          "valueTypesByKey": {
+            "id": "string",
+            "label": "string",
+            "parentId": "string",
+            "branch": "string",
+            "outcome": "string"
+          },
+          "maxCharsPerValue": 28
+        },
+        "rule": {
+          "type": "string",
+          "required": false,
+          "region": "rule",
+          "maxChars": 58,
+          "maxLines": 2
+        }
+      }
+    },
+    "decision-action": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "decision": {
+          "type": "string-list",
+          "required": true,
+          "region": "decision",
+          "minItems": 1,
+          "maxItems": 3,
+          "maxCharsEach": 44
+        },
+        "criteria": {
+          "type": "string-list",
+          "required": true,
+          "region": "criteria",
+          "minItems": 1,
+          "maxItems": 4,
+          "maxCharsEach": 36
+        },
+        "actions": {
+          "type": "object-list",
+          "required": true,
+          "region": "actions",
+          "minItems": 1,
+          "maxItems": 5,
+          "requiredKeys": [
+            "action",
+            "owner",
+            "due"
+          ],
+          "allowedKeys": [
+            "action",
+            "owner",
+            "due",
+            "status"
+          ],
+          "valueTypesByKey": {
+            "action": "string",
+            "owner": "string",
+            "due": "string",
+            "status": "string"
+          },
+          "maxCharsPerValue": 34
+        }
+      }
+    },
+    "kpi": {
       "fields": {
         "title": {
           "type": "string",
@@ -149,6 +832,7 @@
           "type": "object-list",
           "required": true,
           "region": "kpis",
+          "minItems": 2,
           "maxItems": 3,
           "requiredKeys": [
             "label",
@@ -168,16 +852,23 @@
             "unit": "string",
             "status": "string"
           },
-          "maxCharsPerValue": 30
+          "maxCharsPerValue": 26
         },
         "chart": {
           "type": "chart",
-          "required": true,
+          "required": false,
           "region": "chart",
           "requiredKeys": [
             "type",
             "categories",
             "series"
+          ],
+          "allowedKeys": [
+            "type",
+            "categories",
+            "series",
+            "unit",
+            "baseline"
           ],
           "allowedChartTypes": [
             "line",
@@ -185,14 +876,16 @@
             "area"
           ],
           "maxSeries": 3,
-          "maxPoints": 18
-        },
-        "annotation": {
-          "type": "string-list",
-          "required": false,
-          "region": "annotation",
-          "maxItems": 2,
-          "maxCharsEach": 35
+          "maxPoints": 18,
+          "maxPointsByType": {
+            "bar": 8,
+            "stacked-bar": 8,
+            "stacked-column": 8,
+            "donut": 6,
+            "waterfall": 8,
+            "scatter": 12,
+            "pareto": 10
+          }
         },
         "insight": {
           "type": "string",
@@ -221,13 +914,22 @@
             "categories",
             "series"
           ],
+          "allowedKeys": [
+            "type",
+            "categories",
+            "series",
+            "unit",
+            "baseline"
+          ],
           "allowedChartTypes": [
             "bar",
             "line",
             "area",
             "stacked-bar",
             "stacked-column",
-            "donut"
+            "donut",
+            "waterfall",
+            "scatter"
           ],
           "maxSeries": 4,
           "maxPoints": 18,
@@ -235,26 +937,31 @@
             "bar": 8,
             "stacked-bar": 8,
             "stacked-column": 8,
-            "donut": 6
+            "donut": 6,
+            "waterfall": 8,
+            "scatter": 12,
+            "pareto": 10
           }
         },
         "insight": {
           "type": "string-list",
           "required": true,
           "region": "insight",
+          "minItems": 1,
           "maxItems": 2,
-          "maxCharsEach": 45
+          "maxCharsEach": 44
         },
         "annotation": {
           "type": "string-list",
           "required": false,
           "region": "annotation",
+          "minItems": 0,
           "maxItems": 2,
-          "maxCharsEach": 35
+          "maxCharsEach": 34
         }
       }
     },
-    "comparison": {
+    "table-insight": {
       "fields": {
         "title": {
           "type": "string",
@@ -263,46 +970,67 @@
           "maxChars": 32,
           "maxLines": 1
         },
-        "criteria": {
-          "type": "string-list",
+        "table": {
+          "type": "table",
           "required": true,
-          "region": "criteria",
-          "maxItems": 5,
-          "maxCharsEach": 18
-        },
-        "options": {
-          "type": "object-list",
-          "required": true,
-          "region": "options",
-          "maxItems": 3,
+          "region": "table",
           "requiredKeys": [
-            "name",
+            "headers",
             "values"
           ],
           "allowedKeys": [
-            "name",
+            "headers",
             "values",
-            "highlight",
-            "reason"
+            "highlightRows",
+            "highlightColumns"
           ],
-          "valueTypesByKey": {
-            "name": "string",
-            "values": "string-list",
-            "highlight": "boolean",
-            "reason": "string"
-          },
-          "maxCharsPerValue": 25
+          "maxRows": 8,
+          "maxColumns": 6,
+          "maxCharsPerCell": 24
         },
-        "recommendation": {
+        "insight": {
+          "type": "string-list",
+          "required": true,
+          "region": "insight",
+          "minItems": 1,
+          "maxItems": 2,
+          "maxCharsEach": 44
+        }
+      }
+    },
+    "small-multiples": {
+      "fields": {
+        "title": {
           "type": "string",
           "required": true,
-          "region": "recommendation",
-          "maxChars": 65,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "charts": {
+          "type": "chart-list",
+          "required": true,
+          "region": "charts",
+          "minItems": 2,
+          "maxItems": 4,
+          "allowedChartTypes": [
+            "line",
+            "bar",
+            "area"
+          ],
+          "maxSeries": 2,
+          "maxPoints": 8
+        },
+        "insight": {
+          "type": "string",
+          "required": true,
+          "region": "insight",
+          "maxChars": 60,
           "maxLines": 2
         }
       }
     },
-    "before-after": {
+    "progress": {
       "fields": {
         "title": {
           "type": "string",
@@ -311,164 +1039,93 @@
           "maxChars": 32,
           "maxLines": 1
         },
-        "before": {
-          "type": "string-list",
-          "required": true,
-          "region": "before",
-          "maxItems": 4,
-          "maxCharsEach": 35,
-          "maxTotalChars": 80
-        },
-        "after": {
-          "type": "string-list",
-          "required": true,
-          "region": "after",
-          "maxItems": 4,
-          "maxCharsEach": 35,
-          "maxTotalChars": 80
-        },
-        "effect": {
-          "type": "string-list",
-          "required": true,
-          "region": "effect",
-          "maxItems": 3,
-          "maxCharsEach": 35
-        },
-        "transition": {
-          "type": "string",
-          "required": false,
-          "region": "transition",
-          "maxChars": 12,
-          "maxLines": 1
-        }
-      }
-    },
-    "process": {
-      "fields": {
-        "title": {
-          "type": "string",
-          "required": true,
-          "region": "title",
-          "maxChars": 32,
-          "maxLines": 1
-        },
-        "steps": {
+        "items": {
           "type": "object-list",
           "required": true,
-          "region": "steps",
+          "region": "items",
           "minItems": 3,
           "maxItems": 6,
           "requiredKeys": [
-            "title",
-            "body"
-          ],
-          "allowedKeys": [
-            "title",
-            "body"
-          ],
-          "valueTypesByKey": {
-            "title": "string",
-            "body": "string"
-          },
-          "maxCharsPerValue": 35,
-          "maxCharsByKey": {
-            "title": 15,
-            "body": 35
-          }
-        },
-        "owner": {
-          "type": "string-list",
-          "required": false,
-          "region": "owner",
-          "maxItems": 6,
-          "maxCharsEach": 15
-        },
-        "duration": {
-          "type": "string-list",
-          "required": false,
-          "region": "duration",
-          "maxItems": 6,
-          "maxCharsEach": 12
-        },
-        "output": {
-          "type": "string-list",
-          "required": false,
-          "region": "output",
-          "maxItems": 6,
-          "maxCharsEach": 20
-        }
-      }
-    },
-    "timeline-roadmap": {
-      "fields": {
-        "title": {
-          "type": "string",
-          "required": true,
-          "region": "title",
-          "maxChars": 32,
-          "maxLines": 1
-        },
-        "timeAxis": {
-          "type": "string-list",
-          "required": true,
-          "region": "timeAxis",
-          "minItems": 3,
-          "maxItems": 6,
-          "maxCharsEach": 12
-        },
-        "workstreams": {
-          "type": "object-list",
-          "required": true,
-          "region": "workstreams",
-          "maxItems": 5,
-          "requiredKeys": [
-            "name",
-            "start",
-            "end"
-          ],
-          "allowedKeys": [
-            "name",
-            "start",
-            "end",
-            "owner",
-            "status"
-          ],
-          "valueTypesByKey": {
-            "name": "string",
-            "start": "string",
-            "end": "string",
-            "owner": "string",
-            "status": "string"
-          },
-          "maxCharsPerValue": 24
-        },
-        "milestones": {
-          "type": "object-list",
-          "required": true,
-          "region": "milestones",
-          "maxItems": 5,
-          "requiredKeys": [
             "label",
-            "at"
+            "value",
+            "target"
           ],
           "allowedKeys": [
             "label",
-            "at",
+            "value",
+            "target",
             "status"
           ],
           "valueTypesByKey": {
             "label": "string",
-            "at": "string",
+            "value": "number",
+            "target": "number",
             "status": "string"
           },
-          "maxCharsPerValue": 24
+          "maxCharsPerValue": 26
         },
-        "current": {
+        "insight": {
           "type": "string",
           "required": false,
-          "region": "current",
-          "maxChars": 16,
+          "region": "insight",
+          "maxChars": 58,
+          "maxLines": 2
+        }
+      }
+    },
+    "pareto": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
           "maxLines": 1
+        },
+        "chart": {
+          "type": "chart",
+          "required": true,
+          "region": "chart",
+          "requiredKeys": [
+            "type",
+            "categories",
+            "series"
+          ],
+          "allowedKeys": [
+            "type",
+            "categories",
+            "series",
+            "unit",
+            "baseline"
+          ],
+          "allowedChartTypes": [
+            "pareto"
+          ],
+          "maxSeries": 2,
+          "maxPoints": 10,
+          "maxPointsByType": {
+            "bar": 8,
+            "stacked-bar": 8,
+            "stacked-column": 8,
+            "donut": 6,
+            "waterfall": 8,
+            "scatter": 12,
+            "pareto": 10
+          }
+        },
+        "threshold": {
+          "type": "string",
+          "required": true,
+          "region": "threshold",
+          "maxChars": 42,
+          "maxLines": 1
+        },
+        "insight": {
+          "type": "string",
+          "required": true,
+          "region": "insight",
+          "maxChars": 58,
+          "maxLines": 2
         }
       }
     },
@@ -480,28 +1137,6 @@
           "region": "title",
           "maxChars": 32,
           "maxLines": 1
-        },
-        "matrix": {
-          "type": "object",
-          "required": true,
-          "region": "matrix",
-          "requiredKeys": [
-            "xMeaning",
-            "yMeaning"
-          ],
-          "allowedKeys": [
-            "xMeaning",
-            "yMeaning",
-            "xUnit",
-            "yUnit"
-          ],
-          "valueTypesByKey": {
-            "xMeaning": "string",
-            "yMeaning": "string",
-            "xUnit": "string",
-            "yUnit": "string"
-          },
-          "maxCharsPerValue": 24
         },
         "axisLabels": {
           "type": "object",
@@ -525,12 +1160,13 @@
             "yLow": "string",
             "yHigh": "string"
           },
-          "maxCharsPerValue": 15
+          "maxCharsPerValue": 18
         },
         "items": {
           "type": "object-list",
           "required": true,
           "region": "items",
+          "minItems": 4,
           "maxItems": 12,
           "requiredKeys": [
             "label",
@@ -541,26 +1177,27 @@
             "label",
             "x",
             "y",
-            "category"
+            "status"
           ],
           "valueTypesByKey": {
             "label": "string",
             "x": "number",
             "y": "number",
-            "category": "string"
+            "status": "string"
           },
-          "maxCharsPerValue": 24
+          "maxCharsPerValue": 22
         },
-        "insight": {
+        "focus": {
           "type": "string-list",
           "required": false,
-          "region": "insight",
-          "maxItems": 3,
-          "maxCharsEach": 35
+          "region": "focus",
+          "minItems": 0,
+          "maxItems": 2,
+          "maxCharsEach": 34
         }
       }
     },
-    "table-insight": {
+    "process": {
       "fields": {
         "title": {
           "type": "string",
@@ -569,35 +1206,47 @@
           "maxChars": 32,
           "maxLines": 1
         },
-        "table": {
-          "type": "table",
+        "steps": {
+          "type": "object-list",
           "required": true,
-          "region": "table",
+          "region": "steps",
+          "minItems": 3,
+          "maxItems": 6,
           "requiredKeys": [
-            "headers",
-            "values"
+            "title"
           ],
-          "maxRows": 6,
-          "maxColumns": 5,
-          "maxCharsPerCell": 30
+          "allowedKeys": [
+            "title",
+            "description",
+            "owner",
+            "duration",
+            "output",
+            "lane"
+          ],
+          "valueTypesByKey": {
+            "title": "string",
+            "description": "string",
+            "owner": "string",
+            "duration": "string",
+            "output": "string",
+            "lane": "string"
+          },
+          "maxCharsPerValue": 35,
+          "maxCharsByKey": {
+            "title": 15,
+            "description": 35
+          }
         },
-        "insight": {
-          "type": "string-list",
-          "required": true,
-          "region": "insight",
-          "maxItems": 2,
-          "maxCharsEach": 45
-        },
-        "note": {
+        "rule": {
           "type": "string",
           "required": false,
-          "region": "note",
-          "maxChars": 45,
+          "region": "rule",
+          "maxChars": 58,
           "maxLines": 2
         }
       }
     },
-    "decision-action": {
+    "cycle": {
       "fields": {
         "title": {
           "type": "string",
@@ -606,98 +1255,639 @@
           "maxChars": 32,
           "maxLines": 1
         },
-        "decision": {
-          "type": "string-list",
-          "required": true,
-          "region": "decision",
-          "maxItems": 3,
-          "maxCharsEach": 45
-        },
-        "actions": {
+        "steps": {
           "type": "object-list",
           "required": true,
-          "region": "actions",
-          "maxItems": 5,
+          "region": "steps",
+          "minItems": 3,
+          "maxItems": 6,
           "requiredKeys": [
-            "action",
-            "owner",
-            "due"
+            "title"
           ],
           "allowedKeys": [
-            "action",
-            "owner",
-            "due",
-            "status"
+            "title",
+            "description"
           ],
           "valueTypesByKey": {
-            "action": "string",
-            "owner": "string",
-            "due": "string",
-            "status": "string"
+            "title": "string",
+            "description": "string"
           },
-          "maxCharsPerValue": 35
+          "maxCharsPerValue": 34
         },
-        "conditions": {
-          "type": "string-list",
-          "required": false,
-          "region": "conditions",
-          "maxItems": 3,
-          "maxCharsEach": 40
+        "center": {
+          "type": "string",
+          "required": true,
+          "region": "center",
+          "maxChars": 26,
+          "maxLines": 2
         },
-        "openIssues": {
-          "type": "string-list",
+        "learning": {
+          "type": "string",
           "required": false,
-          "region": "openIssues",
-          "maxItems": 2,
-          "maxCharsEach": 45
+          "region": "learning",
+          "maxChars": 58,
+          "maxLines": 2
         }
       }
     },
-    "appendix-reference": {
+    "value-chain": {
       "fields": {
         "title": {
           "type": "string",
           "required": true,
           "region": "title",
-          "maxChars": 24,
+          "maxChars": 32,
           "maxLines": 1
         },
-        "detail": {
+        "stages": {
           "type": "object-list",
           "required": true,
-          "region": "detail",
-          "minItems": 1,
+          "region": "stages",
+          "minItems": 3,
           "maxItems": 6,
           "requiredKeys": [
-            "heading",
-            "body"
+            "title",
+            "value"
           ],
           "allowedKeys": [
-            "heading",
-            "body"
+            "title",
+            "value",
+            "owner"
           ],
           "valueTypesByKey": {
-            "heading": "string",
-            "body": "string"
+            "title": "string",
+            "value": "string",
+            "owner": "string"
           },
-          "maxCharsByKey": {
-            "heading": 24,
-            "body": 120
-          }
+          "maxCharsPerValue": 30
         },
-        "referenceToMain": {
-          "type": "string",
-          "required": false,
-          "region": "referenceToMain",
-          "maxChars": 20,
-          "maxLines": 1
-        },
-        "sources": {
+        "enablers": {
           "type": "string-list",
           "required": false,
-          "region": "sources",
+          "region": "enablers",
+          "minItems": 1,
+          "maxItems": 4,
+          "maxCharsEach": 28
+        },
+        "outcome": {
+          "type": "string",
+          "required": true,
+          "region": "outcome",
+          "maxChars": 54,
+          "maxLines": 2
+        }
+      }
+    },
+    "timeline-roadmap": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "timeAxis": {
+          "type": "string-list",
+          "required": true,
+          "region": "timeAxis",
+          "minItems": 3,
+          "maxItems": 8,
+          "maxCharsEach": 14
+        },
+        "workstreams": {
+          "type": "object-list",
+          "required": true,
+          "region": "workstreams",
+          "minItems": 1,
           "maxItems": 5,
-          "maxCharsEach": 120
+          "requiredKeys": [
+            "name",
+            "start",
+            "end"
+          ],
+          "allowedKeys": [
+            "name",
+            "start",
+            "end",
+            "owner",
+            "status"
+          ],
+          "valueTypesByKey": {
+            "name": "string",
+            "start": "number",
+            "end": "number",
+            "owner": "string",
+            "status": "string"
+          },
+          "maxCharsPerValue": 24
+        },
+        "milestones": {
+          "type": "object-list",
+          "required": false,
+          "region": "milestones",
+          "minItems": 1,
+          "maxItems": 8,
+          "requiredKeys": [
+            "label",
+            "position"
+          ],
+          "allowedKeys": [
+            "label",
+            "position",
+            "status"
+          ],
+          "valueTypesByKey": {
+            "label": "string",
+            "position": "number",
+            "status": "string"
+          },
+          "maxCharsPerValue": 24
+        },
+        "decisionPoint": {
+          "type": "string",
+          "required": false,
+          "region": "decisionPoint",
+          "maxChars": 52,
+          "maxLines": 2
+        }
+      }
+    },
+    "hierarchy-pyramid": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "levels": {
+          "type": "object-list",
+          "required": true,
+          "region": "levels",
+          "minItems": 3,
+          "maxItems": 5,
+          "requiredKeys": [
+            "level",
+            "title"
+          ],
+          "allowedKeys": [
+            "level",
+            "title",
+            "detail"
+          ],
+          "valueTypesByKey": {
+            "level": "scalar",
+            "title": "string",
+            "detail": "string"
+          },
+          "maxCharsPerValue": 34
+        },
+        "foundation": {
+          "type": "string",
+          "required": false,
+          "region": "foundation",
+          "maxChars": 48,
+          "maxLines": 2
+        }
+      }
+    },
+    "funnel": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "stages": {
+          "type": "object-list",
+          "required": true,
+          "region": "stages",
+          "minItems": 3,
+          "maxItems": 6,
+          "requiredKeys": [
+            "label",
+            "value"
+          ],
+          "allowedKeys": [
+            "label",
+            "value",
+            "description"
+          ],
+          "valueTypesByKey": {
+            "label": "string",
+            "value": "number",
+            "description": "string"
+          },
+          "maxCharsPerValue": 30
+        },
+        "conversion": {
+          "type": "string",
+          "required": false,
+          "region": "conversion",
+          "maxChars": 48,
+          "maxLines": 2
+        }
+      }
+    },
+    "architecture": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "nodes": {
+          "type": "object-list",
+          "required": true,
+          "region": "nodes",
+          "minItems": 3,
+          "maxItems": 12,
+          "requiredKeys": [
+            "id",
+            "label",
+            "layer"
+          ],
+          "allowedKeys": [
+            "id",
+            "label",
+            "layer",
+            "type",
+            "detail"
+          ],
+          "valueTypesByKey": {
+            "id": "string",
+            "label": "string",
+            "layer": "string",
+            "type": "string",
+            "detail": "string"
+          },
+          "maxCharsPerValue": 28
+        },
+        "connections": {
+          "type": "object-list",
+          "required": true,
+          "region": "connections",
+          "minItems": 2,
+          "maxItems": 14,
+          "requiredKeys": [
+            "from",
+            "to"
+          ],
+          "allowedKeys": [
+            "from",
+            "to",
+            "label",
+            "direction"
+          ],
+          "valueTypesByKey": {
+            "from": "string",
+            "to": "string",
+            "label": "string",
+            "direction": "string"
+          },
+          "maxCharsPerValue": 22
+        },
+        "insight": {
+          "type": "string",
+          "required": true,
+          "region": "insight",
+          "maxChars": 58,
+          "maxLines": 2
+        }
+      }
+    },
+    "data-flow-lineage": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "nodes": {
+          "type": "object-list",
+          "required": true,
+          "region": "nodes",
+          "minItems": 3,
+          "maxItems": 10,
+          "requiredKeys": [
+            "id",
+            "label",
+            "stage"
+          ],
+          "allowedKeys": [
+            "id",
+            "label",
+            "stage",
+            "system"
+          ],
+          "valueTypesByKey": {
+            "id": "string",
+            "label": "string",
+            "stage": "string",
+            "system": "string"
+          },
+          "maxCharsPerValue": 26
+        },
+        "flows": {
+          "type": "object-list",
+          "required": true,
+          "region": "flows",
+          "minItems": 2,
+          "maxItems": 12,
+          "requiredKeys": [
+            "from",
+            "to",
+            "data"
+          ],
+          "allowedKeys": [
+            "from",
+            "to",
+            "data",
+            "frequency"
+          ],
+          "valueTypesByKey": {
+            "from": "string",
+            "to": "string",
+            "data": "string",
+            "frequency": "string"
+          },
+          "maxCharsPerValue": 24
+        },
+        "control": {
+          "type": "string-list",
+          "required": false,
+          "region": "control",
+          "minItems": 0,
+          "maxItems": 3,
+          "maxCharsEach": 32
+        }
+      }
+    },
+    "dependency-map": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "items": {
+          "type": "object-list",
+          "required": true,
+          "region": "items",
+          "minItems": 4,
+          "maxItems": 12,
+          "requiredKeys": [
+            "id",
+            "label",
+            "group"
+          ],
+          "allowedKeys": [
+            "id",
+            "label",
+            "group",
+            "status"
+          ],
+          "valueTypesByKey": {
+            "id": "string",
+            "label": "string",
+            "group": "string",
+            "status": "string"
+          },
+          "maxCharsPerValue": 24
+        },
+        "dependencies": {
+          "type": "object-list",
+          "required": true,
+          "region": "dependencies",
+          "minItems": 3,
+          "maxItems": 16,
+          "requiredKeys": [
+            "from",
+            "to"
+          ],
+          "allowedKeys": [
+            "from",
+            "to",
+            "type"
+          ],
+          "valueTypesByKey": {
+            "from": "string",
+            "to": "string",
+            "type": "string"
+          },
+          "maxCharsPerValue": 18
+        },
+        "focus": {
+          "type": "string",
+          "required": true,
+          "region": "focus",
+          "maxChars": 58,
+          "maxLines": 2
+        }
+      }
+    },
+    "stakeholder-raci": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "stakeholders": {
+          "type": "object-list",
+          "required": true,
+          "region": "stakeholders",
+          "minItems": 3,
+          "maxItems": 10,
+          "requiredKeys": [
+            "name",
+            "role"
+          ],
+          "allowedKeys": [
+            "name",
+            "role",
+            "influence",
+            "interest",
+            "responsibility"
+          ],
+          "valueTypesByKey": {
+            "name": "string",
+            "role": "string",
+            "influence": "number",
+            "interest": "number",
+            "responsibility": "string"
+          },
+          "maxCharsPerValue": 30
+        },
+        "matrix": {
+          "type": "table",
+          "required": false,
+          "region": "matrix",
+          "requiredKeys": [
+            "headers",
+            "values"
+          ],
+          "allowedKeys": [
+            "headers",
+            "values",
+            "highlightRows",
+            "highlightColumns"
+          ],
+          "maxRows": 8,
+          "maxColumns": 7,
+          "maxCharsPerCell": 24
+        },
+        "engagement": {
+          "type": "string",
+          "required": true,
+          "region": "engagement",
+          "maxChars": 58,
+          "maxLines": 2
+        }
+      }
+    },
+    "risk-status": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "risks": {
+          "type": "object-list",
+          "required": true,
+          "region": "risks",
+          "minItems": 3,
+          "maxItems": 10,
+          "requiredKeys": [
+            "risk",
+            "status"
+          ],
+          "allowedKeys": [
+            "risk",
+            "likelihood",
+            "impact",
+            "status",
+            "owner",
+            "response"
+          ],
+          "valueTypesByKey": {
+            "risk": "string",
+            "likelihood": "number",
+            "impact": "number",
+            "status": "string",
+            "owner": "string",
+            "response": "string"
+          },
+          "maxCharsPerValue": 32
+        },
+        "summary": {
+          "type": "string",
+          "required": true,
+          "region": "summary",
+          "maxChars": 58,
+          "maxLines": 2
+        }
+      }
+    },
+    "visual-story": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "visuals": {
+          "type": "media-list",
+          "required": true,
+          "region": "visuals",
+          "minItems": 1,
+          "maxItems": 4
+        },
+        "headline": {
+          "type": "string",
+          "required": true,
+          "region": "headline",
+          "maxChars": 46,
+          "maxLines": 2
+        },
+        "body": {
+          "type": "string",
+          "required": false,
+          "region": "body",
+          "maxChars": 90,
+          "maxLines": 4
+        },
+        "captions": {
+          "type": "string-list",
+          "required": false,
+          "region": "captions",
+          "minItems": 0,
+          "maxItems": 4,
+          "maxCharsEach": 28
+        }
+      }
+    },
+    "issue-action-log": {
+      "fields": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "region": "title",
+          "maxChars": 32,
+          "maxLines": 1
+        },
+        "issues": {
+          "type": "object-list",
+          "required": true,
+          "region": "issues",
+          "minItems": 3,
+          "maxItems": 8,
+          "requiredKeys": [
+            "issue",
+            "status",
+            "owner",
+            "due",
+            "action"
+          ],
+          "allowedKeys": [
+            "issue",
+            "status",
+            "owner",
+            "due",
+            "action"
+          ],
+          "valueTypesByKey": {
+            "issue": "string",
+            "status": "string",
+            "owner": "string",
+            "due": "string",
+            "action": "string"
+          },
+          "maxCharsPerValue": 30
+        },
+        "escalation": {
+          "type": "string",
+          "required": true,
+          "region": "escalation",
+          "maxChars": 56,
+          "maxLines": 2
         }
       }
     }

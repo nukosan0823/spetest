@@ -1,0 +1,544 @@
+[
+  {
+    "id": "select-01",
+    "prompt": "新基盤構想を経営会議へ提案する資料の表紙",
+    "expectedFamilyId": "cover",
+    "allowedLayoutIds": [
+      "cover-minimal",
+      "cover-visual"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-02",
+    "prompt": "全五章の企画提案資料で、章構成を最初に示す",
+    "expectedFamilyId": "agenda",
+    "allowedLayoutIds": [
+      "agenda-overview"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-03",
+    "prompt": "分析結果から実行計画へ話題を切り替える",
+    "expectedFamilyId": "section-divider",
+    "allowedLayoutIds": [
+      "section-divider"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-04",
+    "prompt": "試行導入の結論、三つの根拠、承認事項を一枚で示す",
+    "expectedFamilyId": "executive-summary",
+    "allowedLayoutIds": [
+      "executive-summary"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-05",
+    "prompt": "承認後の三つの着手事項で提案資料を閉じる",
+    "expectedFamilyId": "closing",
+    "allowedLayoutIds": [
+      "closing-resolution"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-06",
+    "prompt": "用語定義と計算条件を本編から分離する",
+    "expectedFamilyId": "appendix",
+    "allowedLayoutIds": [
+      "appendix-title",
+      "appendix-reference"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-07",
+    "prompt": "平均処理時間40%短縮という主要効果を記憶させる",
+    "expectedFamilyId": "key-message",
+    "allowedLayoutIds": [
+      "key-message",
+      "key-message-split"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-08",
+    "prompt": "案件数増加と人員制約を示し、自動化検討の必要性につなげる",
+    "expectedFamilyId": "context-background",
+    "allowedLayoutIds": [
+      "context-background"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-09",
+    "prompt": "影響調査の長期化を症状、原因、業務影響に分ける",
+    "expectedFamilyId": "problem-definition",
+    "allowedLayoutIds": [
+      "problem-definition"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-10",
+    "prompt": "対象システム、対象外、完了条件を一枚で合意する",
+    "expectedFamilyId": "objective-scope",
+    "allowedLayoutIds": [
+      "objective-scope"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-11",
+    "prompt": "設計原則と実装上の注意を二列で説明する",
+    "expectedFamilyId": "two-column-explanation",
+    "allowedLayoutIds": [
+      "two-column-balanced",
+      "two-column-asymmetric"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-12",
+    "prompt": "利用部門の発言を示し、要件への影響を説明する",
+    "expectedFamilyId": "quote-evidence",
+    "allowedLayoutIds": [
+      "quote-evidence"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-13",
+    "prompt": "試行導入の状況、対応、改善結果、教訓を示す",
+    "expectedFamilyId": "case-study",
+    "allowedLayoutIds": [
+      "case-study"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-14",
+    "prompt": "三つの導入案を費用、期間、運用負荷で比較する",
+    "expectedFamilyId": "comparison",
+    "allowedLayoutIds": [
+      "comparison",
+      "comparison-side-by-side"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-15",
+    "prompt": "個別受付から一元受付への変更と効果を比較する",
+    "expectedFamilyId": "before-after",
+    "allowedLayoutIds": [
+      "before-after"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-16",
+    "prompt": "自動化案の利点、懸念、導入条件を整理する",
+    "expectedFamilyId": "pros-cons",
+    "allowedLayoutIds": [
+      "pros-cons"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-17",
+    "prompt": "試行結果を精度、速度、運用性で評価する",
+    "expectedFamilyId": "scorecard",
+    "allowedLayoutIds": [
+      "scorecard"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-18",
+    "prompt": "社内基盤の強み、弱み、外部機会、脅威を整理する",
+    "expectedFamilyId": "swot",
+    "allowedLayoutIds": [
+      "swot"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-19",
+    "prompt": "障害影響と復旧見込みから対応レベルを判定する",
+    "expectedFamilyId": "decision-tree",
+    "allowedLayoutIds": [
+      "decision-tree"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-20",
+    "prompt": "試行導入の承認、停止条件、担当と期限を示す",
+    "expectedFamilyId": "decision-action",
+    "allowedLayoutIds": [
+      "decision-action"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-21",
+    "prompt": "処理時間、精度、工数の現在値と目標差を示す",
+    "expectedFamilyId": "kpi",
+    "allowedLayoutIds": [
+      "kpi-trend",
+      "kpi-two",
+      "kpi-three"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-22",
+    "prompt": "作業区分別の処理時間を横棒で比較し、主要因を説明する",
+    "expectedFamilyId": "chart-insight",
+    "allowedLayoutIds": [
+      "chart-insight",
+      "chart-insight-line",
+      "chart-insight-stacked",
+      "chart-insight-waterfall",
+      "chart-insight-donut",
+      "chart-insight-scatter"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-23",
+    "prompt": "三案の費用、期間、運用工数を正確に比較する",
+    "expectedFamilyId": "table-insight",
+    "allowedLayoutIds": [
+      "table-insight"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-24",
+    "prompt": "四部門の月次推移を同じ尺度で比較する",
+    "expectedFamilyId": "small-multiples",
+    "allowedLayoutIds": [
+      "small-multiples"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-25",
+    "prompt": "移行準備の項目別完了率と目標を示す",
+    "expectedFamilyId": "progress",
+    "allowedLayoutIds": [
+      "progress-bars"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-26",
+    "prompt": "問い合わせ時間の80%を占める上位三要因を特定する",
+    "expectedFamilyId": "pareto",
+    "allowedLayoutIds": [
+      "pareto"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-27",
+    "prompt": "効果と実行容易性で施策の着手順を決める",
+    "expectedFamilyId": "matrix-2x2",
+    "allowedLayoutIds": [
+      "matrix-2x2"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-28",
+    "prompt": "受付から承認までを担当別スイムレーンで示す",
+    "expectedFamilyId": "process",
+    "allowedLayoutIds": [
+      "process",
+      "process-vertical",
+      "process-swimlane"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-29",
+    "prompt": "調査、実行、検証、改善を継続的に回す",
+    "expectedFamilyId": "cycle",
+    "allowedLayoutIds": [
+      "cycle"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-30",
+    "prompt": "データ収集から意思決定までの価値連鎖を示す",
+    "expectedFamilyId": "value-chain",
+    "allowedLayoutIds": [
+      "value-chain"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-31",
+    "prompt": "要件、構築、試行の三段階と承認点を示す",
+    "expectedFamilyId": "timeline-roadmap",
+    "allowedLayoutIds": [
+      "timeline-roadmap",
+      "timeline-milestones",
+      "timeline-gantt"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-32",
+    "prompt": "目的、原則、標準、実装の階層を示す",
+    "expectedFamilyId": "hierarchy-pyramid",
+    "allowedLayoutIds": [
+      "hierarchy-pyramid"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-33",
+    "prompt": "候補案件から試行対象までの絞り込みを示す",
+    "expectedFamilyId": "funnel",
+    "allowedLayoutIds": [
+      "funnel"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-34",
+    "prompt": "上流、統合基盤、下流利用の責務境界を示す",
+    "expectedFamilyId": "architecture",
+    "allowedLayoutIds": [
+      "architecture-layered",
+      "architecture-system-context"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-35",
+    "prompt": "上流取引からリスク集計、レポートまでの流れを示す",
+    "expectedFamilyId": "data-flow-lineage",
+    "allowedLayoutIds": [
+      "data-flow-lineage"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-36",
+    "prompt": "項目変更がジョブ、IF、帳票へ波及する関係を示す",
+    "expectedFamilyId": "dependency-map",
+    "allowedLayoutIds": [
+      "dependency-map"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-37",
+    "prompt": "社員、協力会社、利用部門の責任分担をRACIで示す",
+    "expectedFamilyId": "stakeholder-raci",
+    "allowedLayoutIds": [
+      "stakeholder-map",
+      "raci"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-38",
+    "prompt": "移行リスクを発生可能性と影響度で評価する",
+    "expectedFamilyId": "risk-status",
+    "allowedLayoutIds": [
+      "risk-matrix",
+      "rag-status"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-39",
+    "prompt": "現行画面と改善後の利用場面を画像で具体化する",
+    "expectedFamilyId": "visual-story",
+    "allowedLayoutIds": [
+      "image-left",
+      "image-right",
+      "image-hero",
+      "image-gallery"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  },
+  {
+    "id": "select-40",
+    "prompt": "重要課題の状態、担当、期限、エスカレーションを示す",
+    "expectedFamilyId": "issue-action-log",
+    "allowedLayoutIds": [
+      "issue-action-log"
+    ],
+    "mustExplain": [
+      "内容の関係",
+      "容量",
+      "前後ページとのシルエット"
+    ]
+  }
+]

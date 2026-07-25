@@ -10,6 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACTS_PATH = ROOT / "assets/layout-contracts.json"
+REGISTRY_PATH = ROOT / "assets/layout-registry.json"
 SCHEMA_PATH = ROOT / "assets/slide-spec.schema.json"
 ALLOWED_CLASSIFICATIONS = {"fact", "estimate", "illustrative", "mixed"}
 ALLOWED_USAGE = {"projection", "pre-read", "handout", "print"}
@@ -345,6 +346,43 @@ def validate_field(value, contract, location: str, errors: list[str]) -> None:
                                 f"{series_location}.values[{value_index}]: "
                                 "数値ではありません"
                             )
+                    x_values = item.get("xValues")
+                    if x_values is not None:
+                        if not isinstance(x_values, list) or not x_values:
+                            errors.append(
+                                f"{series_location}.xValues: "
+                                "空でない数値配列にします"
+                            )
+                        elif len(x_values) != len(values):
+                            errors.append(
+                                f"{series_location}.xValues: valuesと件数が"
+                                "一致しません"
+                            )
+                        else:
+                            for value_index, point in enumerate(x_values):
+                                if (
+                                    not isinstance(point, (int, float))
+                                    or isinstance(point, bool)
+                                ):
+                                    errors.append(
+                                        f"{series_location}.xValues"
+                                        f"[{value_index}]: 数値ではありません"
+                                    )
+    elif field_type == "chart-list":
+        validate_list(value, contract, location, errors)
+        if isinstance(value, list):
+            chart_contract = {
+                **contract,
+                "type": "chart",
+                "requiredKeys": ["type", "categories", "series"],
+            }
+            for index, item in enumerate(value):
+                validate_field(
+                    item,
+                    chart_contract,
+                    f"{location}[{index}]",
+                    errors,
+                )
     elif field_type == "table":
         validate_object(value, contract, location, errors)
         if isinstance(value, dict):
@@ -403,14 +441,28 @@ def validate_field(value, contract, location: str, errors: list[str]) -> None:
                 )
             if "altText" in value and not isinstance(value["altText"], str):
                 errors.append(f"{location}.altText: 文字列ではありません")
+    elif field_type == "media-list":
+        validate_list(value, contract, location, errors)
+        if isinstance(value, list):
+            for index, item in enumerate(value):
+                validate_field(
+                    item,
+                    {"type": "media", "required": True},
+                    f"{location}[{index}]",
+                    errors,
+                )
     else:
         errors.append(f"{location}: 未対応のfield typeです: {field_type}")
 
 
 def validate_layout_invariants(
-    layout_id: str, fields: dict, location: str, errors: list[str]
+    family_id: str,
+    layout: dict,
+    fields: dict,
+    location: str,
+    errors: list[str],
 ) -> None:
-    if layout_id == "comparison":
+    if family_id == "comparison":
         criteria = fields.get("criteria")
         options = fields.get("options")
         if isinstance(criteria, list) and isinstance(options, list):
@@ -421,7 +473,7 @@ def validate_layout_invariants(
                         f"{location}.fields.options[{index}].values: "
                         "criteriaと件数が一致しません"
                     )
-    elif layout_id == "before-after":
+    elif family_id == "before-after":
         before = fields.get("before")
         after = fields.get("after")
         if isinstance(before, list) and isinstance(after, list):
@@ -429,7 +481,7 @@ def validate_layout_invariants(
                 errors.append(
                     f"{location}.fields: beforeとafterの件数が一致しません"
                 )
-    elif layout_id == "process":
+    elif family_id == "process":
         steps = fields.get("steps")
         if isinstance(steps, list):
             for field_name in ("owner", "duration", "output"):
@@ -439,7 +491,7 @@ def validate_layout_invariants(
                         f"{location}.fields.{field_name}: stepsと件数が"
                         "一致しません"
                     )
-    elif layout_id == "matrix-2x2":
+    elif family_id == "matrix-2x2":
         items = fields.get("items")
         if isinstance(items, list):
             for index, item in enumerate(items):
@@ -456,9 +508,92 @@ def validate_layout_invariants(
                             f"{location}.fields.items[{index}].{axis}: "
                             "0〜1の数値にします"
                         )
+    elif family_id in {"architecture", "data-flow-lineage", "dependency-map"}:
+        node_field = "items" if family_id == "dependency-map" else "nodes"
+        edge_field = (
+            "dependencies"
+            if family_id == "dependency-map"
+            else "flows"
+            if family_id == "data-flow-lineage"
+            else "connections"
+        )
+        nodes = fields.get(node_field)
+        edges = fields.get(edge_field)
+        if isinstance(nodes, list) and isinstance(edges, list):
+            node_ids = {
+                item.get("id")
+                for item in nodes
+                if isinstance(item, dict) and isinstance(item.get("id"), str)
+            }
+            if len(node_ids) != len(nodes):
+                errors.append(
+                    f"{location}.fields.{node_field}: idが重複または欠落しています"
+                )
+            for index, edge in enumerate(edges):
+                if not isinstance(edge, dict):
+                    continue
+                for key in ("from", "to"):
+                    if edge.get(key) not in node_ids:
+                        errors.append(
+                            f"{location}.fields.{edge_field}[{index}].{key}: "
+                            "未定義ノードを参照しています"
+                        )
+    elif family_id == "decision-tree":
+        nodes = fields.get("nodes")
+        if isinstance(nodes, list):
+            ids = {
+                item.get("id")
+                for item in nodes
+                if isinstance(item, dict) and isinstance(item.get("id"), str)
+            }
+            if len(ids) != len(nodes):
+                errors.append(
+                    f"{location}.fields.nodes: idが重複または欠落しています"
+                )
+            for index, node in enumerate(nodes):
+                if not isinstance(node, dict):
+                    continue
+                parent_id = node.get("parentId")
+                if parent_id and parent_id not in ids:
+                    errors.append(
+                        f"{location}.fields.nodes[{index}].parentId: "
+                        "未定義ノードを参照しています"
+                    )
+    elif family_id == "timeline-roadmap":
+        workstreams = fields.get("workstreams")
+        if isinstance(workstreams, list):
+            for index, item in enumerate(workstreams):
+                if not isinstance(item, dict):
+                    continue
+                start = item.get("start")
+                end = item.get("end")
+                if (
+                    isinstance(start, (int, float))
+                    and not isinstance(start, bool)
+                    and isinstance(end, (int, float))
+                    and not isinstance(end, bool)
+                    and start > end
+                ):
+                    errors.append(
+                        f"{location}.fields.workstreams[{index}]: "
+                        "startはend以下にします"
+                    )
+    fixed_chart_type = layout.get("fixedChartType")
+    chart = fields.get("chart")
+    if fixed_chart_type and isinstance(chart, dict):
+        if chart.get("type") != fixed_chart_type:
+            errors.append(
+                f"{location}.fields.chart.type: {layout.get('id')}では"
+                f"{fixed_chart_type}にします"
+            )
 
 
-def validate_spec(spec_data, contracts_data, schema_data=None) -> list[str]:
+def validate_spec(
+    spec_data,
+    contracts_data,
+    registry_data,
+    schema_data=None,
+) -> list[str]:
     errors: list[str] = []
     if schema_data is None:
         schema_data = load_json(SCHEMA_PATH, errors)
@@ -467,8 +602,8 @@ def validate_spec(spec_data, contracts_data, schema_data=None) -> list[str]:
     if not isinstance(spec_data, dict):
         return ["ルートがオブジェクトではありません"]
     validate_allowed_keys(spec_data, ROOT_KEYS, "root", errors)
-    if spec_data.get("schemaVersion") != "1.0":
-        errors.append("schemaVersionは1.0にします")
+    if spec_data.get("schemaVersion") != "2.0":
+        errors.append("schemaVersionは2.0にします")
     brief = spec_data.get("brief")
     if not isinstance(brief, dict):
         errors.append("briefがありません")
@@ -485,6 +620,12 @@ def validate_spec(spec_data, contracts_data, schema_data=None) -> list[str]:
         if "aspectRatio" in brief and not isinstance(brief["aspectRatio"], str):
             errors.append("brief.aspectRatioは文字列にします")
     contracts = contracts_data.get("contracts", {}) if isinstance(contracts_data, dict) else {}
+    layouts = registry_data.get("layouts", []) if isinstance(registry_data, dict) else []
+    layout_by_id = {
+        item.get("id"): item
+        for item in layouts
+        if isinstance(item, dict) and isinstance(item.get("id"), str)
+    }
     slides = spec_data.get("slides")
     if not isinstance(slides, list) or not slides:
         errors.append("slidesがありません")
@@ -520,9 +661,17 @@ def validate_spec(spec_data, contracts_data, schema_data=None) -> list[str]:
         if not isinstance(slide.get("role"), str) or not slide.get("role", "").strip():
             errors.append(f"{location}.roleがありません")
         layout_id = slide.get("layoutId")
-        contract = contracts.get(layout_id)
-        if not isinstance(contract, dict):
+        layout = layout_by_id.get(layout_id)
+        if not isinstance(layout, dict):
             errors.append(f"{location}.layoutId: 未定義です: {layout_id}")
+            continue
+        contract_id = layout.get("contractId")
+        contract = contracts.get(contract_id)
+        if not isinstance(contract, dict):
+            errors.append(
+                f"{location}.layoutId: 契約が未定義です: "
+                f"{layout_id}/{contract_id}"
+            )
             continue
         title = slide.get("actionTitle")
         if not isinstance(title, str) or not title:
@@ -562,7 +711,13 @@ def validate_spec(spec_data, contracts_data, schema_data=None) -> list[str]:
                     f"{location}.fields.{field_name}",
                     errors,
                 )
-        validate_layout_invariants(layout_id, fields, location, errors)
+        validate_layout_invariants(
+            layout.get("familyId"),
+            layout,
+            fields,
+            location,
+            errors,
+        )
         evidence = slide.get("evidence")
         if not isinstance(evidence, list) or any(
             not isinstance(item, str) for item in evidence
@@ -588,9 +743,17 @@ def main() -> int:
     spec_path = Path(sys.argv[1])
     spec_data = load_json(spec_path, errors)
     contracts_data = load_json(CONTRACTS_PATH, errors)
+    registry_data = load_json(REGISTRY_PATH, errors)
     schema_data = load_json(SCHEMA_PATH, errors)
     if not errors:
-        errors.extend(validate_spec(spec_data, contracts_data, schema_data))
+        errors.extend(
+            validate_spec(
+                spec_data,
+                contracts_data,
+                registry_data,
+                schema_data,
+            )
+        )
     for error in errors:
         print(f"エラー: {error}")
     if errors:
@@ -598,7 +761,8 @@ def main() -> int:
         return 1
     print(
         f"検査結果: slides={len(spec_data['slides'])}, "
-        f"layouts={len(contracts_data['contracts'])}, errors=0"
+        f"families={len(contracts_data['contracts'])}, "
+        f"layouts={len(registry_data['layouts'])}, errors=0"
     )
     return 0
 

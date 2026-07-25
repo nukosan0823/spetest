@@ -1,208 +1,255 @@
 {
-  "schemaVersion": "1.0",
+  "schemaVersion": "2.0",
   "brief": {
-    "audience": "役員会",
-    "purpose": "申請フローの限定試行について承認を得る",
-    "expectedAction": "試行範囲、評価条件、責任者を承認する",
+    "audience": "経営会議メンバー",
+    "purpose": "影響調査自動化の試行導入について判断してもらう",
+    "expectedAction": "二部門で六週間の試行を承認する",
     "usage": "projection",
     "aspectRatio": "16:9"
   },
   "slides": [
     {
       "number": 1,
-      "role": "推奨要約",
-      "layoutId": "executive-summary",
-      "actionTitle": "限定試行を承認し、全社展開は評価後に判断する",
+      "role": "導入",
+      "layoutId": "cover-minimal",
+      "actionTitle": "影響調査自動化の試行導入",
       "fields": {
-        "recommendation": "対象を限定して試行し、統制指標を確認してから全社展開を判断する",
-        "evidence": [
-          "現行工程の滞留箇所は要確認",
-          "試行範囲と期間は要確認",
-          "評価指標と停止条件は要確認"
-        ],
-        "action": [
-          "試行実施を承認",
-          "評価条件を承認"
+        "subtitle": "判断速度と統制を両立する実行案",
+        "metadata": [
+          "経営会議",
+          "2026年7月",
+          "企画部"
         ]
       },
-      "evidence": [
-        "現行処理時間",
-        "滞留率",
-        "例外率"
-      ],
+      "evidence": [],
       "sources": [],
-      "dataClassification": "mixed",
-      "nextRelation": "変更内容を具体化する"
+      "dataClassification": "illustrative",
+      "nextRelation": "判断事項の全体像を示す"
     },
     {
       "number": 2,
-      "role": "変更内容",
-      "layoutId": "before-after",
-      "actionTitle": "受付から承認までを一つの状態で追跡する",
+      "role": "構成",
+      "layoutId": "agenda-overview",
+      "actionTitle": "四つの論点から試行導入の妥当性を確認する",
       "fields": {
-        "before": [
-          "受付経路が分散",
-          "担当者が手動で振分け",
-          "進捗を個別に確認"
-        ],
-        "after": [
-          "共通フォームで受付",
-          "条件で承認先を判定",
-          "状態を一画面で追跡"
-        ],
-        "effect": [
-          "待ち時間を短縮",
-          "監査可能性を向上"
-        ],
-        "transition": "限定試行"
+        "items": [
+          {
+            "number": 1,
+            "title": "背景",
+            "description": "現在の制約"
+          },
+          {
+            "number": 2,
+            "title": "解決案",
+            "description": "仕組みと統制"
+          },
+          {
+            "number": 3,
+            "title": "検証",
+            "description": "効果とリスク"
+          },
+          {
+            "number": 4,
+            "title": "判断",
+            "description": "実行条件"
+          }
+        ]
       },
-      "evidence": [
-        "現行工程図",
-        "承認条件",
-        "監査ログ要件"
-      ],
+      "evidence": [],
       "sources": [],
-      "dataClassification": "mixed",
-      "nextRelation": "選択理由を比較する"
+      "dataClassification": "illustrative",
+      "nextRelation": "結論を先に示す"
     },
     {
       "number": 3,
-      "role": "選択理由",
-      "layoutId": "comparison",
-      "actionTitle": "限定試行は変更リスクを抑えて学習できる",
+      "role": "要約",
+      "layoutId": "executive-summary",
+      "actionTitle": "二部門で六週間試行し、統制指標を確認してから拡大する",
       "fields": {
-        "criteria": [
-          "期間",
-          "影響範囲",
-          "統制",
-          "撤回可能性",
-          "学習効果"
+        "recommendation": "対象を限定し、再現率と証跡品質を基準に段階導入する",
+        "evidence": [
+          "探索と照合を分離できる",
+          "差分を機械的に記録できる",
+          "承認前に人が確認できる"
         ],
-        "options": [
-          {
-            "name": "現状維持",
-            "values": [
-              "短",
-              "小",
-              "現行",
-              "高",
-              "低"
-            ]
-          },
-          {
-            "name": "限定試行",
-            "values": [
-              "中",
-              "限定",
-              "検証",
-              "高",
-              "高"
-            ]
-          },
-          {
-            "name": "全面導入",
-            "values": [
-              "長",
-              "全社",
-              "要確認",
-              "低",
-              "中"
-            ]
-          }
-        ],
-        "recommendation": "限定試行を選び、停止条件を事前に合意する"
-      },
-      "evidence": [
-        "三案の同一条件比較"
-      ],
-      "sources": [],
-      "dataClassification": "estimate",
-      "nextRelation": "実行方法を示す"
-    },
-    {
-      "number": 4,
-      "role": "実行計画",
-      "layoutId": "timeline-roadmap",
-      "actionTitle": "準備・試行・評価の三段階で継続可否を判定する",
-      "fields": {
-        "timeAxis": [
-          "準備",
-          "試行",
-          "評価"
-        ],
-        "workstreams": [
-          {
-            "name": "要件・設定",
-            "start": "準備",
-            "end": "試行前"
-          },
-          {
-            "name": "利用・観測",
-            "start": "試行",
-            "end": "評価前"
-          }
-        ],
-        "milestones": [
-          {
-            "label": "試行開始",
-            "at": "要確認"
-          },
-          {
-            "label": "継続判定",
-            "at": "要確認"
-          }
-        ],
-        "current": "日付は要確認"
-      },
-      "evidence": [
-        "担当",
-        "節目",
-        "停止条件"
-      ],
-      "sources": [],
-      "dataClassification": "estimate",
-      "nextRelation": "承認事項へ接続する"
-    },
-    {
-      "number": 5,
-      "role": "決定",
-      "layoutId": "decision-action",
-      "actionTitle": "試行範囲・評価条件・責任者の承認をお願いしたい",
-      "fields": {
-        "decision": [
-          "限定試行を実施する",
-          "評価条件を採用する",
-          "責任者を任命する"
-        ],
-        "actions": [
-          {
-            "action": "試行範囲を確定",
-            "owner": "要確認",
-            "due": "要確認"
-          },
-          {
-            "action": "設定を確認",
-            "owner": "要確認",
-            "due": "要確認"
-          }
-        ],
-        "conditions": [
-          "対象データを限定",
-          "監査ログを確認",
-          "停止条件を適用"
-        ],
-        "openIssues": [
-          "全社展開の時期"
+        "action": [
+          "試行開始を承認",
+          "終了判定条件を合意"
         ]
       },
       "evidence": [
-        "承認事項",
-        "担当",
-        "期限"
+        "例示条件"
       ],
       "sources": [],
-      "dataClassification": "mixed",
-      "nextRelation": "会議で決定する"
+      "dataClassification": "illustrative",
+      "nextRelation": "試行プロセスを具体化する"
+    },
+    {
+      "number": 4,
+      "role": "プロセス",
+      "layoutId": "process-swimlane",
+      "actionTitle": "申請から承認までを三者の責任で管理する",
+      "fields": {
+        "steps": [
+          {
+            "title": "申請",
+            "owner": "依頼部門",
+            "lane": "利用部門"
+          },
+          {
+            "title": "列挙",
+            "owner": "AI",
+            "lane": "自動処理"
+          },
+          {
+            "title": "照合",
+            "owner": "AI",
+            "lane": "自動処理"
+          },
+          {
+            "title": "確認",
+            "owner": "担当者",
+            "lane": "IT部門"
+          },
+          {
+            "title": "承認",
+            "owner": "責任者",
+            "lane": "IT部門"
+          }
+        ],
+        "rule": "承認前に根拠と未確認事項を必ず表示する"
+      },
+      "evidence": [
+        "例示フロー"
+      ],
+      "sources": [],
+      "dataClassification": "illustrative",
+      "nextRelation": "技術構成へ接続する"
+    },
+    {
+      "number": 5,
+      "role": "構成",
+      "layoutId": "architecture-layered",
+      "actionTitle": "調査エンジンと証跡保管を分離して統制する",
+      "fields": {
+        "nodes": [
+          {
+            "id": "source",
+            "label": "ソース",
+            "layer": "入力"
+          },
+          {
+            "id": "catalog",
+            "label": "カタログ",
+            "layer": "知識"
+          },
+          {
+            "id": "engine",
+            "label": "調査エンジン",
+            "layer": "処理"
+          },
+          {
+            "id": "evidence",
+            "label": "証跡",
+            "layer": "出力"
+          }
+        ],
+        "connections": [
+          {
+            "from": "source",
+            "to": "engine",
+            "label": "解析"
+          },
+          {
+            "from": "catalog",
+            "to": "engine",
+            "label": "照合"
+          },
+          {
+            "from": "engine",
+            "to": "evidence",
+            "label": "記録"
+          }
+        ],
+        "insight": "入力と出力を固定し、推論だけを交換可能にする"
+      },
+      "evidence": [
+        "例示構成"
+      ],
+      "sources": [],
+      "dataClassification": "illustrative",
+      "nextRelation": "リスクを評価する"
+    },
+    {
+      "number": 6,
+      "role": "リスク",
+      "layoutId": "risk-matrix",
+      "actionTitle": "分類誤りと根拠欠落を優先的に抑える",
+      "fields": {
+        "risks": [
+          {
+            "risk": "分類誤り",
+            "likelihood": 4,
+            "impact": 5,
+            "status": "red",
+            "owner": "設計責任者"
+          },
+          {
+            "risk": "根拠欠落",
+            "likelihood": 3,
+            "impact": 5,
+            "status": "red",
+            "owner": "品質責任者"
+          },
+          {
+            "risk": "処理遅延",
+            "likelihood": 2,
+            "impact": 2,
+            "status": "green",
+            "owner": "運用担当"
+          }
+        ],
+        "summary": "高リスク二項目を試行終了条件へ組み込む"
+      },
+      "evidence": [
+        "例示評価"
+      ],
+      "sources": [],
+      "dataClassification": "illustrative",
+      "nextRelation": "最終判断を求める"
+    },
+    {
+      "number": 7,
+      "role": "判断",
+      "layoutId": "decision-action",
+      "actionTitle": "試行開始と終了判定条件の承認をお願いしたい",
+      "fields": {
+        "decision": [
+          "二部門・六週間の試行を開始する"
+        ],
+        "criteria": [
+          "再現率95%以上",
+          "重大な根拠欠落0件"
+        ],
+        "actions": [
+          {
+            "action": "対象案件を確定",
+            "owner": "企画部",
+            "due": "8月5日"
+          },
+          {
+            "action": "評価手順を確定",
+            "owner": "品質管理",
+            "due": "8月8日"
+          }
+        ]
+      },
+      "evidence": [
+        "例示計画"
+      ],
+      "sources": [],
+      "dataClassification": "illustrative",
+      "nextRelation": "終了"
     }
   ]
 }

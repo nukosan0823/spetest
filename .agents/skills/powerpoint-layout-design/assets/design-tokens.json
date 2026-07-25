@@ -38,10 +38,10 @@
       "bold": 700
     },
     "sizesPt": {
-      "coverTitle": 40,
-      "sectionTitle": 34,
-      "slideTitle": 26,
-      "lead": 20,
+      "coverTitle": 50,
+      "sectionTitle": 40,
+      "slideTitle": 36,
+      "lead": 24,
       "body": 18,
       "chartLabel": 15,
       "note": 11

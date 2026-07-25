@@ -1,7 +1,12 @@
 {
-  "schemaVersion": "2.0",
+  "schemaVersion": "2.1",
   "bundle": "powerpoint-layout-design",
   "language": "ja",
+  "layoutSystem": {
+    "families": 40,
+    "layouts": 62,
+    "selectionModel": "意味構造でfamilyIdを選び、情報量と前後ページのリズムでlayoutIdを選ぶ"
+  },
   "provenance": {
     "method": "clean-room",
     "statement": "レイアウト、文章、JSON、評価ケース、検査スクリプト、見本PPTXはこのSkill向けに新規作成した。外部リポジトリのコード、文章、画像、レイアウト座標、配色定数、ブランド表現を複製していない。",
@@ -36,18 +41,30 @@
       },
       {
         "targets": [
+          "assets/layout-registry.json",
+          "assets/layout-contracts.json",
+          "references/layout-catalog.md",
+          "evals/layout-selection-cases.json",
+          "evals/example-slide-spec.json"
+        ],
+        "method": "scripts/build_layout_assets.pyで40ファミリー・62レイアウトを決定的に生成",
+        "externalContent": false
+      },
+      {
+        "targets": [
           "assets/reference-layouts.pptx"
         ],
-        "method": "@oai/artifact-tool 2.8.21で新規生成後、Python標準ライブラリのzipfileで安全な作成者メタデータと一意な図形名へ正規化",
+        "method": "@oai/artifact-tool 2.8.21で62ページを新規生成し、scripts/normalize_reference_pptx.pyで図形ID、図形名、作成者メタデータを正規化",
         "externalContent": false,
         "dataPolicy": "すべて架空データ",
-        "declaredFont": "Yu Gothic"
+        "declaredFont": "Yu Gothic",
+        "editableElements": "テキスト、図形、表、対応可能なチャートを編集可能な要素として保持"
       },
       {
         "targets": [
           "assets/layout-preview.png"
         ],
-        "method": "reference-layouts.pptxの全14ページをレンダリングし、ImageMagick 6.9.12-98で一覧化後、同じ解像度の8-bit PNGへ最適化",
+        "method": "reference-layouts.pptxと同じ生成モデルの全62ページをPNGへ書き出し、scripts/create_layout_preview.pyとPillow 12.2.0で一覧化",
         "externalContent": true,
         "renderOnlyDependency": {
           "name": "@fontsource/noto-sans-jp",
@@ -67,12 +84,12 @@
     },
     {
       "path": "layout-contracts.json",
-      "origin": "original",
+      "origin": "original-generated",
       "containsExternalContent": false
     },
     {
       "path": "layout-registry.json",
-      "origin": "original",
+      "origin": "original-generated",
       "containsExternalContent": false
     },
     {
@@ -82,13 +99,13 @@
     },
     {
       "path": "reference-layouts.pptx",
-      "origin": "original",
+      "origin": "original-generated",
       "containsExternalContent": false,
       "dataPolicy": "すべて架空データ"
     },
     {
       "path": "layout-preview.png",
-      "origin": "generated-from-reference-layouts.pptx",
+      "origin": "generated-from-reference-model",
       "containsExternalContent": true,
       "externalContent": "ローカルQA時にOFL-1.1のNoto Sans JPでレンダリングした日本語字形。フォントファイル自体は同梱していない。"
     }
@@ -98,27 +115,32 @@
     "scope": "このマニフェスト自身を除くSkill内の全必須ファイル",
     "trustModel": "このマニフェストも含めてレビュー済みGitコミットから取得し、社内管理の検査器または信頼済みOSコマンドで照合する。同梱検査スクリプトを信頼の起点にしない。",
     "files": {
-      "SKILL.md": "c229dac20fb1dcf2ff6fbf952800c2a675aa8679094749a65a57eb38d925255c",
-      "agents/openai.yaml": "cb4faf8f96c18cc714e424b48c5bb0e94a0c8791a2fe3dd7532f2294ae0e52dd",
-      "assets/design-tokens.json": "a068dce54d38260a600a3f6674b0c579ce84a2b8be224fb77ff3b28299a60156",
-      "assets/layout-contracts.json": "a2582904a17667c8a503a0abf8eb23bd938c097684a51684e1ee1cfafc9b730a",
-      "assets/layout-preview.png": "fe117702e11a2cc6e977c47937220aec6c8dd45e53fa40ce0084071802126771",
-      "assets/layout-registry.json": "550246d22ff1e2c1ae865cd24add42c4e86456659ec4c629fa5e418c7a2760c7",
-      "assets/reference-layouts.pptx": "a5a828d50f86bb6108b74bdef4917b697e5763d472701809aa55ff139bec644f",
-      "assets/slide-spec.schema.json": "9f726a8198cec4b3d7f563598d04e4116f81e1d1905dc6f218cc575dc910f1e7",
-      "evals/example-slide-spec.json": "d794c45c4a7528c82e5a3d0b05339d1539882057d389e98f84e36d5cd9f49b97",
+      "SKILL.md": "71ff63adb1fd4b4c105fe3b74182f341169fbf94cdafcdd5c3574c856da2f52a",
+      "agents/openai.yaml": "3a566846de1cf077421f761913540a00a986cd03b5bb7b9f08165278f7e8804e",
+      "assets/design-tokens.json": "96c24c981a0e521517db9bf21285c75d24f76741b81659f00e179b2e8b7e2dd4",
+      "assets/layout-contracts.json": "8957387566b32263656d4308ad0fb042143126b0d1afad847b613f4f8ded7346",
+      "assets/layout-preview.png": "587a8b7707c52e378b8a03218aa9404470663ff4851bb5e8d10a7e992d2265fe",
+      "assets/layout-registry.json": "90d84037815603a9e6aa874fab568bc3f6a9a90f19d0c9e8d82495bbedc16e15",
+      "assets/reference-layouts.pptx": "bd643008cd7a4b2129f3cc22c1a7cb76db4d4b7446e3579d971b86cc7b418529",
+      "assets/slide-spec.schema.json": "c6a025010483ddb540119bf2b4d798e80fc7ec816ef702128cf0387eef68c34b",
+      "evals/example-slide-spec.json": "5ba985b17f28321c98d0e97b0fbd74eabe4e0905f632823cac8768cf047783b9",
+      "evals/layout-selection-cases.json": "dc48791473f8ee57c3906dd70b3d5b501edb4677b6eacdae50064cf5d82c7b15",
       "evals/output-cases.json": "803f80be6c6a5254832f5d0eddfd088651080bfe20ffe58abcb997cf5b341d87",
       "evals/trigger-queries.json": "d122473385a510cc9ad66b6c236c390fededdd0b8cb49eb8bd2ee809382cfa61",
-      "references/charts-tables-images.md": "330c64cffa903cd57e80f626bba3369b380fc0d9d6a425b46baeef33fb6d6cdc",
+      "references/charts-tables-images.md": "a98f345df81a246cc51f92bdf04dc3e7c3a148a7475f16bd152b0b3a2402703b",
       "references/content-and-story.md": "b8e73a7671eff953218041f94b3ee750ffe85d9621aa636e4674ed6e4c7ba13c",
-      "references/design-system.md": "56de237893e17f8f672fb6e21932a0ba71e40213cbe6be5bc66c65475dc8d656",
-      "references/layout-catalog.md": "481e3156bc83385e02b735bbd73ffa1e1cb58bb5afdaf22622fe28d494f05ecd",
+      "references/design-system.md": "341e0a5813ebd33445a4c9095565bb4c0100d9c89c0e373f41a715bbe22922b1",
+      "references/layout-catalog.md": "aa636e49c878e6421b115a1b5c7a035a8dc3a90715a121581826304a07cece82",
       "references/security-and-sources.md": "a54b6fbd9931e391152c8fa8f83fb9bff704a172f011f2b1da3f1f52c618b4a8",
-      "references/template-and-engine.md": "a957712fc06974feb6b8958bcbbaf5ea9380f93785a4185ec2e0871d9647a512",
-      "references/visual-qa.md": "26d60d8ee791bec08ab5d694552695479a2e86d3c044d7466ba05b4f558c7da0",
+      "references/template-and-engine.md": "659384ebe0b651e9f795d41fbdef7d67d15a6403dc54a670e31518a94493ef70",
+      "references/visual-qa.md": "9b2f75b2c77a58ce71bead1939f4a4806eac6adacb77ca5f403d50531cb52d4d",
+      "scripts/build_layout_assets.py": "a7d65db2e40f77a763ebf1cad09785512608d7e2cf4f923b5c8b0e9386f55520",
+      "scripts/build_reference_deck.mjs": "0f78d38c34dcf20bfe74e758e11e9c2ab2ecffd5d33ffa46194df1887ed72039",
       "scripts/check_japanese_font.py": "bece42411c41734d703acf572b86d8bd583d735e956491a36720184816b36d90",
-      "scripts/validate_bundle.py": "7e7192d92016ddc585df26026027b892971f1863e084096dea7ee1368ae0d0b4",
-      "scripts/validate_slide_spec.py": "dd17f89999904d7f252ebbf9d6126108f768a9072b906b3d1a09b095aa98537d"
+      "scripts/create_layout_preview.py": "fca1dc8570ccd87774da723a414b9a352548285abc1f3166f512259167aaf3c2",
+      "scripts/normalize_reference_pptx.py": "e2f0a644a10b8cf49a9f18c3af221840fb848bb043d4a110cded3e28b7096d02",
+      "scripts/validate_bundle.py": "bceb614759dfce7aca3763727dfef46204e7b0bc7bd66258ffd82db4073ba99d",
+      "scripts/validate_slide_spec.py": "0a61313c24e1f55da30d2c3a022f978a8d13c269035218dca8b5342e52cbffb4"
     }
   }
 }
