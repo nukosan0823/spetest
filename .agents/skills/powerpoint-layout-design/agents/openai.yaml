@@ -1,0 +1,4 @@
+interface:
+  display_name: "日本語PowerPointデザイン"
+  short_description: "40ファミリー・62レイアウトで日本語PPTXを設計し、全ページを検査する"
+  default_prompt: "$powerpoint-layout-design を使い、意味構造からファミリー、情報量から具体レイアウトを選んで日本語PowerPointを設計し、全スライドをレンダリング検査してください。"

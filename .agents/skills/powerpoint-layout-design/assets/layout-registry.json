@@ -1,0 +1,4048 @@
+{
+  "schemaVersion": "2.0",
+  "coordinateSystem": {
+    "origin": "top-left",
+    "unit": "ratio",
+    "range": [
+      0,
+      1
+    ],
+    "note": "x、y、width、heightをスライド幅・高さへ乗算する"
+  },
+  "counts": {
+    "families": 40,
+    "layouts": 62
+  },
+  "selectionPolicy": {
+    "selectionOrder": [
+      "communication-job",
+      "content-relationship",
+      "family-capacity",
+      "visual-variation"
+    ],
+    "automaticFallback": false,
+    "adjacentSilhouetteRule": "同じsilhouetteを三ページ以上連続させない。ただし意味構造を変えてまで見た目を変えない",
+    "note": "最初にfamilyIdを決め、次に内容量と前後ページを見てlayoutIdを選ぶ。容量超過時は内容を削る、分割する、付録へ移す"
+  },
+  "renderingPolicy": {
+    "regionOrder": "regions配列の順に描画し、線や接続はノードより先に描画する",
+    "defaultInnerPaddingPx": 16,
+    "textAutoFit": "none",
+    "overflowOrder": [
+      "remove-nonessential-content",
+      "move-detail-to-appendix",
+      "split-slide",
+      "choose-layout-manually"
+    ],
+    "measurement": "文字数上限は一次ゲート。実フォントで計測し、全ページをレンダリングして最終判定する"
+  },
+  "common": {
+    "safeArea": {
+      "x": 0.05625,
+      "y": 0.06667,
+      "width": 0.8875,
+      "height": 0.875
+    },
+    "title": {
+      "x": 0.05625,
+      "y": 0.06667,
+      "width": 0.8875,
+      "height": 0.08333,
+      "capacity": {
+        "maxChars": 32,
+        "maxLines": 1
+      }
+    },
+    "content": {
+      "x": 0.05625,
+      "y": 0.19028,
+      "width": 0.8875,
+      "height": 0.68611
+    },
+    "footer": {
+      "x": 0.05625,
+      "y": 0.89722,
+      "width": 0.8875,
+      "height": 0.04444
+    }
+  },
+  "families": [
+    {
+      "id": "cover",
+      "nameJa": "表紙",
+      "category": "structure",
+      "purpose": "資料名、目的、日付、発表者を最小限で示す",
+      "useWhen": "資料の開始で、期待する読み方を一目で伝える",
+      "avoidWhen": "目次、免責、長い概要まで表紙へ載せる場合",
+      "contractId": "cover",
+      "defaultLayoutId": "cover-minimal",
+      "layoutIds": [
+        "cover-minimal",
+        "cover-visual"
+      ]
+    },
+    {
+      "id": "agenda",
+      "nameJa": "アジェンダ",
+      "category": "structure",
+      "purpose": "資料の論理順序と現在位置を示す",
+      "useWhen": "四章以上の資料、または読み手が参照しながら読む資料",
+      "avoidWhen": "短い資料でページを増やすだけになる場合",
+      "contractId": "agenda",
+      "defaultLayoutId": "agenda-overview",
+      "layoutIds": [
+        "agenda-overview"
+      ]
+    },
+    {
+      "id": "section-divider",
+      "nameJa": "章区切り",
+      "category": "structure",
+      "purpose": "論理段階を切り替え、この章で答える問いを示す",
+      "useWhen": "長い資料で読み手の認知を切り替える",
+      "avoidWhen": "各ページの前に区切りを置く場合",
+      "contractId": "section-divider",
+      "defaultLayoutId": "section-divider",
+      "layoutIds": [
+        "section-divider"
+      ]
+    },
+    {
+      "id": "executive-summary",
+      "nameJa": "エグゼクティブサマリー",
+      "category": "structure",
+      "purpose": "結論、根拠、求める判断を一枚で示す",
+      "useWhen": "詳細を読まない意思決定者にも要点を伝える",
+      "avoidWhen": "後続ページの見出しだけを再掲する場合",
+      "contractId": "executive-summary",
+      "defaultLayoutId": "executive-summary",
+      "layoutIds": [
+        "executive-summary"
+      ]
+    },
+    {
+      "id": "closing",
+      "nameJa": "クロージング",
+      "category": "structure",
+      "purpose": "資料冒頭の問いを解決し、次の行動を確定する",
+      "useWhen": "提案、報告、研修を意図した結論で閉じる",
+      "avoidWhen": "意味のない謝辞だけで終わる場合",
+      "contractId": "closing",
+      "defaultLayoutId": "closing-resolution",
+      "layoutIds": [
+        "closing-resolution"
+      ]
+    },
+    {
+      "id": "appendix",
+      "nameJa": "付録",
+      "category": "structure",
+      "purpose": "本編を補う詳細、定義、出典を整理する",
+      "useWhen": "本編の判断には不要だが参照価値がある情報",
+      "avoidWhen": "主要結論を付録へ隠す場合",
+      "contractId": "appendix",
+      "defaultLayoutId": "appendix-title",
+      "layoutIds": [
+        "appendix-title",
+        "appendix-reference"
+      ]
+    },
+    {
+      "id": "key-message",
+      "nameJa": "キーメッセージ",
+      "category": "narrative",
+      "purpose": "一つの数値、結論、原則を強く記憶させる",
+      "useWhen": "複雑な説明の前後で意味を統合する",
+      "avoidWhen": "大きな数字を複数並べる場合",
+      "contractId": "key-message",
+      "defaultLayoutId": "key-message",
+      "layoutIds": [
+        "key-message",
+        "key-message-split"
+      ]
+    },
+    {
+      "id": "context-background",
+      "nameJa": "背景と前提",
+      "category": "narrative",
+      "purpose": "判断に必要な状況、変化、制約を簡潔に共有する",
+      "useWhen": "読み手が同じ前提を持っていない場合",
+      "avoidWhen": "一般論を長く並べる場合",
+      "contractId": "context-background",
+      "defaultLayoutId": "context-background",
+      "layoutIds": [
+        "context-background"
+      ]
+    },
+    {
+      "id": "problem-definition",
+      "nameJa": "課題定義",
+      "category": "narrative",
+      "purpose": "観測事象、原因、影響を分けて問題を定義する",
+      "useWhen": "解決策を議論する前に問題の境界を合意する",
+      "avoidWhen": "原因を確認せず症状だけを並べる場合",
+      "contractId": "problem-definition",
+      "defaultLayoutId": "problem-definition",
+      "layoutIds": [
+        "problem-definition"
+      ]
+    },
+    {
+      "id": "objective-scope",
+      "nameJa": "目的とスコープ",
+      "category": "narrative",
+      "purpose": "達成目標、対象、対象外、成功条件を固定する",
+      "useWhen": "プロジェクト開始、提案、調査計画",
+      "avoidWhen": "対象外を曖昧にしたまま合意を求める場合",
+      "contractId": "objective-scope",
+      "defaultLayoutId": "objective-scope",
+      "layoutIds": [
+        "objective-scope"
+      ]
+    },
+    {
+      "id": "two-column-explanation",
+      "nameJa": "二列説明",
+      "category": "narrative",
+      "purpose": "二つの観点、主張と根拠、概念と具体例を並べる",
+      "useWhen": "二つの情報群を同時に参照する必要がある",
+      "avoidWhen": "三つ以上の同格要素を無理に二列へ入れる場合",
+      "contractId": "two-column-explanation",
+      "defaultLayoutId": "two-column-balanced",
+      "layoutIds": [
+        "two-column-balanced",
+        "two-column-asymmetric"
+      ]
+    },
+    {
+      "id": "quote-evidence",
+      "nameJa": "引用と意味",
+      "category": "narrative",
+      "purpose": "短い引用や一次情報を示し、その意味を説明する",
+      "useWhen": "発言、規程、顧客の声が判断根拠になる",
+      "avoidWhen": "出典が確認できない引用を演出に使う場合",
+      "contractId": "quote-evidence",
+      "defaultLayoutId": "quote-evidence",
+      "layoutIds": [
+        "quote-evidence"
+      ]
+    },
+    {
+      "id": "case-study",
+      "nameJa": "ケーススタディ",
+      "category": "narrative",
+      "purpose": "状況、実施、結果を一つの事例として示す",
+      "useWhen": "再現可能な実績や教訓を説明する",
+      "avoidWhen": "架空の成果を実績として見せる場合",
+      "contractId": "case-study",
+      "defaultLayoutId": "case-study",
+      "layoutIds": [
+        "case-study"
+      ]
+    },
+    {
+      "id": "comparison",
+      "nameJa": "選択肢比較",
+      "category": "comparison",
+      "purpose": "複数案を同じ評価軸で比較し、推奨理由を明示する",
+      "useWhen": "二つまたは三つの案から選ぶ",
+      "avoidWhen": "案ごとに評価軸や説明量が異なる場合",
+      "contractId": "comparison",
+      "defaultLayoutId": "comparison",
+      "layoutIds": [
+        "comparison",
+        "comparison-side-by-side"
+      ]
+    },
+    {
+      "id": "before-after",
+      "nameJa": "変更前後",
+      "category": "comparison",
+      "purpose": "変更前後を同じ観点で比較し、効果を示す",
+      "useWhen": "構造、体験、プロセスの改善を示す",
+      "avoidWhen": "左右で比較軸や粒度が異なる場合",
+      "contractId": "before-after",
+      "defaultLayoutId": "before-after",
+      "layoutIds": [
+        "before-after"
+      ]
+    },
+    {
+      "id": "pros-cons",
+      "nameJa": "利点と懸念",
+      "category": "comparison",
+      "purpose": "一つの案の利点、懸念、成立条件を同じ強さで示す",
+      "useWhen": "採用可否をバランスよく議論する",
+      "avoidWhen": "利点だけを強調する営業資料にする場合",
+      "contractId": "pros-cons",
+      "defaultLayoutId": "pros-cons",
+      "layoutIds": [
+        "pros-cons"
+      ]
+    },
+    {
+      "id": "scorecard",
+      "nameJa": "スコアカード",
+      "category": "comparison",
+      "purpose": "評価項目ごとの達成度と根拠を一覧化する",
+      "useWhen": "同じ基準で複数対象を評価する",
+      "avoidWhen": "根拠のない点数だけを並べる場合",
+      "contractId": "scorecard",
+      "defaultLayoutId": "scorecard",
+      "layoutIds": [
+        "scorecard"
+      ]
+    },
+    {
+      "id": "swot",
+      "nameJa": "SWOT",
+      "category": "comparison",
+      "purpose": "内部要因と外部要因を四象限で整理する",
+      "useWhen": "戦略議論で強み、弱み、機会、脅威を区別する",
+      "avoidWhen": "単なる四分類として使い、戦略へ接続しない場合",
+      "contractId": "swot",
+      "defaultLayoutId": "swot",
+      "layoutIds": [
+        "swot"
+      ]
+    },
+    {
+      "id": "decision-tree",
+      "nameJa": "判断ツリー",
+      "category": "comparison",
+      "purpose": "条件分岐と最終判断を追跡可能にする",
+      "useWhen": "複数条件で対応が変わる",
+      "avoidWhen": "分岐が多すぎて一枚で読めない場合",
+      "contractId": "decision-tree",
+      "defaultLayoutId": "decision-tree",
+      "layoutIds": [
+        "decision-tree"
+      ]
+    },
+    {
+      "id": "decision-action",
+      "nameJa": "意思決定とアクション",
+      "category": "comparison",
+      "purpose": "求める決定、条件、担当、期限を明確にする",
+      "useWhen": "会議で承認または方針決定を求める",
+      "avoidWhen": "曖昧な確認依頼だけを書く場合",
+      "contractId": "decision-action",
+      "defaultLayoutId": "decision-action",
+      "layoutIds": [
+        "decision-action"
+      ]
+    },
+    {
+      "id": "kpi",
+      "nameJa": "KPI",
+      "category": "data",
+      "purpose": "主要指標の現在値、変化、目標差を示す",
+      "useWhen": "二つまたは三つの重要指標を短時間で確認する",
+      "avoidWhen": "多数の指標をダッシュボード化する場合",
+      "contractId": "kpi",
+      "defaultLayoutId": "kpi-trend",
+      "layoutIds": [
+        "kpi-trend",
+        "kpi-two",
+        "kpi-three"
+      ]
+    },
+    {
+      "id": "chart-insight",
+      "nameJa": "チャートと示唆",
+      "category": "data",
+      "purpose": "一つのチャートを主要証拠として結論を説明する",
+      "useWhen": "比較、推移、構成、変化、相関を示す",
+      "avoidWhen": "複数チャートを同じ強さで並べる場合",
+      "contractId": "chart-insight",
+      "defaultLayoutId": "chart-insight",
+      "layoutIds": [
+        "chart-insight",
+        "chart-insight-line",
+        "chart-insight-stacked",
+        "chart-insight-waterfall",
+        "chart-insight-donut",
+        "chart-insight-scatter"
+      ]
+    },
+    {
+      "id": "table-insight",
+      "nameJa": "表と示唆",
+      "category": "data",
+      "purpose": "正確な値や条件を参照させ、重要な差を説明する",
+      "useWhen": "比較表、条件表、詳細数値",
+      "avoidWhen": "大きな表を縮小して一枚へ押し込む場合",
+      "contractId": "table-insight",
+      "defaultLayoutId": "table-insight",
+      "layoutIds": [
+        "table-insight"
+      ]
+    },
+    {
+      "id": "small-multiples",
+      "nameJa": "小型複数チャート",
+      "category": "data",
+      "purpose": "同じ尺度の小型チャートを並べ、パターン差を比較する",
+      "useWhen": "部門別、地域別、商品別の同型データ",
+      "avoidWhen": "尺度や期間が異なるチャートを並べる場合",
+      "contractId": "small-multiples",
+      "defaultLayoutId": "small-multiples",
+      "layoutIds": [
+        "small-multiples"
+      ]
+    },
+    {
+      "id": "progress",
+      "nameJa": "進捗バー",
+      "category": "data",
+      "purpose": "複数項目の現在値と目標を同じ尺度で示す",
+      "useWhen": "目標達成率、成熟度、完了率",
+      "avoidWhen": "単位や尺度が異なる項目を混在させる場合",
+      "contractId": "progress",
+      "defaultLayoutId": "progress-bars",
+      "layoutIds": [
+        "progress-bars"
+      ]
+    },
+    {
+      "id": "pareto",
+      "nameJa": "パレート",
+      "category": "data",
+      "purpose": "寄与度を降順に並べ、重点対象を特定する",
+      "useWhen": "少数要因が全体の大半を占めるか確認する",
+      "avoidWhen": "カテゴリの順序に意味があり並べ替えられない場合",
+      "contractId": "pareto",
+      "defaultLayoutId": "pareto",
+      "layoutIds": [
+        "pareto"
+      ]
+    },
+    {
+      "id": "matrix-2x2",
+      "nameJa": "2×2マトリクス",
+      "category": "data",
+      "purpose": "二つの独立した軸で項目を分類し、優先領域を示す",
+      "useWhen": "優先順位、ポートフォリオ、リスク分類",
+      "avoidWhen": "軸が曖昧または相互依存する場合",
+      "contractId": "matrix-2x2",
+      "defaultLayoutId": "matrix-2x2",
+      "layoutIds": [
+        "matrix-2x2"
+      ]
+    },
+    {
+      "id": "process",
+      "nameJa": "プロセス",
+      "category": "process",
+      "purpose": "順序、責任、入力、出力を示す",
+      "useWhen": "三から六段階の直線的または部門横断の流れ",
+      "avoidWhen": "複雑な分岐や循環を一列で表す場合",
+      "contractId": "process",
+      "defaultLayoutId": "process",
+      "layoutIds": [
+        "process",
+        "process-vertical",
+        "process-swimlane"
+      ]
+    },
+    {
+      "id": "cycle",
+      "nameJa": "循環",
+      "category": "process",
+      "purpose": "繰り返し改善する活動とフィードバックを示す",
+      "useWhen": "開始点を固定しない反復プロセス",
+      "avoidWhen": "一方向の工程を装飾目的で円環にする場合",
+      "contractId": "cycle",
+      "defaultLayoutId": "cycle",
+      "layoutIds": [
+        "cycle"
+      ]
+    },
+    {
+      "id": "value-chain",
+      "nameJa": "バリューチェーン",
+      "category": "process",
+      "purpose": "価値が段階的に付加される流れと支援要素を示す",
+      "useWhen": "業務機能や能力の連鎖を説明する",
+      "avoidWhen": "単なる時間順プロセスを表す場合",
+      "contractId": "value-chain",
+      "defaultLayoutId": "value-chain",
+      "layoutIds": [
+        "value-chain"
+      ]
+    },
+    {
+      "id": "timeline-roadmap",
+      "nameJa": "タイムラインと計画",
+      "category": "process",
+      "purpose": "時間順の計画、節目、依存関係を示す",
+      "useWhen": "ロードマップ、マイルストーン、簡易ガント",
+      "avoidWhen": "詳細タスクをすべて一枚へ載せる場合",
+      "contractId": "timeline-roadmap",
+      "defaultLayoutId": "timeline-roadmap",
+      "layoutIds": [
+        "timeline-roadmap",
+        "timeline-milestones",
+        "timeline-gantt"
+      ]
+    },
+    {
+      "id": "hierarchy-pyramid",
+      "nameJa": "階層・ピラミッド",
+      "category": "process",
+      "purpose": "上位概念と下位要素の階層を示す",
+      "useWhen": "戦略、能力、原則の優先階層",
+      "avoidWhen": "時系列や因果関係を表す場合",
+      "contractId": "hierarchy-pyramid",
+      "defaultLayoutId": "hierarchy-pyramid",
+      "layoutIds": [
+        "hierarchy-pyramid"
+      ]
+    },
+    {
+      "id": "funnel",
+      "nameJa": "ファネル",
+      "category": "process",
+      "purpose": "段階ごとの絞り込みと残存量を示す",
+      "useWhen": "候補選定、案件選別、対象縮小",
+      "avoidWhen": "値が減少しない段階や循環を表す場合",
+      "contractId": "funnel",
+      "defaultLayoutId": "funnel",
+      "layoutIds": [
+        "funnel"
+      ]
+    },
+    {
+      "id": "architecture",
+      "nameJa": "システム構成",
+      "category": "technical",
+      "purpose": "主要コンポーネント、境界、責務、接続を示す",
+      "useWhen": "システム全体像または層構造を説明する",
+      "avoidWhen": "詳細な物理構成や全通信を一枚へ詰める場合",
+      "contractId": "architecture",
+      "defaultLayoutId": "architecture-layered",
+      "layoutIds": [
+        "architecture-layered",
+        "architecture-system-context"
+      ]
+    },
+    {
+      "id": "data-flow-lineage",
+      "nameJa": "データフロー",
+      "category": "technical",
+      "purpose": "データの発生、変換、保存、利用を追跡可能にする",
+      "useWhen": "データリネージ、インターフェース、処理経路",
+      "avoidWhen": "アプリ構成図とデータの流れを混在させる場合",
+      "contractId": "data-flow-lineage",
+      "defaultLayoutId": "data-flow-lineage",
+      "layoutIds": [
+        "data-flow-lineage"
+      ]
+    },
+    {
+      "id": "dependency-map",
+      "nameJa": "依存関係",
+      "category": "technical",
+      "purpose": "コンポーネント間の依存と変更波及を示す",
+      "useWhen": "影響調査、移行計画、障害分析",
+      "avoidWhen": "方向性のない関係を大量に線で結ぶ場合",
+      "contractId": "dependency-map",
+      "defaultLayoutId": "dependency-map",
+      "layoutIds": [
+        "dependency-map"
+      ]
+    },
+    {
+      "id": "stakeholder-raci",
+      "nameJa": "関係者と責任",
+      "category": "governance",
+      "purpose": "関係者の関心、影響力、役割、責任分担を示す",
+      "useWhen": "合意形成または実行責任を明確にする",
+      "avoidWhen": "氏名だけを並べ、役割を示さない場合",
+      "contractId": "stakeholder-raci",
+      "defaultLayoutId": "stakeholder-map",
+      "layoutIds": [
+        "stakeholder-map",
+        "raci"
+      ]
+    },
+    {
+      "id": "risk-status",
+      "nameJa": "リスクと状態",
+      "category": "governance",
+      "purpose": "リスクの大きさ、状態、担当、対応を示す",
+      "useWhen": "プロジェクト報告、移行判定、統制確認",
+      "avoidWhen": "根拠のない色だけで状態を示す場合",
+      "contractId": "risk-status",
+      "defaultLayoutId": "risk-matrix",
+      "layoutIds": [
+        "risk-matrix",
+        "rag-status"
+      ]
+    },
+    {
+      "id": "visual-story",
+      "nameJa": "画像中心",
+      "category": "visual",
+      "purpose": "画像を主要な証拠または状況説明として使う",
+      "useWhen": "現場、製品、画面、成果物を具体的に見せる",
+      "avoidWhen": "意味のない装飾写真で空白を埋める場合",
+      "contractId": "visual-story",
+      "defaultLayoutId": "image-left",
+      "layoutIds": [
+        "image-left",
+        "image-right",
+        "image-hero",
+        "image-gallery"
+      ]
+    },
+    {
+      "id": "issue-action-log",
+      "nameJa": "課題と対応",
+      "category": "governance",
+      "purpose": "課題、状態、担当、期限、対応を一枚で管理する",
+      "useWhen": "会議で重要課題を追跡する",
+      "avoidWhen": "全チケットを一覧化して可読性を失う場合",
+      "contractId": "issue-action-log",
+      "defaultLayoutId": "issue-action-log",
+      "layoutIds": [
+        "issue-action-log"
+      ]
+    }
+  ],
+  "layouts": [
+    {
+      "id": "cover-minimal",
+      "familyId": "cover",
+      "contractId": "cover",
+      "nameJa": "最小表紙",
+      "category": "structure",
+      "purpose": "資料名、目的、日付、発表者を最小限で示す",
+      "useWhen": "資料の開始で、期待する読み方を一目で伝える",
+      "avoidWhen": "目次、免責、長い概要まで表紙へ載せる場合",
+      "silhouette": "left-title-accent-rail",
+      "density": "sparse",
+      "required": [
+        "title"
+      ],
+      "optional": [
+        "subtitle",
+        "metadata",
+        "visual"
+      ],
+      "capacity": {
+        "titleChars": 26,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.57,
+          "height": 0.23
+        },
+        {
+          "id": "subtitle",
+          "x": 0.05625,
+          "y": 0.47,
+          "width": 0.55,
+          "height": 0.11
+        },
+        {
+          "id": "metadata",
+          "x": 0.05625,
+          "y": 0.8,
+          "width": 0.55,
+          "height": 0.08
+        },
+        {
+          "id": "visual",
+          "x": 0.7,
+          "y": 0.1,
+          "width": 0.24375,
+          "height": 0.78
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 1
+    },
+    {
+      "id": "cover-visual",
+      "familyId": "cover",
+      "contractId": "cover",
+      "nameJa": "ビジュアル表紙",
+      "category": "structure",
+      "purpose": "資料名、目的、日付、発表者を最小限で示す",
+      "useWhen": "資料の開始で、期待する読み方を一目で伝える",
+      "avoidWhen": "目次、免責、長い概要まで表紙へ載せる場合",
+      "silhouette": "image-field-with-title-overlay",
+      "density": "sparse",
+      "required": [
+        "title"
+      ],
+      "optional": [
+        "subtitle",
+        "metadata",
+        "visual"
+      ],
+      "capacity": {
+        "titleChars": 26,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.21,
+          "width": 0.48,
+          "height": 0.25
+        },
+        {
+          "id": "subtitle",
+          "x": 0.05625,
+          "y": 0.48,
+          "width": 0.45,
+          "height": 0.12
+        },
+        {
+          "id": "metadata",
+          "x": 0.05625,
+          "y": 0.8,
+          "width": 0.44,
+          "height": 0.08
+        },
+        {
+          "id": "visual",
+          "x": 0.55,
+          "y": 0.0,
+          "width": 0.45,
+          "height": 1.0
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 2
+    },
+    {
+      "id": "agenda-overview",
+      "familyId": "agenda",
+      "contractId": "agenda",
+      "nameJa": "全体アジェンダ",
+      "category": "structure",
+      "purpose": "資料の論理順序と現在位置を示す",
+      "useWhen": "四章以上の資料、または読み手が参照しながら読む資料",
+      "avoidWhen": "短い資料でページを増やすだけになる場合",
+      "silhouette": "numbered-stacked-agenda",
+      "density": "standard",
+      "required": [
+        "title",
+        "items"
+      ],
+      "optional": [],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 1
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "items",
+          "x": 0.05625,
+          "y": 0.20556,
+          "width": 0.8875,
+          "height": 0.64722
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 3
+    },
+    {
+      "id": "section-divider",
+      "familyId": "section-divider",
+      "contractId": "section-divider",
+      "nameJa": "章区切り",
+      "category": "structure",
+      "purpose": "論理段階を切り替え、この章で答える問いを示す",
+      "useWhen": "長い資料で読み手の認知を切り替える",
+      "avoidWhen": "各ページの前に区切りを置く場合",
+      "silhouette": "dark-field-number-and-question",
+      "density": "sparse",
+      "required": [
+        "title",
+        "sectionNumber"
+      ],
+      "optional": [
+        "question"
+      ],
+      "capacity": {
+        "titleChars": 22,
+        "primaryFields": 2
+      },
+      "regions": [
+        {
+          "id": "sectionNumber",
+          "x": 0.05625,
+          "y": 0.24,
+          "width": 0.18,
+          "height": 0.08
+        },
+        {
+          "id": "title",
+          "x": 0.31,
+          "y": 0.3,
+          "width": 0.56,
+          "height": 0.14
+        },
+        {
+          "id": "question",
+          "x": 0.31,
+          "y": 0.48,
+          "width": 0.52,
+          "height": 0.12
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 4
+    },
+    {
+      "id": "executive-summary",
+      "familyId": "executive-summary",
+      "contractId": "executive-summary",
+      "nameJa": "要約と判断",
+      "category": "structure",
+      "purpose": "結論、根拠、求める判断を一枚で示す",
+      "useWhen": "詳細を読まない意思決定者にも要点を伝える",
+      "avoidWhen": "後続ページの見出しだけを再掲する場合",
+      "silhouette": "recommendation-evidence-decision",
+      "density": "standard",
+      "required": [
+        "title",
+        "recommendation",
+        "evidence",
+        "action"
+      ],
+      "optional": [],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "recommendation",
+          "x": 0.05625,
+          "y": 0.2,
+          "width": 0.8875,
+          "height": 0.13
+        },
+        {
+          "id": "evidence",
+          "x": 0.05625,
+          "y": 0.38,
+          "width": 0.6,
+          "height": 0.42
+        },
+        {
+          "id": "action",
+          "x": 0.69688,
+          "y": 0.38,
+          "width": 0.24687,
+          "height": 0.42
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 5
+    },
+    {
+      "id": "closing-resolution",
+      "familyId": "closing",
+      "contractId": "closing",
+      "nameJa": "結論と次の一手",
+      "category": "structure",
+      "purpose": "資料冒頭の問いを解決し、次の行動を確定する",
+      "useWhen": "提案、報告、研修を意図した結論で閉じる",
+      "avoidWhen": "意味のない謝辞だけで終わる場合",
+      "silhouette": "large-resolution-and-actions",
+      "density": "sparse",
+      "required": [
+        "title",
+        "resolution",
+        "actions"
+      ],
+      "optional": [
+        "contact"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "resolution",
+          "x": 0.1,
+          "y": 0.25,
+          "width": 0.8,
+          "height": 0.2
+        },
+        {
+          "id": "actions",
+          "x": 0.1,
+          "y": 0.53,
+          "width": 0.8,
+          "height": 0.2
+        },
+        {
+          "id": "contact",
+          "x": 0.1,
+          "y": 0.82,
+          "width": 0.8,
+          "height": 0.05
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 6
+    },
+    {
+      "id": "appendix-title",
+      "familyId": "appendix",
+      "contractId": "appendix",
+      "nameJa": "付録区切り",
+      "category": "structure",
+      "purpose": "本編を補う詳細、定義、出典を整理する",
+      "useWhen": "本編の判断には不要だが参照価値がある情報",
+      "avoidWhen": "主要結論を付録へ隠す場合",
+      "silhouette": "appendix-divider",
+      "density": "sparse",
+      "required": [
+        "title",
+        "detail"
+      ],
+      "optional": [
+        "sources"
+      ],
+      "capacity": {
+        "titleChars": 34,
+        "primaryFields": 2
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.1,
+          "y": 0.33,
+          "width": 0.8,
+          "height": 0.15
+        },
+        {
+          "id": "detail",
+          "x": 0.1,
+          "y": 0.54,
+          "width": 0.8,
+          "height": 0.15
+        },
+        {
+          "id": "sources",
+          "x": 0.1,
+          "y": 0.8,
+          "width": 0.8,
+          "height": 0.06
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 7
+    },
+    {
+      "id": "appendix-reference",
+      "familyId": "appendix",
+      "contractId": "appendix",
+      "nameJa": "付録詳細",
+      "category": "structure",
+      "purpose": "本編を補う詳細、定義、出典を整理する",
+      "useWhen": "本編の判断には不要だが参照価値がある情報",
+      "avoidWhen": "主要結論を付録へ隠す場合",
+      "silhouette": "reference-list",
+      "density": "dense",
+      "required": [
+        "title",
+        "detail"
+      ],
+      "optional": [
+        "sources"
+      ],
+      "capacity": {
+        "titleChars": 34,
+        "primaryFields": 2
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "detail",
+          "x": 0.05625,
+          "y": 0.20556,
+          "width": 0.43375,
+          "height": 0.64722
+        },
+        {
+          "id": "sources",
+          "x": 0.51,
+          "y": 0.20556,
+          "width": 0.43375,
+          "height": 0.64722
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 8
+    },
+    {
+      "id": "key-message",
+      "familyId": "key-message",
+      "contractId": "key-message",
+      "nameJa": "中央メッセージ",
+      "category": "narrative",
+      "purpose": "一つの数値、結論、原則を強く記憶させる",
+      "useWhen": "複雑な説明の前後で意味を統合する",
+      "avoidWhen": "大きな数字を複数並べる場合",
+      "silhouette": "centered-single-message",
+      "density": "sparse",
+      "required": [
+        "title",
+        "message"
+      ],
+      "optional": [
+        "support",
+        "evidence"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "message",
+          "x": 0.1,
+          "y": 0.28,
+          "width": 0.8,
+          "height": 0.22
+        },
+        {
+          "id": "support",
+          "x": 0.16,
+          "y": 0.55,
+          "width": 0.68,
+          "height": 0.1
+        },
+        {
+          "id": "evidence",
+          "x": 0.25,
+          "y": 0.72,
+          "width": 0.5,
+          "height": 0.08
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 9
+    },
+    {
+      "id": "key-message-split",
+      "familyId": "key-message",
+      "contractId": "key-message",
+      "nameJa": "メッセージと根拠",
+      "category": "narrative",
+      "purpose": "一つの数値、結論、原則を強く記憶させる",
+      "useWhen": "複雑な説明の前後で意味を統合する",
+      "avoidWhen": "大きな数字を複数並べる場合",
+      "silhouette": "message-left-evidence-right",
+      "density": "standard",
+      "required": [
+        "title",
+        "message"
+      ],
+      "optional": [
+        "support",
+        "evidence"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "message",
+          "x": 0.05625,
+          "y": 0.27,
+          "width": 0.43,
+          "height": 0.24
+        },
+        {
+          "id": "support",
+          "x": 0.05625,
+          "y": 0.55,
+          "width": 0.43,
+          "height": 0.14
+        },
+        {
+          "id": "evidence",
+          "x": 0.56,
+          "y": 0.27,
+          "width": 0.38375,
+          "height": 0.42
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 10
+    },
+    {
+      "id": "context-background",
+      "familyId": "context-background",
+      "contractId": "context-background",
+      "nameJa": "背景と変化",
+      "category": "narrative",
+      "purpose": "判断に必要な状況、変化、制約を簡潔に共有する",
+      "useWhen": "読み手が同じ前提を持っていない場合",
+      "avoidWhen": "一般論を長く並べる場合",
+      "silhouette": "lead-facts-implication",
+      "density": "standard",
+      "required": [
+        "title",
+        "lead",
+        "facts",
+        "implication"
+      ],
+      "optional": [],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "lead",
+          "x": 0.05625,
+          "y": 0.2,
+          "width": 0.8875,
+          "height": 0.12
+        },
+        {
+          "id": "facts",
+          "x": 0.05625,
+          "y": 0.38,
+          "width": 0.8875,
+          "height": 0.3
+        },
+        {
+          "id": "implication",
+          "x": 0.05625,
+          "y": 0.74,
+          "width": 0.8875,
+          "height": 0.1
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 11
+    },
+    {
+      "id": "problem-definition",
+      "familyId": "problem-definition",
+      "contractId": "problem-definition",
+      "nameJa": "症状・原因・影響",
+      "category": "narrative",
+      "purpose": "観測事象、原因、影響を分けて問題を定義する",
+      "useWhen": "解決策を議論する前に問題の境界を合意する",
+      "avoidWhen": "原因を確認せず症状だけを並べる場合",
+      "silhouette": "problem-causal-chain",
+      "density": "standard",
+      "required": [
+        "title",
+        "problem",
+        "symptoms",
+        "causes",
+        "impact"
+      ],
+      "optional": [],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 4
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "problem",
+          "x": 0.05625,
+          "y": 0.2,
+          "width": 0.8875,
+          "height": 0.12
+        },
+        {
+          "id": "symptoms",
+          "x": 0.05625,
+          "y": 0.38,
+          "width": 0.27,
+          "height": 0.32
+        },
+        {
+          "id": "causes",
+          "x": 0.365,
+          "y": 0.38,
+          "width": 0.27,
+          "height": 0.32
+        },
+        {
+          "id": "impact",
+          "x": 0.67625,
+          "y": 0.38,
+          "width": 0.2675,
+          "height": 0.32
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 12
+    },
+    {
+      "id": "objective-scope",
+      "familyId": "objective-scope",
+      "contractId": "objective-scope",
+      "nameJa": "目的・対象・成功条件",
+      "category": "narrative",
+      "purpose": "達成目標、対象、対象外、成功条件を固定する",
+      "useWhen": "プロジェクト開始、提案、調査計画",
+      "avoidWhen": "対象外を曖昧にしたまま合意を求める場合",
+      "silhouette": "objective-scope-boundary",
+      "density": "standard",
+      "required": [
+        "title",
+        "objective",
+        "inScope",
+        "successMetrics"
+      ],
+      "optional": [
+        "outOfScope"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 4
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "objective",
+          "x": 0.05625,
+          "y": 0.2,
+          "width": 0.8875,
+          "height": 0.12
+        },
+        {
+          "id": "inScope",
+          "x": 0.05625,
+          "y": 0.39,
+          "width": 0.36,
+          "height": 0.34
+        },
+        {
+          "id": "outOfScope",
+          "x": 0.44,
+          "y": 0.39,
+          "width": 0.27,
+          "height": 0.34
+        },
+        {
+          "id": "successMetrics",
+          "x": 0.735,
+          "y": 0.39,
+          "width": 0.20875,
+          "height": 0.34
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 13
+    },
+    {
+      "id": "two-column-balanced",
+      "familyId": "two-column-explanation",
+      "contractId": "two-column-explanation",
+      "nameJa": "均等二列",
+      "category": "narrative",
+      "purpose": "二つの観点、主張と根拠、概念と具体例を並べる",
+      "useWhen": "二つの情報群を同時に参照する必要がある",
+      "avoidWhen": "三つ以上の同格要素を無理に二列へ入れる場合",
+      "silhouette": "balanced-two-column",
+      "density": "standard",
+      "required": [
+        "title",
+        "leftHeading",
+        "leftItems",
+        "rightHeading",
+        "rightItems"
+      ],
+      "optional": [
+        "takeaway"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 5
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "leftHeading",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.42,
+          "height": 0.06
+        },
+        {
+          "id": "leftItems",
+          "x": 0.05625,
+          "y": 0.31,
+          "width": 0.42,
+          "height": 0.39
+        },
+        {
+          "id": "rightHeading",
+          "x": 0.52375,
+          "y": 0.22,
+          "width": 0.42,
+          "height": 0.06
+        },
+        {
+          "id": "rightItems",
+          "x": 0.52375,
+          "y": 0.31,
+          "width": 0.42,
+          "height": 0.39
+        },
+        {
+          "id": "takeaway",
+          "x": 0.05625,
+          "y": 0.76,
+          "width": 0.8875,
+          "height": 0.09
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 14
+    },
+    {
+      "id": "two-column-asymmetric",
+      "familyId": "two-column-explanation",
+      "contractId": "two-column-explanation",
+      "nameJa": "主従二列",
+      "category": "narrative",
+      "purpose": "二つの観点、主張と根拠、概念と具体例を並べる",
+      "useWhen": "二つの情報群を同時に参照する必要がある",
+      "avoidWhen": "三つ以上の同格要素を無理に二列へ入れる場合",
+      "silhouette": "asymmetric-two-column",
+      "density": "standard",
+      "required": [
+        "title",
+        "leftHeading",
+        "leftItems",
+        "rightHeading",
+        "rightItems"
+      ],
+      "optional": [
+        "takeaway"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 5
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "leftHeading",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.55,
+          "height": 0.06
+        },
+        {
+          "id": "leftItems",
+          "x": 0.05625,
+          "y": 0.31,
+          "width": 0.55,
+          "height": 0.39
+        },
+        {
+          "id": "rightHeading",
+          "x": 0.65,
+          "y": 0.22,
+          "width": 0.29375,
+          "height": 0.06
+        },
+        {
+          "id": "rightItems",
+          "x": 0.65,
+          "y": 0.31,
+          "width": 0.29375,
+          "height": 0.39
+        },
+        {
+          "id": "takeaway",
+          "x": 0.05625,
+          "y": 0.76,
+          "width": 0.8875,
+          "height": 0.09
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 15
+    },
+    {
+      "id": "quote-evidence",
+      "familyId": "quote-evidence",
+      "contractId": "quote-evidence",
+      "nameJa": "引用と示唆",
+      "category": "narrative",
+      "purpose": "短い引用や一次情報を示し、その意味を説明する",
+      "useWhen": "発言、規程、顧客の声が判断根拠になる",
+      "avoidWhen": "出典が確認できない引用を演出に使う場合",
+      "silhouette": "quote-left-implication-right",
+      "density": "standard",
+      "required": [
+        "title",
+        "quote",
+        "attribution",
+        "implication"
+      ],
+      "optional": [],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "quote",
+          "x": 0.05625,
+          "y": 0.20556,
+          "width": 0.43375,
+          "height": 0.64722
+        },
+        {
+          "id": "implication",
+          "x": 0.51,
+          "y": 0.20556,
+          "width": 0.43375,
+          "height": 0.64722
+        },
+        {
+          "id": "attribution",
+          "x": 0.05625,
+          "y": 0.73,
+          "width": 0.42,
+          "height": 0.06
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 16
+    },
+    {
+      "id": "case-study",
+      "familyId": "case-study",
+      "contractId": "case-study",
+      "nameJa": "状況・実施・結果",
+      "category": "narrative",
+      "purpose": "状況、実施、結果を一つの事例として示す",
+      "useWhen": "再現可能な実績や教訓を説明する",
+      "avoidWhen": "架空の成果を実績として見せる場合",
+      "silhouette": "case-study-three-stage",
+      "density": "standard",
+      "required": [
+        "title",
+        "situation",
+        "action",
+        "result"
+      ],
+      "optional": [
+        "lesson"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 4
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "situation",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.26,
+          "height": 0.4
+        },
+        {
+          "id": "action",
+          "x": 0.37,
+          "y": 0.22,
+          "width": 0.27,
+          "height": 0.4
+        },
+        {
+          "id": "result",
+          "x": 0.69,
+          "y": 0.22,
+          "width": 0.25375,
+          "height": 0.4
+        },
+        {
+          "id": "lesson",
+          "x": 0.05625,
+          "y": 0.73,
+          "width": 0.8875,
+          "height": 0.1
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 17
+    },
+    {
+      "id": "comparison",
+      "familyId": "comparison",
+      "contractId": "comparison",
+      "nameJa": "評価表比較",
+      "category": "comparison",
+      "purpose": "複数案を同じ評価軸で比較し、推奨理由を明示する",
+      "useWhen": "二つまたは三つの案から選ぶ",
+      "avoidWhen": "案ごとに評価軸や説明量が異なる場合",
+      "silhouette": "criteria-table-comparison",
+      "density": "dense",
+      "required": [
+        "title",
+        "criteria",
+        "options",
+        "recommendation"
+      ],
+      "optional": [],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "criteria",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.2,
+          "height": 0.43
+        },
+        {
+          "id": "options",
+          "x": 0.27,
+          "y": 0.22,
+          "width": 0.67375,
+          "height": 0.43
+        },
+        {
+          "id": "recommendation",
+          "x": 0.05625,
+          "y": 0.73,
+          "width": 0.8875,
+          "height": 0.11
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 18
+    },
+    {
+      "id": "comparison-side-by-side",
+      "familyId": "comparison",
+      "contractId": "comparison",
+      "nameJa": "並列比較",
+      "category": "comparison",
+      "purpose": "複数案を同じ評価軸で比較し、推奨理由を明示する",
+      "useWhen": "二つまたは三つの案から選ぶ",
+      "avoidWhen": "案ごとに評価軸や説明量が異なる場合",
+      "silhouette": "side-by-side-options",
+      "density": "standard",
+      "required": [
+        "title",
+        "criteria",
+        "options",
+        "recommendation"
+      ],
+      "optional": [],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "criteria",
+          "x": 0.05625,
+          "y": 0.74,
+          "width": 0.8875,
+          "height": 0.05
+        },
+        {
+          "id": "options",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.8875,
+          "height": 0.45
+        },
+        {
+          "id": "recommendation",
+          "x": 0.05625,
+          "y": 0.81,
+          "width": 0.8875,
+          "height": 0.06
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 19
+    },
+    {
+      "id": "before-after",
+      "familyId": "before-after",
+      "contractId": "before-after",
+      "nameJa": "Before / After",
+      "category": "comparison",
+      "purpose": "変更前後を同じ観点で比較し、効果を示す",
+      "useWhen": "構造、体験、プロセスの改善を示す",
+      "avoidWhen": "左右で比較軸や粒度が異なる場合",
+      "silhouette": "balanced-before-after",
+      "density": "standard",
+      "required": [
+        "title",
+        "before",
+        "after",
+        "effect"
+      ],
+      "optional": [],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "before",
+          "x": 0.05625,
+          "y": 0.23,
+          "width": 0.39,
+          "height": 0.43
+        },
+        {
+          "id": "after",
+          "x": 0.55375,
+          "y": 0.23,
+          "width": 0.39,
+          "height": 0.43
+        },
+        {
+          "id": "effect",
+          "x": 0.05625,
+          "y": 0.74,
+          "width": 0.8875,
+          "height": 0.1
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 20
+    },
+    {
+      "id": "pros-cons",
+      "familyId": "pros-cons",
+      "contractId": "pros-cons",
+      "nameJa": "利点・懸念・条件",
+      "category": "comparison",
+      "purpose": "一つの案の利点、懸念、成立条件を同じ強さで示す",
+      "useWhen": "採用可否をバランスよく議論する",
+      "avoidWhen": "利点だけを強調する営業資料にする場合",
+      "silhouette": "pros-cons-condition",
+      "density": "standard",
+      "required": [
+        "title",
+        "pros",
+        "cons",
+        "condition"
+      ],
+      "optional": [],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "pros",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.42,
+          "height": 0.43
+        },
+        {
+          "id": "cons",
+          "x": 0.52375,
+          "y": 0.22,
+          "width": 0.42,
+          "height": 0.43
+        },
+        {
+          "id": "condition",
+          "x": 0.05625,
+          "y": 0.73,
+          "width": 0.8875,
+          "height": 0.11
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 21
+    },
+    {
+      "id": "scorecard",
+      "familyId": "scorecard",
+      "contractId": "scorecard",
+      "nameJa": "評価スコア",
+      "category": "comparison",
+      "purpose": "評価項目ごとの達成度と根拠を一覧化する",
+      "useWhen": "同じ基準で複数対象を評価する",
+      "avoidWhen": "根拠のない点数だけを並べる場合",
+      "silhouette": "criteria-score-evidence",
+      "density": "dense",
+      "required": [
+        "title",
+        "items",
+        "summary"
+      ],
+      "optional": [],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 2
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "items",
+          "x": 0.05625,
+          "y": 0.21,
+          "width": 0.8875,
+          "height": 0.5
+        },
+        {
+          "id": "summary",
+          "x": 0.05625,
+          "y": 0.76,
+          "width": 0.8875,
+          "height": 0.09
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 22
+    },
+    {
+      "id": "swot",
+      "familyId": "swot",
+      "contractId": "swot",
+      "nameJa": "SWOT四象限",
+      "category": "comparison",
+      "purpose": "内部要因と外部要因を四象限で整理する",
+      "useWhen": "戦略議論で強み、弱み、機会、脅威を区別する",
+      "avoidWhen": "単なる四分類として使い、戦略へ接続しない場合",
+      "silhouette": "swot-four-quadrant",
+      "density": "standard",
+      "required": [
+        "title",
+        "strengths",
+        "weaknesses",
+        "opportunities",
+        "threats"
+      ],
+      "optional": [],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 4
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "strengths",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.42,
+          "height": 0.27
+        },
+        {
+          "id": "weaknesses",
+          "x": 0.52375,
+          "y": 0.22,
+          "width": 0.42,
+          "height": 0.27
+        },
+        {
+          "id": "opportunities",
+          "x": 0.05625,
+          "y": 0.54,
+          "width": 0.42,
+          "height": 0.27
+        },
+        {
+          "id": "threats",
+          "x": 0.52375,
+          "y": 0.54,
+          "width": 0.42,
+          "height": 0.27
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 23
+    },
+    {
+      "id": "decision-tree",
+      "familyId": "decision-tree",
+      "contractId": "decision-tree",
+      "nameJa": "判断分岐",
+      "category": "comparison",
+      "purpose": "条件分岐と最終判断を追跡可能にする",
+      "useWhen": "複数条件で対応が変わる",
+      "avoidWhen": "分岐が多すぎて一枚で読めない場合",
+      "silhouette": "top-down-decision-tree",
+      "density": "standard",
+      "required": [
+        "title",
+        "nodes"
+      ],
+      "optional": [
+        "rule"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 2
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "nodes",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.8875,
+          "height": 0.5
+        },
+        {
+          "id": "rule",
+          "x": 0.05625,
+          "y": 0.77,
+          "width": 0.8875,
+          "height": 0.08
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 24
+    },
+    {
+      "id": "decision-action",
+      "familyId": "decision-action",
+      "contractId": "decision-action",
+      "nameJa": "決定事項と実行",
+      "category": "comparison",
+      "purpose": "求める決定、条件、担当、期限を明確にする",
+      "useWhen": "会議で承認または方針決定を求める",
+      "avoidWhen": "曖昧な確認依頼だけを書く場合",
+      "silhouette": "decision-banner-action-list",
+      "density": "standard",
+      "required": [
+        "title",
+        "decision",
+        "criteria",
+        "actions"
+      ],
+      "optional": [],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "decision",
+          "x": 0.05625,
+          "y": 0.2,
+          "width": 0.8875,
+          "height": 0.14
+        },
+        {
+          "id": "criteria",
+          "x": 0.05625,
+          "y": 0.41,
+          "width": 0.34,
+          "height": 0.3
+        },
+        {
+          "id": "actions",
+          "x": 0.44,
+          "y": 0.41,
+          "width": 0.50375,
+          "height": 0.3
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 25
+    },
+    {
+      "id": "kpi-trend",
+      "familyId": "kpi",
+      "contractId": "kpi",
+      "nameJa": "KPIと推移",
+      "category": "data",
+      "purpose": "主要指標の現在値、変化、目標差を示す",
+      "useWhen": "二つまたは三つの重要指標を短時間で確認する",
+      "avoidWhen": "多数の指標をダッシュボード化する場合",
+      "silhouette": "kpi-rail-and-trend",
+      "density": "standard",
+      "required": [
+        "title",
+        "kpis"
+      ],
+      "optional": [
+        "chart",
+        "insight"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "kpis",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.19,
+          "height": 0.48
+        },
+        {
+          "id": "chart",
+          "x": 0.29,
+          "y": 0.22,
+          "width": 0.65375,
+          "height": 0.48
+        },
+        {
+          "id": "insight",
+          "x": 0.29,
+          "y": 0.75,
+          "width": 0.65375,
+          "height": 0.08
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 26
+    },
+    {
+      "id": "kpi-two",
+      "familyId": "kpi",
+      "contractId": "kpi",
+      "nameJa": "二つのKPI",
+      "category": "data",
+      "purpose": "主要指標の現在値、変化、目標差を示す",
+      "useWhen": "二つまたは三つの重要指標を短時間で確認する",
+      "avoidWhen": "多数の指標をダッシュボード化する場合",
+      "silhouette": "two-large-kpis",
+      "density": "sparse",
+      "required": [
+        "title",
+        "kpis"
+      ],
+      "optional": [
+        "chart",
+        "insight"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "kpis",
+          "x": 0.1,
+          "y": 0.28,
+          "width": 0.8,
+          "height": 0.3
+        },
+        {
+          "id": "chart",
+          "x": 0.1,
+          "y": 0.63,
+          "width": 0.8,
+          "height": 0.1
+        },
+        {
+          "id": "insight",
+          "x": 0.1,
+          "y": 0.78,
+          "width": 0.8,
+          "height": 0.08
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 27
+    },
+    {
+      "id": "kpi-three",
+      "familyId": "kpi",
+      "contractId": "kpi",
+      "nameJa": "三つのKPI",
+      "category": "data",
+      "purpose": "主要指標の現在値、変化、目標差を示す",
+      "useWhen": "二つまたは三つの重要指標を短時間で確認する",
+      "avoidWhen": "多数の指標をダッシュボード化する場合",
+      "silhouette": "three-large-kpis",
+      "density": "sparse",
+      "required": [
+        "title",
+        "kpis"
+      ],
+      "optional": [
+        "chart",
+        "insight"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "kpis",
+          "x": 0.05625,
+          "y": 0.25,
+          "width": 0.8875,
+          "height": 0.34
+        },
+        {
+          "id": "chart",
+          "x": 0.05625,
+          "y": 0.64,
+          "width": 0.8875,
+          "height": 0.08
+        },
+        {
+          "id": "insight",
+          "x": 0.05625,
+          "y": 0.77,
+          "width": 0.8875,
+          "height": 0.08
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 28
+    },
+    {
+      "id": "chart-insight",
+      "familyId": "chart-insight",
+      "contractId": "chart-insight",
+      "nameJa": "横棒",
+      "category": "data",
+      "purpose": "一つのチャートを主要証拠として結論を説明する",
+      "useWhen": "比較、推移、構成、変化、相関を示す",
+      "avoidWhen": "複数チャートを同じ強さで並べる場合",
+      "silhouette": "chart-left-insight-right",
+      "density": "standard",
+      "required": [
+        "title",
+        "chart",
+        "insight"
+      ],
+      "optional": [
+        "annotation"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "chart",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.67,
+          "height": 0.52
+        },
+        {
+          "id": "insight",
+          "x": 0.77,
+          "y": 0.22,
+          "width": 0.17375,
+          "height": 0.34
+        },
+        {
+          "id": "annotation",
+          "x": 0.77,
+          "y": 0.62,
+          "width": 0.17375,
+          "height": 0.12
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 29,
+      "fixedChartType": "bar"
+    },
+    {
+      "id": "chart-insight-line",
+      "familyId": "chart-insight",
+      "contractId": "chart-insight",
+      "nameJa": "折れ線",
+      "category": "data",
+      "purpose": "一つのチャートを主要証拠として結論を説明する",
+      "useWhen": "比較、推移、構成、変化、相関を示す",
+      "avoidWhen": "複数チャートを同じ強さで並べる場合",
+      "silhouette": "chart-left-insight-right",
+      "density": "standard",
+      "required": [
+        "title",
+        "chart",
+        "insight"
+      ],
+      "optional": [
+        "annotation"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "chart",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.67,
+          "height": 0.52
+        },
+        {
+          "id": "insight",
+          "x": 0.77,
+          "y": 0.22,
+          "width": 0.17375,
+          "height": 0.34
+        },
+        {
+          "id": "annotation",
+          "x": 0.77,
+          "y": 0.62,
+          "width": 0.17375,
+          "height": 0.12
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 30,
+      "fixedChartType": "line"
+    },
+    {
+      "id": "chart-insight-stacked",
+      "familyId": "chart-insight",
+      "contractId": "chart-insight",
+      "nameJa": "積み上げ",
+      "category": "data",
+      "purpose": "一つのチャートを主要証拠として結論を説明する",
+      "useWhen": "比較、推移、構成、変化、相関を示す",
+      "avoidWhen": "複数チャートを同じ強さで並べる場合",
+      "silhouette": "chart-left-insight-right",
+      "density": "standard",
+      "required": [
+        "title",
+        "chart",
+        "insight"
+      ],
+      "optional": [
+        "annotation"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "chart",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.67,
+          "height": 0.52
+        },
+        {
+          "id": "insight",
+          "x": 0.77,
+          "y": 0.22,
+          "width": 0.17375,
+          "height": 0.34
+        },
+        {
+          "id": "annotation",
+          "x": 0.77,
+          "y": 0.62,
+          "width": 0.17375,
+          "height": 0.12
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 31,
+      "fixedChartType": "stacked-column"
+    },
+    {
+      "id": "chart-insight-waterfall",
+      "familyId": "chart-insight",
+      "contractId": "chart-insight",
+      "nameJa": "ウォーターフォール",
+      "category": "data",
+      "purpose": "一つのチャートを主要証拠として結論を説明する",
+      "useWhen": "比較、推移、構成、変化、相関を示す",
+      "avoidWhen": "複数チャートを同じ強さで並べる場合",
+      "silhouette": "chart-left-insight-right",
+      "density": "standard",
+      "required": [
+        "title",
+        "chart",
+        "insight"
+      ],
+      "optional": [
+        "annotation"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "chart",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.67,
+          "height": 0.52
+        },
+        {
+          "id": "insight",
+          "x": 0.77,
+          "y": 0.22,
+          "width": 0.17375,
+          "height": 0.34
+        },
+        {
+          "id": "annotation",
+          "x": 0.77,
+          "y": 0.62,
+          "width": 0.17375,
+          "height": 0.12
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 32,
+      "fixedChartType": "waterfall"
+    },
+    {
+      "id": "chart-insight-donut",
+      "familyId": "chart-insight",
+      "contractId": "chart-insight",
+      "nameJa": "構成比",
+      "category": "data",
+      "purpose": "一つのチャートを主要証拠として結論を説明する",
+      "useWhen": "比較、推移、構成、変化、相関を示す",
+      "avoidWhen": "複数チャートを同じ強さで並べる場合",
+      "silhouette": "donut-left-insight-right",
+      "density": "standard",
+      "required": [
+        "title",
+        "chart",
+        "insight"
+      ],
+      "optional": [
+        "annotation"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "chart",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.67,
+          "height": 0.52
+        },
+        {
+          "id": "insight",
+          "x": 0.77,
+          "y": 0.22,
+          "width": 0.17375,
+          "height": 0.34
+        },
+        {
+          "id": "annotation",
+          "x": 0.77,
+          "y": 0.62,
+          "width": 0.17375,
+          "height": 0.12
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 33,
+      "fixedChartType": "donut"
+    },
+    {
+      "id": "chart-insight-scatter",
+      "familyId": "chart-insight",
+      "contractId": "chart-insight",
+      "nameJa": "散布図",
+      "category": "data",
+      "purpose": "一つのチャートを主要証拠として結論を説明する",
+      "useWhen": "比較、推移、構成、変化、相関を示す",
+      "avoidWhen": "複数チャートを同じ強さで並べる場合",
+      "silhouette": "scatter-left-insight-right",
+      "density": "standard",
+      "required": [
+        "title",
+        "chart",
+        "insight"
+      ],
+      "optional": [
+        "annotation"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "chart",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.67,
+          "height": 0.52
+        },
+        {
+          "id": "insight",
+          "x": 0.77,
+          "y": 0.22,
+          "width": 0.17375,
+          "height": 0.34
+        },
+        {
+          "id": "annotation",
+          "x": 0.77,
+          "y": 0.62,
+          "width": 0.17375,
+          "height": 0.12
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 34,
+      "fixedChartType": "scatter"
+    },
+    {
+      "id": "table-insight",
+      "familyId": "table-insight",
+      "contractId": "table-insight",
+      "nameJa": "表と示唆",
+      "category": "data",
+      "purpose": "正確な値や条件を参照させ、重要な差を説明する",
+      "useWhen": "比較表、条件表、詳細数値",
+      "avoidWhen": "大きな表を縮小して一枚へ押し込む場合",
+      "silhouette": "table-left-insight-right",
+      "density": "dense",
+      "required": [
+        "title",
+        "table",
+        "insight"
+      ],
+      "optional": [],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 2
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "table",
+          "x": 0.05625,
+          "y": 0.20556,
+          "width": 0.43375,
+          "height": 0.64722
+        },
+        {
+          "id": "insight",
+          "x": 0.51,
+          "y": 0.20556,
+          "width": 0.43375,
+          "height": 0.64722
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 35
+    },
+    {
+      "id": "small-multiples",
+      "familyId": "small-multiples",
+      "contractId": "small-multiples",
+      "nameJa": "同型チャート比較",
+      "category": "data",
+      "purpose": "同じ尺度の小型チャートを並べ、パターン差を比較する",
+      "useWhen": "部門別、地域別、商品別の同型データ",
+      "avoidWhen": "尺度や期間が異なるチャートを並べる場合",
+      "silhouette": "two-by-two-small-multiples",
+      "density": "standard",
+      "required": [
+        "title",
+        "charts",
+        "insight"
+      ],
+      "optional": [],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 2
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "charts",
+          "x": 0.05625,
+          "y": 0.21,
+          "width": 0.8875,
+          "height": 0.52
+        },
+        {
+          "id": "insight",
+          "x": 0.05625,
+          "y": 0.78,
+          "width": 0.8875,
+          "height": 0.08
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 36
+    },
+    {
+      "id": "progress-bars",
+      "familyId": "progress",
+      "contractId": "progress",
+      "nameJa": "目標対比バー",
+      "category": "data",
+      "purpose": "複数項目の現在値と目標を同じ尺度で示す",
+      "useWhen": "目標達成率、成熟度、完了率",
+      "avoidWhen": "単位や尺度が異なる項目を混在させる場合",
+      "silhouette": "horizontal-progress-bars",
+      "density": "standard",
+      "required": [
+        "title",
+        "items"
+      ],
+      "optional": [
+        "insight"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 2
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "items",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.8875,
+          "height": 0.48
+        },
+        {
+          "id": "insight",
+          "x": 0.05625,
+          "y": 0.76,
+          "width": 0.8875,
+          "height": 0.09
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 37
+    },
+    {
+      "id": "pareto",
+      "familyId": "pareto",
+      "contractId": "pareto",
+      "nameJa": "寄与度分析",
+      "category": "data",
+      "purpose": "寄与度を降順に並べ、重点対象を特定する",
+      "useWhen": "少数要因が全体の大半を占めるか確認する",
+      "avoidWhen": "カテゴリの順序に意味があり並べ替えられない場合",
+      "silhouette": "pareto-chart-and-threshold",
+      "density": "standard",
+      "required": [
+        "title",
+        "chart",
+        "threshold",
+        "insight"
+      ],
+      "optional": [],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "chart",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.67,
+          "height": 0.52
+        },
+        {
+          "id": "threshold",
+          "x": 0.77,
+          "y": 0.25,
+          "width": 0.17375,
+          "height": 0.12
+        },
+        {
+          "id": "insight",
+          "x": 0.77,
+          "y": 0.45,
+          "width": 0.17375,
+          "height": 0.22
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 38
+    },
+    {
+      "id": "matrix-2x2",
+      "familyId": "matrix-2x2",
+      "contractId": "matrix-2x2",
+      "nameJa": "2×2分類",
+      "category": "data",
+      "purpose": "二つの独立した軸で項目を分類し、優先領域を示す",
+      "useWhen": "優先順位、ポートフォリオ、リスク分類",
+      "avoidWhen": "軸が曖昧または相互依存する場合",
+      "silhouette": "matrix-left-insight-right",
+      "density": "standard",
+      "required": [
+        "title",
+        "axisLabels",
+        "items"
+      ],
+      "optional": [
+        "focus"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "axisLabels",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.57,
+          "height": 0.52
+        },
+        {
+          "id": "items",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.57,
+          "height": 0.52
+        },
+        {
+          "id": "focus",
+          "x": 0.68,
+          "y": 0.26,
+          "width": 0.26375,
+          "height": 0.36
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 39
+    },
+    {
+      "id": "process",
+      "familyId": "process",
+      "contractId": "process",
+      "nameJa": "横型プロセス",
+      "category": "process",
+      "purpose": "順序、責任、入力、出力を示す",
+      "useWhen": "三から六段階の直線的または部門横断の流れ",
+      "avoidWhen": "複雑な分岐や循環を一列で表す場合",
+      "silhouette": "horizontal-steps",
+      "density": "standard",
+      "required": [
+        "title",
+        "steps"
+      ],
+      "optional": [
+        "rule"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 2
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "steps",
+          "x": 0.05625,
+          "y": 0.27,
+          "width": 0.8875,
+          "height": 0.37
+        },
+        {
+          "id": "rule",
+          "x": 0.05625,
+          "y": 0.74,
+          "width": 0.8875,
+          "height": 0.09
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 40
+    },
+    {
+      "id": "process-vertical",
+      "familyId": "process",
+      "contractId": "process",
+      "nameJa": "縦型プロセス",
+      "category": "process",
+      "purpose": "順序、責任、入力、出力を示す",
+      "useWhen": "三から六段階の直線的または部門横断の流れ",
+      "avoidWhen": "複雑な分岐や循環を一列で表す場合",
+      "silhouette": "vertical-steps",
+      "density": "standard",
+      "required": [
+        "title",
+        "steps"
+      ],
+      "optional": [
+        "rule"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 2
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "steps",
+          "x": 0.12,
+          "y": 0.2,
+          "width": 0.48,
+          "height": 0.57
+        },
+        {
+          "id": "rule",
+          "x": 0.67,
+          "y": 0.3,
+          "width": 0.27375,
+          "height": 0.25
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 41
+    },
+    {
+      "id": "process-swimlane",
+      "familyId": "process",
+      "contractId": "process",
+      "nameJa": "スイムレーン",
+      "category": "process",
+      "purpose": "順序、責任、入力、出力を示す",
+      "useWhen": "三から六段階の直線的または部門横断の流れ",
+      "avoidWhen": "複雑な分岐や循環を一列で表す場合",
+      "silhouette": "swimlane-process",
+      "density": "dense",
+      "required": [
+        "title",
+        "steps"
+      ],
+      "optional": [
+        "rule"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 2
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "steps",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.8875,
+          "height": 0.51
+        },
+        {
+          "id": "rule",
+          "x": 0.05625,
+          "y": 0.78,
+          "width": 0.8875,
+          "height": 0.07
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 42
+    },
+    {
+      "id": "cycle",
+      "familyId": "cycle",
+      "contractId": "cycle",
+      "nameJa": "改善サイクル",
+      "category": "process",
+      "purpose": "繰り返し改善する活動とフィードバックを示す",
+      "useWhen": "開始点を固定しない反復プロセス",
+      "avoidWhen": "一方向の工程を装飾目的で円環にする場合",
+      "silhouette": "radial-cycle",
+      "density": "standard",
+      "required": [
+        "title",
+        "steps",
+        "center"
+      ],
+      "optional": [
+        "learning"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "steps",
+          "x": 0.12,
+          "y": 0.22,
+          "width": 0.55,
+          "height": 0.54
+        },
+        {
+          "id": "center",
+          "x": 0.3,
+          "y": 0.41,
+          "width": 0.19,
+          "height": 0.14
+        },
+        {
+          "id": "learning",
+          "x": 0.72,
+          "y": 0.34,
+          "width": 0.22375,
+          "height": 0.25
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 43
+    },
+    {
+      "id": "value-chain",
+      "familyId": "value-chain",
+      "contractId": "value-chain",
+      "nameJa": "価値連鎖",
+      "category": "process",
+      "purpose": "価値が段階的に付加される流れと支援要素を示す",
+      "useWhen": "業務機能や能力の連鎖を説明する",
+      "avoidWhen": "単なる時間順プロセスを表す場合",
+      "silhouette": "stages-with-enablers",
+      "density": "standard",
+      "required": [
+        "title",
+        "stages",
+        "outcome"
+      ],
+      "optional": [
+        "enablers"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "stages",
+          "x": 0.05625,
+          "y": 0.25,
+          "width": 0.8875,
+          "height": 0.28
+        },
+        {
+          "id": "enablers",
+          "x": 0.05625,
+          "y": 0.6,
+          "width": 0.8875,
+          "height": 0.1
+        },
+        {
+          "id": "outcome",
+          "x": 0.05625,
+          "y": 0.76,
+          "width": 0.8875,
+          "height": 0.09
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 44
+    },
+    {
+      "id": "timeline-roadmap",
+      "familyId": "timeline-roadmap",
+      "contractId": "timeline-roadmap",
+      "nameJa": "ロードマップ",
+      "category": "process",
+      "purpose": "時間順の計画、節目、依存関係を示す",
+      "useWhen": "ロードマップ、マイルストーン、簡易ガント",
+      "avoidWhen": "詳細タスクをすべて一枚へ載せる場合",
+      "silhouette": "workstream-roadmap",
+      "density": "standard",
+      "required": [
+        "title",
+        "timeAxis",
+        "workstreams"
+      ],
+      "optional": [
+        "milestones",
+        "decisionPoint"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 4
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "timeAxis",
+          "x": 0.23,
+          "y": 0.2,
+          "width": 0.71375,
+          "height": 0.07
+        },
+        {
+          "id": "workstreams",
+          "x": 0.05625,
+          "y": 0.28,
+          "width": 0.8875,
+          "height": 0.42
+        },
+        {
+          "id": "milestones",
+          "x": 0.05625,
+          "y": 0.28,
+          "width": 0.8875,
+          "height": 0.42
+        },
+        {
+          "id": "decisionPoint",
+          "x": 0.05625,
+          "y": 0.76,
+          "width": 0.8875,
+          "height": 0.09
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 45
+    },
+    {
+      "id": "timeline-milestones",
+      "familyId": "timeline-roadmap",
+      "contractId": "timeline-roadmap",
+      "nameJa": "マイルストーン",
+      "category": "process",
+      "purpose": "時間順の計画、節目、依存関係を示す",
+      "useWhen": "ロードマップ、マイルストーン、簡易ガント",
+      "avoidWhen": "詳細タスクをすべて一枚へ載せる場合",
+      "silhouette": "single-line-milestones",
+      "density": "sparse",
+      "required": [
+        "title",
+        "timeAxis",
+        "workstreams"
+      ],
+      "optional": [
+        "milestones",
+        "decisionPoint"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 4
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "timeAxis",
+          "x": 0.05625,
+          "y": 0.36,
+          "width": 0.8875,
+          "height": 0.08
+        },
+        {
+          "id": "workstreams",
+          "x": 0.05625,
+          "y": 0.47,
+          "width": 0.8875,
+          "height": 0.1
+        },
+        {
+          "id": "milestones",
+          "x": 0.05625,
+          "y": 0.27,
+          "width": 0.8875,
+          "height": 0.32
+        },
+        {
+          "id": "decisionPoint",
+          "x": 0.05625,
+          "y": 0.72,
+          "width": 0.8875,
+          "height": 0.1
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 46
+    },
+    {
+      "id": "timeline-gantt",
+      "familyId": "timeline-roadmap",
+      "contractId": "timeline-roadmap",
+      "nameJa": "簡易ガント",
+      "category": "process",
+      "purpose": "時間順の計画、節目、依存関係を示す",
+      "useWhen": "ロードマップ、マイルストーン、簡易ガント",
+      "avoidWhen": "詳細タスクをすべて一枚へ載せる場合",
+      "silhouette": "compact-gantt",
+      "density": "dense",
+      "required": [
+        "title",
+        "timeAxis",
+        "workstreams"
+      ],
+      "optional": [
+        "milestones",
+        "decisionPoint"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 4
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "timeAxis",
+          "x": 0.25,
+          "y": 0.2,
+          "width": 0.69375,
+          "height": 0.07
+        },
+        {
+          "id": "workstreams",
+          "x": 0.05625,
+          "y": 0.28,
+          "width": 0.8875,
+          "height": 0.46
+        },
+        {
+          "id": "milestones",
+          "x": 0.05625,
+          "y": 0.28,
+          "width": 0.8875,
+          "height": 0.46
+        },
+        {
+          "id": "decisionPoint",
+          "x": 0.05625,
+          "y": 0.78,
+          "width": 0.8875,
+          "height": 0.07
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 47
+    },
+    {
+      "id": "hierarchy-pyramid",
+      "familyId": "hierarchy-pyramid",
+      "contractId": "hierarchy-pyramid",
+      "nameJa": "階層ピラミッド",
+      "category": "process",
+      "purpose": "上位概念と下位要素の階層を示す",
+      "useWhen": "戦略、能力、原則の優先階層",
+      "avoidWhen": "時系列や因果関係を表す場合",
+      "silhouette": "layered-pyramid",
+      "density": "standard",
+      "required": [
+        "title",
+        "levels"
+      ],
+      "optional": [
+        "foundation"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 2
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "levels",
+          "x": 0.12,
+          "y": 0.22,
+          "width": 0.58,
+          "height": 0.52
+        },
+        {
+          "id": "foundation",
+          "x": 0.75,
+          "y": 0.35,
+          "width": 0.19375,
+          "height": 0.22
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 48
+    },
+    {
+      "id": "funnel",
+      "familyId": "funnel",
+      "contractId": "funnel",
+      "nameJa": "絞り込みファネル",
+      "category": "process",
+      "purpose": "段階ごとの絞り込みと残存量を示す",
+      "useWhen": "候補選定、案件選別、対象縮小",
+      "avoidWhen": "値が減少しない段階や循環を表す場合",
+      "silhouette": "centered-funnel",
+      "density": "standard",
+      "required": [
+        "title",
+        "stages"
+      ],
+      "optional": [
+        "conversion"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 2
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "stages",
+          "x": 0.16,
+          "y": 0.22,
+          "width": 0.55,
+          "height": 0.52
+        },
+        {
+          "id": "conversion",
+          "x": 0.76,
+          "y": 0.34,
+          "width": 0.18375,
+          "height": 0.24
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 49
+    },
+    {
+      "id": "architecture-layered",
+      "familyId": "architecture",
+      "contractId": "architecture",
+      "nameJa": "層別アーキテクチャ",
+      "category": "technical",
+      "purpose": "主要コンポーネント、境界、責務、接続を示す",
+      "useWhen": "システム全体像または層構造を説明する",
+      "avoidWhen": "詳細な物理構成や全通信を一枚へ詰める場合",
+      "silhouette": "layered-architecture",
+      "density": "dense",
+      "required": [
+        "title",
+        "nodes",
+        "connections",
+        "insight"
+      ],
+      "optional": [],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "nodes",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.7,
+          "height": 0.5
+        },
+        {
+          "id": "connections",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.7,
+          "height": 0.5
+        },
+        {
+          "id": "insight",
+          "x": 0.8,
+          "y": 0.3,
+          "width": 0.14375,
+          "height": 0.28
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 50
+    },
+    {
+      "id": "architecture-system-context",
+      "familyId": "architecture",
+      "contractId": "architecture",
+      "nameJa": "システムコンテキスト",
+      "category": "technical",
+      "purpose": "主要コンポーネント、境界、責務、接続を示す",
+      "useWhen": "システム全体像または層構造を説明する",
+      "avoidWhen": "詳細な物理構成や全通信を一枚へ詰める場合",
+      "silhouette": "system-context-map",
+      "density": "standard",
+      "required": [
+        "title",
+        "nodes",
+        "connections",
+        "insight"
+      ],
+      "optional": [],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "nodes",
+          "x": 0.1,
+          "y": 0.22,
+          "width": 0.62,
+          "height": 0.52
+        },
+        {
+          "id": "connections",
+          "x": 0.1,
+          "y": 0.22,
+          "width": 0.62,
+          "height": 0.52
+        },
+        {
+          "id": "insight",
+          "x": 0.77,
+          "y": 0.31,
+          "width": 0.17375,
+          "height": 0.26
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 51
+    },
+    {
+      "id": "data-flow-lineage",
+      "familyId": "data-flow-lineage",
+      "contractId": "data-flow-lineage",
+      "nameJa": "データリネージ",
+      "category": "technical",
+      "purpose": "データの発生、変換、保存、利用を追跡可能にする",
+      "useWhen": "データリネージ、インターフェース、処理経路",
+      "avoidWhen": "アプリ構成図とデータの流れを混在させる場合",
+      "silhouette": "left-to-right-data-flow",
+      "density": "dense",
+      "required": [
+        "title",
+        "nodes",
+        "flows"
+      ],
+      "optional": [
+        "control"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "nodes",
+          "x": 0.05625,
+          "y": 0.24,
+          "width": 0.8875,
+          "height": 0.39
+        },
+        {
+          "id": "flows",
+          "x": 0.05625,
+          "y": 0.24,
+          "width": 0.8875,
+          "height": 0.39
+        },
+        {
+          "id": "control",
+          "x": 0.05625,
+          "y": 0.72,
+          "width": 0.8875,
+          "height": 0.12
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 52
+    },
+    {
+      "id": "dependency-map",
+      "familyId": "dependency-map",
+      "contractId": "dependency-map",
+      "nameJa": "依存関係マップ",
+      "category": "technical",
+      "purpose": "コンポーネント間の依存と変更波及を示す",
+      "useWhen": "影響調査、移行計画、障害分析",
+      "avoidWhen": "方向性のない関係を大量に線で結ぶ場合",
+      "silhouette": "hub-and-dependency-map",
+      "density": "dense",
+      "required": [
+        "title",
+        "items",
+        "dependencies",
+        "focus"
+      ],
+      "optional": [],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "items",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.68,
+          "height": 0.51
+        },
+        {
+          "id": "dependencies",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.68,
+          "height": 0.51
+        },
+        {
+          "id": "focus",
+          "x": 0.79,
+          "y": 0.32,
+          "width": 0.15375,
+          "height": 0.25
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 53
+    },
+    {
+      "id": "stakeholder-map",
+      "familyId": "stakeholder-raci",
+      "contractId": "stakeholder-raci",
+      "nameJa": "ステークホルダーマップ",
+      "category": "governance",
+      "purpose": "関係者の関心、影響力、役割、責任分担を示す",
+      "useWhen": "合意形成または実行責任を明確にする",
+      "avoidWhen": "氏名だけを並べ、役割を示さない場合",
+      "silhouette": "influence-interest-map",
+      "density": "standard",
+      "required": [
+        "title",
+        "stakeholders",
+        "engagement"
+      ],
+      "optional": [
+        "matrix"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "stakeholders",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.6,
+          "height": 0.5
+        },
+        {
+          "id": "matrix",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.6,
+          "height": 0.5
+        },
+        {
+          "id": "engagement",
+          "x": 0.71,
+          "y": 0.32,
+          "width": 0.23375,
+          "height": 0.25
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 54
+    },
+    {
+      "id": "raci",
+      "familyId": "stakeholder-raci",
+      "contractId": "stakeholder-raci",
+      "nameJa": "RACI",
+      "category": "governance",
+      "purpose": "関係者の関心、影響力、役割、責任分担を示す",
+      "useWhen": "合意形成または実行責任を明確にする",
+      "avoidWhen": "氏名だけを並べ、役割を示さない場合",
+      "silhouette": "raci-table",
+      "density": "dense",
+      "required": [
+        "title",
+        "stakeholders",
+        "engagement"
+      ],
+      "optional": [
+        "matrix"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 3
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "stakeholders",
+          "x": 0.05625,
+          "y": 0.21,
+          "width": 0.22,
+          "height": 0.48
+        },
+        {
+          "id": "matrix",
+          "x": 0.3,
+          "y": 0.21,
+          "width": 0.64375,
+          "height": 0.48
+        },
+        {
+          "id": "engagement",
+          "x": 0.05625,
+          "y": 0.76,
+          "width": 0.8875,
+          "height": 0.09
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 55
+    },
+    {
+      "id": "risk-matrix",
+      "familyId": "risk-status",
+      "contractId": "risk-status",
+      "nameJa": "リスクマトリクス",
+      "category": "governance",
+      "purpose": "リスクの大きさ、状態、担当、対応を示す",
+      "useWhen": "プロジェクト報告、移行判定、統制確認",
+      "avoidWhen": "根拠のない色だけで状態を示す場合",
+      "silhouette": "likelihood-impact-matrix",
+      "density": "standard",
+      "required": [
+        "title",
+        "risks",
+        "summary"
+      ],
+      "optional": [],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 2
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "risks",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.62,
+          "height": 0.51
+        },
+        {
+          "id": "summary",
+          "x": 0.73,
+          "y": 0.33,
+          "width": 0.21375,
+          "height": 0.24
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 56
+    },
+    {
+      "id": "rag-status",
+      "familyId": "risk-status",
+      "contractId": "risk-status",
+      "nameJa": "RAGステータス",
+      "category": "governance",
+      "purpose": "リスクの大きさ、状態、担当、対応を示す",
+      "useWhen": "プロジェクト報告、移行判定、統制確認",
+      "avoidWhen": "根拠のない色だけで状態を示す場合",
+      "silhouette": "rag-status-list",
+      "density": "dense",
+      "required": [
+        "title",
+        "risks",
+        "summary"
+      ],
+      "optional": [],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 2
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "risks",
+          "x": 0.05625,
+          "y": 0.21,
+          "width": 0.8875,
+          "height": 0.5
+        },
+        {
+          "id": "summary",
+          "x": 0.05625,
+          "y": 0.77,
+          "width": 0.8875,
+          "height": 0.08
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 57
+    },
+    {
+      "id": "image-left",
+      "familyId": "visual-story",
+      "contractId": "visual-story",
+      "nameJa": "画像左",
+      "category": "visual",
+      "purpose": "画像を主要な証拠または状況説明として使う",
+      "useWhen": "現場、製品、画面、成果物を具体的に見せる",
+      "avoidWhen": "意味のない装飾写真で空白を埋める場合",
+      "silhouette": "image-left-content-right",
+      "density": "standard",
+      "required": [
+        "title",
+        "visuals",
+        "headline"
+      ],
+      "optional": [
+        "body",
+        "captions"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 4
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "visuals",
+          "x": 0.05625,
+          "y": 0.21,
+          "width": 0.52,
+          "height": 0.58
+        },
+        {
+          "id": "headline",
+          "x": 0.62,
+          "y": 0.27,
+          "width": 0.32375,
+          "height": 0.15
+        },
+        {
+          "id": "body",
+          "x": 0.62,
+          "y": 0.47,
+          "width": 0.32375,
+          "height": 0.24
+        },
+        {
+          "id": "captions",
+          "x": 0.05625,
+          "y": 0.81,
+          "width": 0.52,
+          "height": 0.05
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 58
+    },
+    {
+      "id": "image-right",
+      "familyId": "visual-story",
+      "contractId": "visual-story",
+      "nameJa": "画像右",
+      "category": "visual",
+      "purpose": "画像を主要な証拠または状況説明として使う",
+      "useWhen": "現場、製品、画面、成果物を具体的に見せる",
+      "avoidWhen": "意味のない装飾写真で空白を埋める場合",
+      "silhouette": "content-left-image-right",
+      "density": "standard",
+      "required": [
+        "title",
+        "visuals",
+        "headline"
+      ],
+      "optional": [
+        "body",
+        "captions"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 4
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "visuals",
+          "x": 0.42375,
+          "y": 0.21,
+          "width": 0.52,
+          "height": 0.58
+        },
+        {
+          "id": "headline",
+          "x": 0.05625,
+          "y": 0.27,
+          "width": 0.32375,
+          "height": 0.15
+        },
+        {
+          "id": "body",
+          "x": 0.05625,
+          "y": 0.47,
+          "width": 0.32375,
+          "height": 0.24
+        },
+        {
+          "id": "captions",
+          "x": 0.42375,
+          "y": 0.81,
+          "width": 0.52,
+          "height": 0.05
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 59
+    },
+    {
+      "id": "image-hero",
+      "familyId": "visual-story",
+      "contractId": "visual-story",
+      "nameJa": "全面ビジュアル",
+      "category": "visual",
+      "purpose": "画像を主要な証拠または状況説明として使う",
+      "useWhen": "現場、製品、画面、成果物を具体的に見せる",
+      "avoidWhen": "意味のない装飾写真で空白を埋める場合",
+      "silhouette": "hero-image-overlay",
+      "density": "sparse",
+      "required": [
+        "title",
+        "visuals",
+        "headline"
+      ],
+      "optional": [
+        "body",
+        "captions"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 4
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "visuals",
+          "x": 0.05625,
+          "y": 0.19,
+          "width": 0.8875,
+          "height": 0.64
+        },
+        {
+          "id": "headline",
+          "x": 0.1,
+          "y": 0.52,
+          "width": 0.56,
+          "height": 0.15
+        },
+        {
+          "id": "body",
+          "x": 0.1,
+          "y": 0.69,
+          "width": 0.56,
+          "height": 0.1
+        },
+        {
+          "id": "captions",
+          "x": 0.72,
+          "y": 0.78,
+          "width": 0.18,
+          "height": 0.04
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 60
+    },
+    {
+      "id": "image-gallery",
+      "familyId": "visual-story",
+      "contractId": "visual-story",
+      "nameJa": "画像ギャラリー",
+      "category": "visual",
+      "purpose": "画像を主要な証拠または状況説明として使う",
+      "useWhen": "現場、製品、画面、成果物を具体的に見せる",
+      "avoidWhen": "意味のない装飾写真で空白を埋める場合",
+      "silhouette": "three-image-gallery",
+      "density": "standard",
+      "required": [
+        "title",
+        "visuals",
+        "headline"
+      ],
+      "optional": [
+        "body",
+        "captions"
+      ],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 4
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "visuals",
+          "x": 0.05625,
+          "y": 0.22,
+          "width": 0.8875,
+          "height": 0.42
+        },
+        {
+          "id": "headline",
+          "x": 0.05625,
+          "y": 0.7,
+          "width": 0.8875,
+          "height": 0.08
+        },
+        {
+          "id": "body",
+          "x": 0.05625,
+          "y": 0.78,
+          "width": 0.8875,
+          "height": 0.06
+        },
+        {
+          "id": "captions",
+          "x": 0.05625,
+          "y": 0.65,
+          "width": 0.8875,
+          "height": 0.04
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 61
+    },
+    {
+      "id": "issue-action-log",
+      "familyId": "issue-action-log",
+      "contractId": "issue-action-log",
+      "nameJa": "重要課題一覧",
+      "category": "governance",
+      "purpose": "課題、状態、担当、期限、対応を一枚で管理する",
+      "useWhen": "会議で重要課題を追跡する",
+      "avoidWhen": "全チケットを一覧化して可読性を失う場合",
+      "silhouette": "issue-action-table",
+      "density": "dense",
+      "required": [
+        "title",
+        "issues",
+        "escalation"
+      ],
+      "optional": [],
+      "capacity": {
+        "titleChars": 32,
+        "primaryFields": 2
+      },
+      "regions": [
+        {
+          "id": "title",
+          "x": 0.05625,
+          "y": 0.06667,
+          "width": 0.8875,
+          "height": 0.08333
+        },
+        {
+          "id": "issues",
+          "x": 0.05625,
+          "y": 0.21,
+          "width": 0.8875,
+          "height": 0.51
+        },
+        {
+          "id": "escalation",
+          "x": 0.05625,
+          "y": 0.78,
+          "width": 0.8875,
+          "height": 0.08
+        }
+      ],
+      "overflowAction": "本文を短くする、ページを分ける、詳細を付録へ移す。自動縮小や自動レイアウト変更は行わない",
+      "previewOrder": 62
+    }
+  ]
+}

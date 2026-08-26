@@ -1,0 +1,111 @@
+{
+  "title": "Japanese PowerPoint Slide Specification",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "brief",
+    "slides"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "2.0"
+    },
+    "brief": {
+      "type": "object",
+      "required": [
+        "audience",
+        "purpose",
+        "expectedAction",
+        "usage"
+      ],
+      "properties": {
+        "audience": {
+          "type": "string",
+          "minLength": 1
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expectedAction": {
+          "type": "string",
+          "minLength": 1
+        },
+        "usage": {
+          "enum": [
+            "projection",
+            "pre-read",
+            "handout",
+            "print"
+          ]
+        },
+        "aspectRatio": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "slides": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "number",
+          "role",
+          "layoutId",
+          "actionTitle",
+          "fields",
+          "evidence",
+          "dataClassification"
+        ],
+        "properties": {
+          "number": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "role": {
+            "type": "string",
+            "minLength": 1
+          },
+          "layoutId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "actionTitle": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fields": {
+            "type": "object"
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "dataClassification": {
+            "enum": [
+              "fact",
+              "estimate",
+              "illustrative",
+              "mixed"
+            ]
+          },
+          "nextRelation": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

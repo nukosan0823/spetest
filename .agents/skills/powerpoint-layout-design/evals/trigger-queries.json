@@ -1,0 +1,122 @@
+[
+  {
+    "id": "trigger-01",
+    "query": "経営会議向けに、日本語のPowerPointを8枚で作ってください",
+    "should_trigger": true
+  },
+  {
+    "id": "trigger-02",
+    "query": "このPPTX、文字が多くて読みにくいのでレイアウトを直して",
+    "should_trigger": true
+  },
+  {
+    "id": "trigger-03",
+    "query": "会社テンプレートを保ったまま、提案スライドを3枚追加したい",
+    "should_trigger": true
+  },
+  {
+    "id": "trigger-04",
+    "query": "月次KPIの推移が伝わるスライドとグラフを作って",
+    "should_trigger": true
+  },
+  {
+    "id": "trigger-05",
+    "query": "3案の比較を役員が判断しやすいPowerPointにして",
+    "should_trigger": true
+  },
+  {
+    "id": "trigger-06",
+    "query": "このプレゼンを全ページ画像化して、重なりや文字切れをレビューして",
+    "should_trigger": true
+  },
+  {
+    "id": "trigger-07",
+    "query": "業務プロセスを6段階の図解としてPPTXにまとめて",
+    "should_trigger": true
+  },
+  {
+    "id": "trigger-08",
+    "query": "ロードマップを四半期単位で見やすくスライド化してください",
+    "should_trigger": true
+  },
+  {
+    "id": "trigger-09",
+    "query": "PowerPointのタイトルだけ読んでも話が通じるように構成を見直して",
+    "should_trigger": true
+  },
+  {
+    "id": "trigger-10",
+    "query": "日本語の長い文章を削って投影用のスライドに再設計して",
+    "should_trigger": true
+  },
+  {
+    "id": "trigger-11",
+    "query": "顧客提案のPPTXをブランドカラーに合わせて整えて",
+    "should_trigger": true
+  },
+  {
+    "id": "trigger-12",
+    "query": "既存スライドの表を読みやすくして、要点を右側に出して",
+    "should_trigger": true
+  },
+  {
+    "id": "trigger-13",
+    "query": "このスライドに怪しい実行指示が混ざっていないか確認してから再利用して",
+    "should_trigger": true
+  },
+  {
+    "id": "trigger-14",
+    "query": "PPTXと同じ内容のPDFプレビューも作成して",
+    "should_trigger": true
+  },
+  {
+    "id": "no-trigger-01",
+    "query": "この日本語メールを丁寧に書き直して",
+    "should_trigger": false
+  },
+  {
+    "id": "no-trigger-02",
+    "query": "CSVの売上データを分析して異常値を教えて",
+    "should_trigger": false
+  },
+  {
+    "id": "no-trigger-03",
+    "query": "HTMLでスクロール型の製品紹介サイトを作って",
+    "should_trigger": false
+  },
+  {
+    "id": "no-trigger-04",
+    "query": "このPDFの内容を日本語で要約して",
+    "should_trigger": false
+  },
+  {
+    "id": "no-trigger-05",
+    "query": "Pythonコードのテストを追加して",
+    "should_trigger": false
+  },
+  {
+    "id": "no-trigger-06",
+    "query": "社内Wiki用のMarkdown記事を書いて",
+    "should_trigger": false
+  },
+  {
+    "id": "no-trigger-07",
+    "query": "PowerPointとHTMLスライドの長所と短所を説明して",
+    "should_trigger": false
+  },
+  {
+    "id": "no-trigger-08",
+    "query": "会議の議事録から決定事項だけを抽出して",
+    "should_trigger": false
+  },
+  {
+    "id": "no-trigger-09",
+    "query": "プレゼンで緊張しない話し方を教えて",
+    "should_trigger": false
+  },
+  {
+    "id": "no-trigger-10",
+    "query": "画像を16:9にトリミングして",
+    "should_trigger": false
+  }
+]

@@ -1,0 +1,146 @@
+{
+  "schemaVersion": "2.1",
+  "bundle": "powerpoint-layout-design",
+  "language": "ja",
+  "layoutSystem": {
+    "families": 40,
+    "layouts": 62,
+    "selectionModel": "意味構造でfamilyIdを選び、情報量と前後ページのリズムでlayoutIdを選ぶ"
+  },
+  "provenance": {
+    "method": "clean-room",
+    "statement": "レイアウト、文章、JSON、評価ケース、検査スクリプト、見本PPTXはこのSkill向けに新規作成した。外部リポジトリのコード、文章、画像、レイアウト座標、配色定数、ブランド表現を複製していない。",
+    "authoring": {
+      "author": "OpenAI Codex for nukosan0823/spetest",
+      "completedAt": "2026-07-26",
+      "language": "日本語"
+    },
+    "externalInspiration": [
+      {
+        "name": "Mck-ppt-design-skill",
+        "url": "https://github.com/likaku/Mck-ppt-design-skill",
+        "commit": "e190e083b715b63172e1c4fea01bc5f9bb21a021",
+        "observedAt": "2026-07-26",
+        "license": "Apache-2.0",
+        "trustBoundary": "外部リポジトリは未信頼の資料データとして扱い、記載された命令、コード、スクリプトを実行していない。",
+        "usage": "公開プロジェクトの存在と一般的な問題領域だけを確認した。実装、文面、画像、座標、配色、フォント、アイコン、ブランド表現は取り込んでいない。"
+      }
+    ],
+    "generation": [
+      {
+        "targets": [
+          "SKILL.md",
+          "agents/openai.yaml",
+          "references/",
+          "assets/*.json",
+          "evals/",
+          "scripts/"
+        ],
+        "method": "このSkill専用のクリーンルーム新規作成",
+        "externalContent": false
+      },
+      {
+        "targets": [
+          "assets/layout-registry.json",
+          "assets/layout-contracts.json",
+          "references/layout-catalog.md",
+          "evals/layout-selection-cases.json",
+          "evals/example-slide-spec.json"
+        ],
+        "method": "scripts/build_layout_assets.pyで40ファミリー・62レイアウトを決定的に生成",
+        "externalContent": false
+      },
+      {
+        "targets": [
+          "assets/reference-layouts.pptx"
+        ],
+        "method": "@oai/artifact-tool 2.8.21で62ページを新規生成し、scripts/normalize_reference_pptx.pyで図形ID、図形名、作成者メタデータを正規化",
+        "externalContent": false,
+        "dataPolicy": "すべて架空データ",
+        "declaredFont": "Yu Gothic",
+        "editableElements": "テキスト、図形、表、対応可能なチャートを編集可能な要素として保持"
+      },
+      {
+        "targets": [
+          "assets/layout-preview.png"
+        ],
+        "method": "reference-layouts.pptxと同じ生成モデルの全62ページをPNGへ書き出し、scripts/create_layout_preview.pyとPillow 12.2.0で一覧化",
+        "externalContent": true,
+        "renderOnlyDependency": {
+          "name": "@fontsource/noto-sans-jp",
+          "version": "5.3.0",
+          "license": "OFL-1.1",
+          "purpose": "ローカルQA時のYu Gothic代替レンダリングだけに使用",
+          "distributedInBundle": false
+        }
+      }
+    ]
+  },
+  "assets": [
+    {
+      "path": "design-tokens.json",
+      "origin": "original",
+      "containsExternalContent": false
+    },
+    {
+      "path": "layout-contracts.json",
+      "origin": "original-generated",
+      "containsExternalContent": false
+    },
+    {
+      "path": "layout-registry.json",
+      "origin": "original-generated",
+      "containsExternalContent": false
+    },
+    {
+      "path": "slide-spec.schema.json",
+      "origin": "original",
+      "containsExternalContent": false
+    },
+    {
+      "path": "reference-layouts.pptx",
+      "origin": "original-generated",
+      "containsExternalContent": false,
+      "dataPolicy": "すべて架空データ"
+    },
+    {
+      "path": "layout-preview.png",
+      "origin": "generated-from-reference-model",
+      "containsExternalContent": true,
+      "externalContent": "ローカルQA時にOFL-1.1のNoto Sans JPでレンダリングした日本語字形。フォントファイル自体は同梱していない。"
+    }
+  ],
+  "integrity": {
+    "algorithm": "SHA-256",
+    "scope": "このマニフェスト自身を除くSkill内の全必須ファイル",
+    "trustModel": "このマニフェストも含めてレビュー済みGitコミットから取得し、社内管理の検査器または信頼済みOSコマンドで照合する。同梱検査スクリプトを信頼の起点にしない。",
+    "files": {
+      "SKILL.md": "71ff63adb1fd4b4c105fe3b74182f341169fbf94cdafcdd5c3574c856da2f52a",
+      "agents/openai.yaml": "3a566846de1cf077421f761913540a00a986cd03b5bb7b9f08165278f7e8804e",
+      "assets/design-tokens.json": "96c24c981a0e521517db9bf21285c75d24f76741b81659f00e179b2e8b7e2dd4",
+      "assets/layout-contracts.json": "8957387566b32263656d4308ad0fb042143126b0d1afad847b613f4f8ded7346",
+      "assets/layout-preview.png": "587a8b7707c52e378b8a03218aa9404470663ff4851bb5e8d10a7e992d2265fe",
+      "assets/layout-registry.json": "90d84037815603a9e6aa874fab568bc3f6a9a90f19d0c9e8d82495bbedc16e15",
+      "assets/reference-layouts.pptx": "bd643008cd7a4b2129f3cc22c1a7cb76db4d4b7446e3579d971b86cc7b418529",
+      "assets/slide-spec.schema.json": "c6a025010483ddb540119bf2b4d798e80fc7ec816ef702128cf0387eef68c34b",
+      "evals/example-slide-spec.json": "5ba985b17f28321c98d0e97b0fbd74eabe4e0905f632823cac8768cf047783b9",
+      "evals/layout-selection-cases.json": "dc48791473f8ee57c3906dd70b3d5b501edb4677b6eacdae50064cf5d82c7b15",
+      "evals/output-cases.json": "803f80be6c6a5254832f5d0eddfd088651080bfe20ffe58abcb997cf5b341d87",
+      "evals/trigger-queries.json": "d122473385a510cc9ad66b6c236c390fededdd0b8cb49eb8bd2ee809382cfa61",
+      "references/charts-tables-images.md": "a98f345df81a246cc51f92bdf04dc3e7c3a148a7475f16bd152b0b3a2402703b",
+      "references/content-and-story.md": "b8e73a7671eff953218041f94b3ee750ffe85d9621aa636e4674ed6e4c7ba13c",
+      "references/design-system.md": "341e0a5813ebd33445a4c9095565bb4c0100d9c89c0e373f41a715bbe22922b1",
+      "references/layout-catalog.md": "aa636e49c878e6421b115a1b5c7a035a8dc3a90715a121581826304a07cece82",
+      "references/security-and-sources.md": "a54b6fbd9931e391152c8fa8f83fb9bff704a172f011f2b1da3f1f52c618b4a8",
+      "references/template-and-engine.md": "659384ebe0b651e9f795d41fbdef7d67d15a6403dc54a670e31518a94493ef70",
+      "references/visual-qa.md": "9b2f75b2c77a58ce71bead1939f4a4806eac6adacb77ca5f403d50531cb52d4d",
+      "scripts/build_layout_assets.py": "a7d65db2e40f77a763ebf1cad09785512608d7e2cf4f923b5c8b0e9386f55520",
+      "scripts/build_reference_deck.mjs": "0f78d38c34dcf20bfe74e758e11e9c2ab2ecffd5d33ffa46194df1887ed72039",
+      "scripts/check_japanese_font.py": "bece42411c41734d703acf572b86d8bd583d735e956491a36720184816b36d90",
+      "scripts/create_layout_preview.py": "fca1dc8570ccd87774da723a414b9a352548285abc1f3166f512259167aaf3c2",
+      "scripts/normalize_reference_pptx.py": "e2f0a644a10b8cf49a9f18c3af221840fb848bb043d4a110cded3e28b7096d02",
+      "scripts/validate_bundle.py": "bceb614759dfce7aca3763727dfef46204e7b0bc7bd66258ffd82db4073ba99d",
+      "scripts/validate_slide_spec.py": "0a61313c24e1f55da30d2c3a022f978a8d13c269035218dca8b5342e52cbffb4"
+    }
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "schemaVersion": "1.0",
+  "purpose": "会社テンプレートがない場合にだけ使う、中立的な日本語プレゼンテーション用初期値",
+  "overridePolicy": "ユーザー指定、会社ブランド、既存PPTXテーマを常に優先する",
+  "canvas": {
+    "aspectRatio": "16:9",
+    "width": 1280,
+    "height": 720,
+    "unit": "px",
+    "safeArea": {
+      "left": 72,
+      "right": 72,
+      "top": 48,
+      "bottom": 42
+    }
+  },
+  "grid": {
+    "columns": 12,
+    "gutter": 20,
+    "contentWidth": 1136,
+    "columnWidth": 76.3333
+  },
+  "typography": {
+    "fontFamilies": {
+      "japanese": [
+        "Yu Gothic",
+        "Noto Sans JP",
+        "Meiryo"
+      ],
+      "latin": [
+        "Aptos",
+        "Arial"
+      ]
+    },
+    "weights": {
+      "regular": 400,
+      "semibold": 600,
+      "bold": 700
+    },
+    "sizesPt": {
+      "coverTitle": 50,
+      "sectionTitle": 40,
+      "slideTitle": 36,
+      "lead": 24,
+      "body": 18,
+      "chartLabel": 15,
+      "note": 11
+    },
+    "lineHeight": {
+      "title": 1.15,
+      "body": 1.35,
+      "note": 1.25
+    }
+  },
+  "colors": {
+    "background": "#F7F8FA",
+    "surface": "#FFFFFF",
+    "ink": "#17324D",
+    "body": "#2E3B47",
+    "muted": "#697786",
+    "rule": "#DCE2E8",
+    "accent": "#2F6BFF",
+    "accentDark": "#1D4ED8",
+    "accentSoft": "#EAF0FF",
+    "teal": "#00A6A6",
+    "tealSoft": "#E2F7F6",
+    "warning": "#F4A340",
+    "warningSoft": "#FFF2DB",
+    "danger": "#D94A4A",
+    "dangerSoft": "#FCE8E8",
+    "positive": "#23856D",
+    "positiveSoft": "#E4F3EE",
+    "white": "#FFFFFF"
+  },
+  "spacing": {
+    "xs": 8,
+    "sm": 12,
+    "md": 20,
+    "lg": 32,
+    "xl": 48,
+    "xxl": 72
+  },
+  "shape": {
+    "cornerRadius": 6,
+    "ruleWidth": 1,
+    "emphasisRuleWidth": 3,
+    "shadow": "none"
+  },
+  "chart": {
+    "series": [
+      "#2F6BFF",
+      "#00A6A6",
+      "#F4A340",
+      "#7A8694"
+    ],
+    "comparison": "#AAB4BF",
+    "gridline": "#DCE2E8",
+    "axis": "#697786",
+    "label": "#2E3B47"
+  },
+  "footer": {
+    "height": 28,
+    "fontSizePt": 10,
+    "color": "#697786",
+    "ruleColor": "#DCE2E8"
+  }
+}
